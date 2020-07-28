@@ -11,21 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da7bfc85-f8df-49b6-9b84-99b61bd4f9f9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/app-icon/mac/app.icns" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/mac/app.icns" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/1024.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/1024.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/128.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/128.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/16.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/16.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/24.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/24.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/256.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/256.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/32.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/32.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/48.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/48.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/512.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/512.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/64.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/64.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/app-icon/win/app.ico" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/win/app.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/img/icons.svg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/img/icons.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main-process/menus/application-menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/main-process/menus/application-menu.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,6 +41,7 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
     <property name="settings.editor.selected.configurable" value="settings.javascript.linters.eslint" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -73,8 +61,16 @@
       <workItem from="1595964356954" duration="980000" />
       <workItem from="1595965356977" duration="980000" />
       <workItem from="1595966343053" duration="6000" />
-      <workItem from="1595966351553" duration="4339000" />
+      <workItem from="1595966351553" duration="5845000" />
     </task>
+    <task id="LOCAL-00001" summary="Updating icons and titles">
+      <created>1595972680020</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1595972680020</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -91,6 +87,10 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Updating icons and titles" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updating icons and titles" />
   </component>
   <component name="WindowStateProjectService">
     <state x="389" y="673" width="931" height="357" key="#ESLint" timestamp="1595966086807">
@@ -113,10 +113,14 @@
       <screen x="0" y="23" width="2809" height="1597" />
     </state>
     <state width="500" height="445" key="SwitcherDM/0.23.2809.1597@0.23.2809.1597" timestamp="1595971343152" />
-    <state x="410" y="561" width="899" height="498" key="find.popup" timestamp="1595972289335">
+    <state x="1040" y="550" key="Vcs.Push.Dialog.v2" timestamp="1595972739801">
       <screen x="0" y="0" width="2880" height="1620" />
     </state>
-    <state x="410" y="561" width="899" height="498" key="find.popup/0.0.2880.1620@0.0.2880.1620" timestamp="1595972289335" />
+    <state x="1040" y="550" key="Vcs.Push.Dialog.v2/0.0.2880.1620@0.0.2880.1620" timestamp="1595972739801" />
+    <state x="410" y="561" width="909" height="498" key="find.popup" timestamp="1595973956225">
+      <screen x="0" y="0" width="2880" height="1620" />
+    </state>
+    <state x="410" y="561" width="909" height="498" key="find.popup/0.0.2880.1620@0.0.2880.1620" timestamp="1595973956225" />
     <state x="400" y="576" width="876" height="490" key="find.popup/0.23.2809.1597@0.23.2809.1597" timestamp="1595971680148" />
     <state x="367" y="393" width="670" height="676" key="search.everywhere.popup" timestamp="1595971366331">
       <screen x="0" y="23" width="2809" height="1597" />
