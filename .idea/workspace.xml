@@ -10,7 +10,24 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da7bfc85-f8df-49b6-9b84-99b61bd4f9f9" name="Default Changelist" comment="" />
+    <list default="true" id="da7bfc85-f8df-49b6-9b84-99b61bd4f9f9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app-icon/mac/app.icns" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/mac/app.icns" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/1024.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/1024.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/128.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/128.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/16.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/16.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/24.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/24.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/256.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/256.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/32.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/32.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/48.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/48.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/512.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/512.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app-icon/png/64.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/png/64.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app-icon/win/app.ico" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app-icon/win/app.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/icons.svg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/img/icons.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,17 +44,23 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="js.linters.configure.manually.selectedeslint" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets/app-icon/png" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.standard" value="project" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.eslint" value="$PROJECT_DIR$/node_modules/eslint" />
     <property name="node.js.selected.package.standard" value="$PROJECT_DIR$/node_modules/standard" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
-    <property name="settings.editor.selected.configurable" value="settings.javascript.prettier" />
+    <property name="settings.editor.selected.configurable" value="settings.javascript.linters.eslint" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/app-icon/png" />
+      <recent name="$PROJECT_DIR$/assets/app-icon/win" />
+      <recent name="$PROJECT_DIR$/assets/app-icon/mac" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -50,7 +73,7 @@
       <workItem from="1595964356954" duration="980000" />
       <workItem from="1595965356977" duration="980000" />
       <workItem from="1595966343053" duration="6000" />
-      <workItem from="1595966351553" duration="496000" />
+      <workItem from="1595966351553" duration="4339000" />
     </task>
     <servers />
   </component>
@@ -74,9 +97,30 @@
       <screen x="0" y="23" width="2809" height="1597" />
     </state>
     <state x="389" y="673" width="931" height="357" key="#ESLint/0.23.2809.1597@0.23.2809.1597" timestamp="1595966086807" />
-    <state x="204" y="460" key="SettingsEditor" timestamp="1595965979212">
+    <state x="167" y="483" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1595967495630">
       <screen x="0" y="23" width="2809" height="1597" />
     </state>
-    <state x="204" y="460" key="SettingsEditor/0.23.2809.1597@0.23.2809.1597" timestamp="1595965979212" />
+    <state x="167" y="483" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.2809.1597@0.23.2809.1597" timestamp="1595967495630" />
+    <state x="492" y="531" key="RollbackChangesDialog" timestamp="1595967452083">
+      <screen x="0" y="23" width="2809" height="1597" />
+    </state>
+    <state x="492" y="531" key="RollbackChangesDialog/0.23.2809.1597@0.23.2809.1597" timestamp="1595967452083" />
+    <state x="204" y="460" key="SettingsEditor" timestamp="1595967402334">
+      <screen x="0" y="23" width="2809" height="1597" />
+    </state>
+    <state x="204" y="460" key="SettingsEditor/0.23.2809.1597@0.23.2809.1597" timestamp="1595967402334" />
+    <state width="500" height="445" key="SwitcherDM" timestamp="1595971343152">
+      <screen x="0" y="23" width="2809" height="1597" />
+    </state>
+    <state width="500" height="445" key="SwitcherDM/0.23.2809.1597@0.23.2809.1597" timestamp="1595971343152" />
+    <state x="410" y="561" width="899" height="498" key="find.popup" timestamp="1595972289335">
+      <screen x="0" y="0" width="2880" height="1620" />
+    </state>
+    <state x="410" y="561" width="899" height="498" key="find.popup/0.0.2880.1620@0.0.2880.1620" timestamp="1595972289335" />
+    <state x="400" y="576" width="876" height="490" key="find.popup/0.23.2809.1597@0.23.2809.1597" timestamp="1595971680148" />
+    <state x="367" y="393" width="670" height="676" key="search.everywhere.popup" timestamp="1595971366331">
+      <screen x="0" y="23" width="2809" height="1597" />
+    </state>
+    <state x="367" y="393" width="670" height="676" key="search.everywhere.popup/0.23.2809.1597@0.23.2809.1597" timestamp="1595971366331" />
   </component>
 </project>
