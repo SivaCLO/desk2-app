@@ -60,11 +60,11 @@
   color: hsl(0, 0%, 55%);
 }
 
-.about .about-code h2 {
+.about .top h2 {
   color: hsl(330, 65%, 55%);
 }
 
-.about .play-along h2 {
+.about .bottom h2 {
   color: hsl(222, 53%, 50%);
 }
 
