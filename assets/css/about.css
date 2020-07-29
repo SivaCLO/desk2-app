@@ -61,11 +61,11 @@
 }
 
 .about .top h2 {
-  color: hsl(330, 65%, 55%);
+  color: #292929;
 }
 
 .about .bottom h2 {
-  color: hsl(222, 53%, 50%);
+  color: #029E74;
 }
 
 .about-button {
@@ -79,9 +79,11 @@
   border-radius: 4px;
   background-color: transparent;
 }
-.about-button:focus {
+
+.about-button:hover {
   outline: none;
-  border-color: hsl(0,0%,88%);
+  background-color: #029E74;
+  color: white;
 }
 
 footer.about-section {
@@ -93,13 +95,8 @@ footer.about-section {
   --rainbow-button-height: 50px;
   --rainbow-button-width-inner: 164px;
   --rainbow-button-height-inner: 44px;
-  --rainbow-color-1: hsl(116, 30%, 36%);
-  --rainbow-color-2: hsl(194, 60%, 36%);
-  --rainbow-color-3: hsl(222, 53%, 50%);
-  --rainbow-color-4: hsl(285, 47%, 46%);
-  --rainbow-color-5: hsl(330, 65%, 48%);
-  --rainbow-color-6: hsl(32, 79%, 49%);
-  --rainbow-color-7: hsl(53, 84%, 50%);
+  --rainbow-color-1: #029E74;
+  --rainbow-color-2: #292929;
 
   display: inline-block;
   width: var(--rainbow-button-width);
@@ -117,9 +114,7 @@ footer.about-section {
   left: 0;
   width: 600px;
   height: var(--rainbow-button-height);
-  background: #CCC;
-  background: linear-gradient(to right, var(--rainbow-color-1) 0%, var(--rainbow-color-2) 14%, var(--rainbow-color-3) 28%, var(--rainbow-color-4) 42%, var(--rainbow-color-5) 56%, var(--rainbow-color-6) 70%, var(--rainbow-color-7) 84%, var(--rainbow-color-1) 100%);
-  background-position: -200px 0;
+  background: #029E74;
   transition: all 0.5s;
   content: "";
 }
