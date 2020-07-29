@@ -7,13 +7,13 @@
     <dict>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>electron-api-demos</string>
+        <string>mediumdesk</string>
       </array>
       <key>CFBundleURLName</key>
-      <string>Electron API Demos Protocol</string>
+      <string>MediumDesk</string>
     </dict>
   </array>
-  <key>ElectronTeamID</key>
-  <string>VEKTX9H2N7</string>
+  <key>TeamID</key>
+  <string>897MXA578H</string>
 </dict>
 </plist>
