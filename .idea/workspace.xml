@@ -12,9 +12,9 @@
   <component name="ChangeListManager">
     <list default="true" id="da7bfc85-f8df-49b6-9b84-99b61bd4f9f9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/mac/info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/assets/mac/info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/mac/parent.plist" beforeDir="false" afterPath="$PROJECT_DIR$/assets/mac/parent.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/icons.svg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/img/icons.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sections/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/sections/about.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +62,7 @@
       <workItem from="1595964356954" duration="980000" />
       <workItem from="1595965356977" duration="980000" />
       <workItem from="1595966343053" duration="6000" />
-      <workItem from="1595966351553" duration="7318000" />
+      <workItem from="1595966351553" duration="8506000" />
     </task>
     <task id="LOCAL-00001" summary="Updating icons and titles">
       <created>1595972680020</created>
@@ -78,7 +78,14 @@
       <option name="project" value="LOCAL" />
       <updated>1595974043403</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Updated the Apple developer settings">
+      <created>1595985751522</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1595985751522</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -99,7 +106,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Updating icons and titles" />
     <MESSAGE value="Update getName() to .name" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update getName() to .name" />
+    <MESSAGE value="Updated the Apple developer settings" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated the Apple developer settings" />
   </component>
   <component name="WindowStateProjectService">
     <state x="389" y="673" width="931" height="357" key="#ESLint" timestamp="1595966086807">
@@ -122,15 +130,16 @@
       <screen x="0" y="23" width="2809" height="1597" />
     </state>
     <state width="500" height="445" key="SwitcherDM/0.23.2809.1597@0.23.2809.1597" timestamp="1595971343152" />
-    <state x="1040" y="550" key="Vcs.Push.Dialog.v2" timestamp="1595974045178">
-      <screen x="0" y="0" width="2880" height="1620" />
+    <state x="1014" y="565" key="Vcs.Push.Dialog.v2" timestamp="1595985753772">
+      <screen x="0" y="23" width="2809" height="1597" />
     </state>
     <state x="1040" y="550" key="Vcs.Push.Dialog.v2/0.0.2880.1620@0.0.2880.1620" timestamp="1595974045178" />
-    <state x="410" y="561" width="1063" height="498" key="find.popup" timestamp="1595974861236">
-      <screen x="0" y="0" width="2880" height="1620" />
+    <state x="1014" y="565" key="Vcs.Push.Dialog.v2/0.23.2809.1597@0.23.2809.1597" timestamp="1595985753772" />
+    <state x="400" y="576" width="915" height="490" key="find.popup" timestamp="1595985961032">
+      <screen x="0" y="23" width="2809" height="1597" />
     </state>
     <state x="410" y="561" width="1063" height="498" key="find.popup/0.0.2880.1620@0.0.2880.1620" timestamp="1595974861236" />
-    <state x="400" y="576" width="876" height="490" key="find.popup/0.23.2809.1597@0.23.2809.1597" timestamp="1595971680148" />
+    <state x="400" y="576" width="915" height="490" key="find.popup/0.23.2809.1597@0.23.2809.1597" timestamp="1595985961032" />
     <state x="367" y="393" width="670" height="676" key="search.everywhere.popup" timestamp="1595971366331">
       <screen x="0" y="23" width="2809" height="1597" />
     </state>
