@@ -20,8 +20,9 @@ function initialize () {
   function createWindow () {
     const windowOptions = {
       width: 1080,
-      minWidth: 680,
+      minWidth: 800,
       height: 840,
+      minHeight: 600,
       title: app.name,
       webPreferences: {
         nodeIntegration: true
