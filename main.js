@@ -4,7 +4,7 @@ require('update-electron-app')({
 
 const path = require('path')
 const glob = require('glob')
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserView, BrowserWindow} = require('electron')
 
 const debug = /--debug/.test(process.argv[2])
 
@@ -36,15 +36,25 @@ function initialize () {
     mainWindow = new BrowserWindow(windowOptions)
     mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
 
+    // Create Content View
+    const contentView = new BrowserView({webPreferences: {allowRunningInsecureContent: true}})
+    mainWindow.setBrowserView(contentView)
+    contentView.setBounds({ x: 240, y: 0, width: mainWindow.getBounds().width - 240, height: mainWindow.getBounds().height })
+    contentView.webContents.loadURL('https://medium.com')
+
     // Launch fullscreen with DevTools open, usage: npm run debug
     if (debug) {
       mainWindow.webContents.openDevTools()
-      mainWindow.maximize()
+      contentView.webContents.openDevTools()
       require('devtron').install()
     }
 
     mainWindow.on('closed', () => {
       mainWindow = null
+    })
+
+    mainWindow.on('resize', () => {
+      contentView.setBounds({ x: 240, y: 0, width: mainWindow.getBounds().width - 240, height: mainWindow.getBounds().height })
     })
   }
 
