@@ -37,15 +37,16 @@ function initialize () {
     mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
 
     // Create Content View
-    const contentView = new BrowserView({webPreferences: {allowRunningInsecureContent: true}})
-    mainWindow.setBrowserView(contentView)
-    contentView.setBounds({ x: 240, y: 0, width: mainWindow.getBounds().width - 240, height: mainWindow.getBounds().height })
-    contentView.webContents.loadURL('https://medium.com')
+    const mediumView = new BrowserView({webPreferences: {allowRunningInsecureContent: true}})
+    mediumView.setBounds({ x: 240, y: 0, width: mainWindow.getBounds().width - 240, height: mainWindow.getBounds().height })
+    mediumView.webContents.loadURL('https://medium.com')
+
+    mainWindow.setBrowserView(mediumView)
 
     // Launch fullscreen with DevTools open, usage: npm run debug
     if (debug) {
       mainWindow.webContents.openDevTools()
-      contentView.webContents.openDevTools()
+      mediumView.webContents.openDevTools()
       require('devtron').install()
     }
 
@@ -54,7 +55,7 @@ function initialize () {
     })
 
     mainWindow.on('resize', () => {
-      contentView.setBounds({ x: 240, y: 0, width: mainWindow.getBounds().width - 240, height: mainWindow.getBounds().height })
+      mediumView.setBounds({ x: 240, y: 0, width: mainWindow.getBounds().width - 240, height: mainWindow.getBounds().height })
     })
   }
 
