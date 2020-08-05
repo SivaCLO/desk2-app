@@ -80,10 +80,12 @@
 }
 .nav-button:hover,
 .nav-button:focus:not(.is-selected) {
-  background-color: hsla(0,0%,0%,.1);
+  background-color: var(--color-accent);
+  color: white;
 }
 .nav-button.is-selected {
   background-color: var(--color-accent);
+  color: white;
 }
 .nav-button.is-selected,
 .nav-button.is-selected em {

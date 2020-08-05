@@ -3,10 +3,10 @@ const path = require('path')
 
 if (process.defaultApp) {
   if (process.argv.length >= 2) {
-    app.setAsDefaultProtocolClient('electron-api-demos', process.execPath, [path.resolve(process.argv[1])])
+    app.setAsDefaultProtocolClient('mediumdesk', process.execPath, [path.resolve(process.argv[1])])
   }
 } else {
-  app.setAsDefaultProtocolClient('electron-api-demos')
+  app.setAsDefaultProtocolClient('mediumdesk')
 }
 
 app.on('open-url', (event, url) => {

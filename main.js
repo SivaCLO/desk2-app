@@ -14,8 +14,7 @@ let mainWindow = null
 
 function initialize () {
   makeSingleInstance()
-
-  loadSidebar()
+  loadMainProcess()
 
   function createWindow () {
     const windowOptions = {
@@ -38,17 +37,9 @@ function initialize () {
 
     // Create Content View
     const mediumView = new BrowserView({webPreferences: {allowRunningInsecureContent: true}})
+    mainWindow.setBrowserView(mediumView)
     mediumView.setBounds({ x: 240, y: 0, width: mainWindow.getBounds().width - 240, height: mainWindow.getBounds().height })
     mediumView.webContents.loadURL('https://medium.com')
-
-    mainWindow.setBrowserView(mediumView)
-
-    // Launch fullscreen with DevTools open, usage: npm run debug
-    if (debug) {
-      mainWindow.webContents.openDevTools()
-      mediumView.webContents.openDevTools()
-      require('devtron').install()
-    }
 
     mainWindow.on('closed', () => {
       mainWindow = null
@@ -76,13 +67,6 @@ function initialize () {
   })
 }
 
-// Make this app a single instance app.
-//
-// The main window will be restored and focused instead of a second window
-// opened when a person attempts to launch a second instance.
-//
-// Returns true if the current version of the app should quit instead of
-// launching.
 function makeSingleInstance () {
   if (process.mas) return
 
@@ -96,8 +80,7 @@ function makeSingleInstance () {
   })
 }
 
-// Require each JS file in the main-process dir
-function loadSidebar () {
+function loadMainProcess () {
   const files = glob.sync(path.join(__dirname, 'main-process/**/*.js'))
   files.forEach((file) => { require(file) })
 }

@@ -71,7 +71,7 @@ let template = [{
     })(),
     click: (item, focusedWindow) => {
       if (focusedWindow) {
-        focusedWindow.toggleDevTools()
+        focusedWindow.webContents.openDevTools({mode:'undocked'})
       }
     }
   }, {

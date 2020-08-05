@@ -6,27 +6,7 @@
   <link rel="stylesheet" href="assets/css/variables.css">
   <link rel="stylesheet" href="assets/css/nativize.css">
   <link rel="stylesheet" href="assets/css/global.css">
-  <link rel="stylesheet" href="assets/css/about.css">
   <link rel="stylesheet" href="assets/css/nav.css">
-  <link rel="stylesheet" href="assets/css/section.css">
-  <link rel="stylesheet" href="assets/css/demo.css">
-  <link rel="stylesheet" href="assets/css/github.css">
-
-  <link rel="import" href="sections/about.html">
-  <link rel="import" href="sections/windows/windows.html">
-  <link rel="import" href="sections/windows/crash-hang.html">
-  <link rel="import" href="sections/menus/menus.html">
-  <link rel="import" href="sections/menus/shortcuts.html">
-  <link rel="import" href="sections/native-ui/ex-links-file-manager.html">
-  <link rel="import" href="sections/native-ui/notifications.html">
-  <link rel="import" href="sections/native-ui/dialogs.html">
-  <link rel="import" href="sections/native-ui/tray.html">
-  <link rel="import" href="sections/native-ui/drag.html">
-  <link rel="import" href="sections/communication/ipc.html">
-  <link rel="import" href="sections/system/app-sys-information.html">
-  <link rel="import" href="sections/system/clipboard.html">
-  <link rel="import" href="sections/system/protocol-handler.html">
-  <link rel="import" href="sections/media/desktop-capturer.html">
 </head>
 <body>
 
@@ -36,115 +16,29 @@
       <svg class="nav-header-icon"><use xlink:href="assets/img/icons.svg#icon-mediumdesk"></use></svg>
     </header>
 
-    <div class="nav-item u-category-windows">
-      <h5 class="nav-category">
-        <svg class="nav-icon"><use xlink:href="assets/img/icons.svg#icon-windows"></use></svg>
-        Get Started
-      </h5>
-      <button type="button" id="button-signup" data-section="signup" class="nav-button">Join Medium</button>
-      <button type="button" id="button-signin" data-section="signin" class="nav-button">Sign in</button>
+    <div class="nav-item">
+      <button type="button" id="button-signup" data-action="signup" class="nav-button">Join Medium</button>
+      <button type="button" id="button-signin" data-action="signin" class="nav-button">Sign in</button>
     </div>
 
-    <div class="nav-item u-category-windows">
-      <h5 class="nav-category">
-        <svg class="nav-icon"><use xlink:href="assets/img/icons.svg#icon-windows"></use></svg>
-        Read
-      </h5>
-      <button type="button" id="button-signup" data-section="signup" class="nav-button">Home</button>
-      <button type="button" id="button-signin" data-section="signin" class="nav-button">Popular</button>
-      <button type="button" id="button-signin" data-section="signin" class="nav-button">Momentum</button>
-      <button type="button" id="button-signin" data-section="signin" class="nav-button">All Topics</button>
-      <button type="button" id="button-signin" data-section="signin" class="nav-button">Your Reading List</button>
+    <div class="nav-item">
+      <button type="button" id="button-new" data-action="new" class="nav-button">New Story</button>
+      <button type="button" id="button-draft" data-action="draft" class="nav-button">Drafts</button>
     </div>
 
-    <div class="nav-item u-category-windows">
-      <h5 class="nav-category">
-        <svg class="nav-icon"><use xlink:href="assets/img/icons.svg#icon-windows"></use></svg>
-        Write
-      </h5>
-      <button type="button" id="button-signup" data-section="signup" class="nav-button">New Story</button>
-      <button type="button" id="button-signin" data-section="signin" class="nav-button">Drafts</button>
-      <button type="button" id="button-signin" data-section="signin" class="nav-button">Published</button>
-      <button type="button" id="button-signin" data-section="signin" class="nav-button">Stats</button>
+    <div class="nav-item">
+      <button type="button" id="button-published" data-action="published" class="nav-button">Published</button>
+      <button type="button" id="button-stats" data-action="stats" class="nav-button">Stats</button>
+      <button type="button" id="button-notification" data-action="notification" class="nav-button">Notifications</button>
     </div>
 
-    <div class="nav-item u-category-windows">
-      <h5 class="nav-category">
-        <svg class="nav-icon"><use xlink:href="assets/img/icons.svg#icon-windows"></use></svg>
-        Publications
-      </h5>
-      <button type="button" id="button-signup" data-section="signup" class="nav-button">New Publication</button>
-      <button type="button" id="button-signin" data-section="signin" class="nav-button">Customize your interests</button>
-      <button type="button" id="button-signin" data-section="signin" class="nav-button">Your Publications</button>
-    </div>
-
-    <div class="nav-item u-category-windows">
-      <h5 class="nav-category">
-        <svg class="nav-icon"><use xlink:href="assets/img/icons.svg#icon-windows"></use></svg>
-        Account
-      </h5>
-      <button type="button" id="button-signup" data-section="signup" class="nav-button">Profile</button>
-      <button type="button" id="button-signin" data-section="signin" class="nav-button">Settings</button>
-      <button type="button" id="button-signin" data-section="signin" class="nav-button">Sign out</button>
-    </div>
-
-    <div class="nav-item u-category-windows">
-      <h5 class="nav-category">
-        <svg class="nav-icon"><use xlink:href="assets/img/icons.svg#icon-windows"></use></svg>
-        Windows
-      </h5>
-      <button type="button" id="button-windows" data-section="windows" class="nav-button">Create and manage <em>windows</em></button>
-      <button type="button" id="button-crash-hang" data-section="crash-hang" class="nav-button">Handling window <em>crashes and hangs</em></button>
-    </div>
-
-    <div class="nav-item u-category-menu">
-      <h5 class="nav-category">
-        <svg class="nav-icon"><use xlink:href="assets/img/icons.svg#icon-menu"></use></svg>
-        Menus
-      </h5>
-      <button type="button" id="button-menus" data-section="menus" class="nav-button">Customize <em>menus</em> </button>
-      <button type="button" id="button-shortcuts" data-section="shortcuts" class="nav-button">Register keyboard <em>shortcuts</em></button>
-    </div>
-
-    <div class="nav-item u-category-native-ui">
-      <h5 class="nav-category">
-        <svg class="nav-icon"><use xlink:href="assets/img/icons.svg#icon-native-ui"></use></svg>
-        Native User Interface</h5>
-      <button type="button" id="button-ex-links-file-manager" data-section="ex-links-file-manager" class="nav-button">Open <em>external links</em> or system <em>file manager</em></button>
-      <button type="button" id="button-notifications" data-section="notifications" class="nav-button"> <em>Notifications</em> with and without custom image</button>
-      <button type="button" id="button-dialogs" data-section="dialogs" class="nav-button">Use system <em>dialogs</em></button>
-      <button type="button" id="button-tray" data-section="tray" class="nav-button">Put your app in the <em>tray</em></button>
-      <button type="button" id="button-drag" data-section="drag" class="nav-button"><em>Drag</em> and drop files</button>
-    </div>
-
-    <div class="nav-item u-category-communication">
-      <h5 class="nav-category">
-        <svg class="nav-icon"><use xlink:href="assets/img/icons.svg#icon-communication"></use></svg>
-        Communication
-      </h5>
-      <button type="button" id="button-ipc" data-section="ipc" class="nav-button">Communicate between the <em>two processes</em></button>
-    </div>
-
-    <div class="nav-item u-category-system">
-      <h5 class="nav-category">
-        <svg class="nav-icon"><use xlink:href="assets/img/icons.svg#icon-system"></use></svg>
-        System
-      </h5>
-      <button type="button" id="button-app-sys-information" data-section="app-sys-information" class="nav-button" >Get app or user <em>system information</em></button>
-      <button type="button" id="button-clipboard" data-section="clipboard" class="nav-button">Copy and paste from the <em>clipboard</em></button>
-      <button type="button" id="button-protocol" data-section="protocol" class="nav-button">Launch app from <em>protocol handler</em></button>
-    </div>
-
-    <div class="nav-item u-category-media">
-      <h5 class="nav-category">
-        <svg class="nav-icon"><use xlink:href="assets/img/icons.svg#icon-media"></use></svg>
-        Media
-      </h5>
-      <button type="button" id="button-desktop-capturer" data-section="desktop-capturer" class="nav-button">Take a <em>screenshot</em></button>
+    <div class="nav-item">
+      <button type="button" id="button-profile" data-action="profile" class="nav-button">Profile</button>
+      <button type="button" id="button-settings" data-action="settings" class="nav-button">Settings</button>
+      <button type="button" id="button-signout" data-action="signout" class="nav-button">Sign out</button>
     </div>
 
     <footer class="nav-footer">
-      <button type="button" id="button-about" data-modal="about" class="nav-footer-button">About MediumDesk</button>
       <a class="nav-footer-logo" href="https://mediumdesk.com" aria-label="Homepage">
         mediumdesk.com
       </a>
@@ -154,12 +48,10 @@
   <main class="content js-content"></main>
 
   <script>
-    require('./assets/imports')
-    require('./assets/ex-links')
-    require('./assets/nav')
-    require('./assets/demo-btns')
-    require('./assets/code-blocks')
-    require('./assets/normalize-shortcuts')
+    require('./render-process/imports')
+    require('./render-process/ex-links')
+    require('./render-process/nav')
+    require('./render-process/normalize-shortcuts')
   </script>
 </body>
 </html>
