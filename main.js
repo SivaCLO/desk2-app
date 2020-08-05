@@ -37,7 +37,7 @@ function initialize () {
 
     // Create Content View
     mainWindow.setBrowserView(new BrowserView({webPreferences: {allowRunningInsecureContent: true}}))
-    mainWindow.getBrowserView().webContents.loadURL('https://medium.com/')
+    mainWindow.getBrowserView().webContents.loadURL('https://medium.com/me/stories/drafts')
     resizeWindow(mainWindow)
 
     mainWindow.on('closed', () => {
