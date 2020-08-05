@@ -4,7 +4,7 @@ require('update-electron-app')({
 
 const path = require('path')
 const glob = require('glob')
-const {app, BrowserView, BrowserWindow} = require('electron')
+const {app, session, BrowserView, BrowserWindow} = require('electron')
 
 const debug = /--debug/.test(process.argv[2])
 
@@ -54,6 +54,10 @@ function initialize () {
   }
 
   app.on('ready', () => {
+    session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+      details.requestHeaders['User-Agent'] = session.defaultSession.getUserAgent().replace("Electron/" + process.versions.electron, "")
+      callback({ cancel: false, requestHeaders: details.requestHeaders });
+    });
     createWindow()
   })
 
