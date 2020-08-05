@@ -36,18 +36,21 @@ function initialize () {
     mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
 
     // Create Content View
-    const mediumView = new BrowserView({webPreferences: {allowRunningInsecureContent: true}})
-    mainWindow.setBrowserView(mediumView)
-    mediumView.setBounds({ x: 240, y: 0, width: mainWindow.getBounds().width - 240, height: mainWindow.getBounds().height })
-    mediumView.webContents.loadURL('https://medium.com')
+    mainWindow.setBrowserView(new BrowserView({webPreferences: {allowRunningInsecureContent: true}}))
+    mainWindow.getBrowserView().webContents.loadURL('https://medium.com/')
+    resizeWindow(mainWindow)
 
     mainWindow.on('closed', () => {
       mainWindow = null
     })
 
     mainWindow.on('resize', () => {
-      mediumView.setBounds({ x: 240, y: 0, width: mainWindow.getBounds().width - 240, height: mainWindow.getBounds().height })
+      resizeWindow(mainWindow)
     })
+  }
+
+  function resizeWindow (window) {
+    window.getBrowserView().setBounds({ x: 240, y: 0, width: mainWindow.getBounds().width - 240, height: mainWindow.getBounds().height })
   }
 
   app.on('ready', () => {
