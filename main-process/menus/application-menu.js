@@ -1,6 +1,46 @@
 const {BrowserWindow, Menu, app, shell, dialog} = require('electron')
+let currentWindow = null ;
 
 let template = [{
+  label: 'File',
+  submenu: [{
+    label: 'New Stroy',
+    accelerator: 'CmdOrCtrl+N',
+    click() {
+      currentWindow && currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/new-story`)
+    }
+  },{
+    label: 'Drafts',
+    accelerator: 'CmdOrCtrl+D',
+    click() {
+      currentWindow && currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`)
+    }
+  },{
+    label: 'Published',
+    accelerator: 'CmdOrCtrl+p',
+    click() {
+      currentWindow && currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me/stories/public`)
+    }
+  },{
+    label: 'Stats',
+    accelerator: 'Shift+CmdOrCtrl+s',
+    click() {
+      currentWindow && currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me/stats`)
+    }
+  },{
+    label: 'Profile',
+    accelerator: 'Shift+CmdOrCtrl+p',
+    click() {
+      currentWindow && currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me`)
+    }
+  },{
+    label: 'Settings',
+    accelerator: 'Alt+CmdOrCtrl+s',
+    click() {
+      currentWindow && currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me/settings`)
+    }
+  }]
+}, {
   label: 'Edit',
   submenu: [{
     label: 'Undo',
@@ -230,12 +270,14 @@ app.on('ready', () => {
   Menu.setApplicationMenu(menu)
 })
 
-app.on('browser-window-created', () => {
+app.on('browser-window-created', (event, win) => {
   let reopenMenuItem = findReopenMenuItem()
   if (reopenMenuItem) reopenMenuItem.enabled = false
+  currentWindow=win;
 })
 
 app.on('window-all-closed', () => {
   let reopenMenuItem = findReopenMenuItem()
   if (reopenMenuItem) reopenMenuItem.enabled = true
 })
+
