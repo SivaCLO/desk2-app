@@ -67,9 +67,9 @@ function createWindow () {
   function resizeMediumView () {
     mediumView.setBounds({
       x: 240,
-      y: 0,
+      y: 35,
       width: mainWindow.getBounds().width - 240,
-      height: mainWindow.getBounds().height
+      height: mainWindow.getBounds().height - 35
     })
   }
 
@@ -106,7 +106,7 @@ function createWindow () {
 
   mainWindow = new BrowserWindow(windowOptions)
   mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
-  mainWindow.setBrowserView(mediumView)
+  // mainWindow.setBrowserView(mediumView)
   mainWindow.on('resize', () => {
     resizeMediumView()
   })

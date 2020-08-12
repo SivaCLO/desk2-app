@@ -1,6 +1,17 @@
 const settings = require('electron-settings')
 const currentWindow = require('electron').remote.getCurrentWindow();
-const path = require('path')
+const path = require('path');
+const TabGroup = require('./tab')
+
+const tabGroup = new TabGroup({})
+
+tabGroup.addTab({
+  title: "Home",
+  src: "https://medium.com/me/stories/drafts",
+  visible: true,
+  active: true,
+  closable: false
+})
 
 document.body.addEventListener('click', (event) => {
   if (event.target.dataset.action) {
@@ -20,7 +31,13 @@ function handleAction (event) {
   }else if(action === "profile"){
     currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me`)
   }else if(action === "new"){
-    currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/new-story`)
+    tabGroup.addTab({
+      title: "Untitled",
+      src: "https://medium.com/new-story",
+      visible: true,
+      active: true
+    })
+    // currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/new-story`)
   }else if(action === "home"){
     currentWindow.getBrowserView().webContents.loadURL(`https://medium.com`)
   }
