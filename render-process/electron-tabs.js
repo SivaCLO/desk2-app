@@ -1,11 +1,26 @@
 const EventEmitter = require("events");
-const Remote = require('electron').remote
-const path = require('path');
-const fs = require('fs')
 
 if (!document) {
   throw Error("electron-tabs module must be called in renderer process");
 }
+
+// Inject styles
+(function () {
+  const styles = `
+    webview {
+      position: absolute;
+      visibility: hidden;
+      width: 100%;
+      height: 100%;
+    }
+    webview.visible {
+      visibility: visible;
+    }
+  `;
+  let styleTag = document.createElement("style");
+  styleTag.innerHTML = styles;
+  document.getElementsByTagName("head")[0].appendChild(styleTag);
+})();
 
 class TabGroup extends EventEmitter {
   constructor (args = {}) {
@@ -154,7 +169,7 @@ const TabGroupPrivate = {
 };
 
 class Tab extends EventEmitter {
-   constructor (tabGroup, id, args) {
+  constructor (tabGroup, id, args) {
     super();
     this.tabGroup = tabGroup;
     this.id = id;
@@ -163,10 +178,11 @@ class Tab extends EventEmitter {
     this.iconURL = args.iconURL;
     this.icon = args.icon;
     this.closable = args.closable === false ? false : true;
-    this.url = args.src;
+    this.webviewAttributes = args.webviewAttributes || {};
+    this.webviewAttributes.src = args.src;
     this.tabElements = {};
     TabPrivate.initTab.bind(this)();
-    TabPrivate.initBrowserView.bind(this)();
+    TabPrivate.initWebview.bind(this)();
     if (args.visible !== false) {
       this.show();
     }
@@ -282,12 +298,13 @@ class Tab extends EventEmitter {
     let activeTab = this.tabGroup.getActiveTab();
     if (activeTab) {
       activeTab.tab.classList.remove("active");
+      activeTab.webview.classList.remove("visible");
       activeTab.emit("inactive", activeTab);
     }
     TabGroupPrivate.setActiveTab.bind(this.tabGroup)(this);
     this.tab.classList.add("active");
-    Remote.getCurrentWindow().setBrowserView(this.browserView)
-    this.browserView.webContents.focus()
+    this.webview.classList.add("visible");
+    this.webview.focus();
     this.emit("active", this);
     return this;
   }
@@ -339,6 +356,7 @@ class Tab extends EventEmitter {
     this.isClosed = true;
     let tabGroup = this.tabGroup;
     tabGroup.tabContainer.removeChild(this.tab);
+    tabGroup.viewContainer.removeChild(this.webview);
     let activeTab = this.tabGroup.getActiveTab();
     TabGroupPrivate.removeTab.bind(tabGroup)(this, true);
 
@@ -403,49 +421,36 @@ const TabPrivate = {
     this.tab.addEventListener("mousedown", tabMouseDownHandler.bind(this), false);
   },
 
-  initBrowserView: function () {
-    this.browserView = new Remote.BrowserView({
-      webPreferences: {
-        allowRunningInsecureContent: true,
-        preload: path.join(__dirname, 'medium-process/mediumView.js')
-      }
-    })
-    this.browserView.webContents.loadURL(this.url)
+  initWebview: function () {
+    const webview = this.webview = document.createElement("webview");
 
-    this.browserView.webContents.on('dom-ready', () => {
-      this.browserView.webContents.insertCSS(fs.readFileSync(path.join(__dirname, '../assets/css/mediumView.css'), 'utf8'))
-      this.browserView.setBounds({
-        x: 240,
-        y: 35,
-        width: Remote.getCurrentWindow().getBounds().width - 240,
-        height: Remote.getCurrentWindow().getBounds().height - 35
-      })
-    })
-
-    this.browserView.webContents.on('did-navigate', (event, url) => {
-      if (url.startsWith('https://medium.com/new-story')) {
-        console.log('New Story opened')
-      }
-    })
-
-    this.browserView.webContents.on('new-window', (e, url) => {
-      e.preventDefault()
-      Remote.shell.openExternal(url)
-    })
-
-    const tabBrowserViewDidFinishLoadHandler = function (e) {
-      this.emit("browserView-ready", this);
+    const tabWebviewDidFinishLoadHandler = function (e) {
+      this.emit("webview-ready", this);
     };
 
-    this.browserView.webContents.on("did-finish-load", tabBrowserViewDidFinishLoadHandler.bind(this), false);
+    this.webview.addEventListener("did-finish-load", tabWebviewDidFinishLoadHandler.bind(this), false);
 
-    const tabBrowserViewDomReadyHandler = function (e) {
-      this.emit("browserView-dom-ready", this);
+    const tabWebviewDomReadyHandler = function (e) {
+      // Remove this once https://github.com/electron/electron/issues/14474 is fixed
+      webview.blur();
+      webview.focus();
+      this.emit("webview-dom-ready", this);
     };
 
-    this.browserView.webContents.on("dom-ready", tabBrowserViewDomReadyHandler.bind(this), false);
-  },
+    this.webview.addEventListener("dom-ready", tabWebviewDomReadyHandler.bind(this), false);
+
+    this.webview.classList.add(this.tabGroup.options.viewClass);
+    if (this.webviewAttributes) {
+      let attrs = this.webviewAttributes;
+      for (let key in attrs) {
+        const attr = attrs[key];
+        if (attr === false) continue;
+        this.webview.setAttribute(key, attr);
+      }
+    }
+
+    this.tabGroup.viewContainer.appendChild(this.webview);
+  }
 };
 
 module.exports = TabGroup;
-

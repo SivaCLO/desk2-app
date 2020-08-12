@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="assets/css/nativize.css">
   <link rel="stylesheet" href="assets/css/global.css">
   <link rel="stylesheet" href="assets/css/nav.css">
+  <link rel="stylesheet" href="assets/css/tabs.css">
 </head>
 <body>
 
@@ -17,11 +18,11 @@
     </header>
 
     <div class="nav-item">
-      <button type="button" id="button-new" data-action="new" class="nav-button nav-primary">New Story</button>
+      <button type="button" id="button-new" data-action="new" class="nav-button">New Story</button>
+      <button type="button" id="button-draft" data-action="draft" class="nav-button">Drafts</button>
     </div>
 
     <div class="nav-item">
-      <button type="button" id="button-draft" data-action="draft" class="nav-button">Drafts</button>
       <button type="button" id="button-published" data-action="published" class="nav-button">Published</button>
       <button type="button" id="button-stats" data-action="stats" class="nav-button">Stats</button>
     </div>
@@ -37,17 +38,11 @@
       </a>
     </footer>
   </nav>
-  <table>
-    <tr>
-      <td>
-        <div class="etabs-tabgroup">
-          <div class="etabs-tabs"></div>
-          <div class="etabs-buttons"></div>
-        </div>
-      </td>
-    </tr>
-  </table>
-  
+
+  <div class="etabs-tabgroup">
+    <div class="etabs-tabs"></div>
+    <div class="etabs-buttons"></div>
+  </div>
 
   <script>
     require('./render-process/ex-links')
