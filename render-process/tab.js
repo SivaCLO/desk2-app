@@ -412,7 +412,7 @@ const TabPrivate = {
     })
     this.browserView.webContents.loadURL(this.url)
 
-    this.browserView.webContents.on('dom-ready', () => {
+    this.browserView.webContents.on('did-finish-load', () => {
       this.browserView.webContents.insertCSS(fs.readFileSync(path.join(__dirname, '../assets/css/mediumView.css'), 'utf8'))
       this.browserView.setBounds({
         x: 240,
@@ -433,17 +433,6 @@ const TabPrivate = {
       Remote.shell.openExternal(url)
     })
 
-    const tabBrowserViewDidFinishLoadHandler = function (e) {
-      this.emit("browserView-ready", this);
-    };
-
-    this.browserView.webContents.on("did-finish-load", tabBrowserViewDidFinishLoadHandler.bind(this), false);
-
-    const tabBrowserViewDomReadyHandler = function (e) {
-      this.emit("browserView-dom-ready", this);
-    };
-
-    this.browserView.webContents.on("dom-ready", tabBrowserViewDomReadyHandler.bind(this), false);
   },
 };
 
