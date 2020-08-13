@@ -78,9 +78,9 @@ function createWindow () {
   mainWindow.on('resize', () => {
     mainWindow.getBrowserView().setBounds({
       x: 240,
-      y: 35,
-      width: mainWindow.getBounds().width - 240,
-      height: mainWindow.getBounds().height - 35
+      y: 32,
+      width: mainWindow.getContentBounds().width - 240,
+      height: mainWindow.getContentBounds().height - 32
     })
   })
   mainWindow.on('close', () => {

@@ -1,11 +1,19 @@
 const currentWindow = require('electron').remote.getCurrentWindow()
 const TabGroup = require('./tab')
 
-const tabGroup = new TabGroup({})
+const tabGroup = new TabGroup({
+  newTab: {
+    title: 'Untitled',
+    src: 'https://medium.com/new-story',
+    visible: true,
+    active: true
+  }
+})
 
 tabGroup.addTab({
-  title: 'M',
+  title: '',
   src: 'https://medium.com/me/stories/drafts',
+  iconURL: "assets/app-icon/png/512.png",
   visible: true,
   active: true,
   closable: false
@@ -28,12 +36,5 @@ function handleAction (event) {
     currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me/stories/public`)
   } else if (action === 'profile') {
     currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me`)
-  } else if (action === 'new') {
-    tabGroup.addTab({
-      title: 'Untitled',
-      src: 'https://medium.com/new-story',
-      visible: true,
-      active: true
-    })
   }
 }

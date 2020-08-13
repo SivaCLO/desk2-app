@@ -178,8 +178,13 @@ class Tab extends EventEmitter {
   setTitle (title) {
     if (this.isClosed) return;
     let span = this.tabElements.title;
-    span.innerHTML = title;
-    span.title = title;
+    if(title !== "") {
+      span.innerHTML = title;
+      span.title = title;
+      span.classList.remove('hidden');
+    } else {
+      span.classList.add('hidden');
+    }
     this.title = title;
     this.emit("title-changed", title, this);
     return this;
@@ -290,8 +295,8 @@ class Tab extends EventEmitter {
     this.browserView.setBounds({
       x: 240,
       y: 35,
-      width: Remote.getCurrentWindow().getBounds().width - 240,
-      height: Remote.getCurrentWindow().getBounds().height - 32
+      width: Remote.getCurrentWindow().getContentBounds().width - 240,
+      height: Remote.getCurrentWindow().getContentBounds().height - 35
     })
     this.browserView.webContents.focus()
     this.emit("active", this);
@@ -382,10 +387,13 @@ const TabPrivate = {
     let container = this.tabElements.buttons;
     let tabClass = this.tabGroup.options.tabClass;
     if (this.closable) {
+      container.classList.remove("hidden")
       let button = container.appendChild(document.createElement("button"));
       button.classList.add(`${tabClass}-button-close`);
       button.innerHTML = this.tabGroup.options.closeButtonText;
       button.addEventListener("click", this.close.bind(this, false), false);
+    } else {
+      container.classList.add("hidden")
     }
   },
 
