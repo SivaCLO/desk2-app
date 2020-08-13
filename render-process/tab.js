@@ -287,6 +287,12 @@ class Tab extends EventEmitter {
     TabGroupPrivate.setActiveTab.bind(this.tabGroup)(this);
     this.tab.classList.add("active");
     Remote.getCurrentWindow().setBrowserView(this.browserView)
+    this.browserView.setBounds({
+      x: 240,
+      y: 35,
+      width: Remote.getCurrentWindow().getBounds().width - 240,
+      height: Remote.getCurrentWindow().getBounds().height - 32
+    })
     this.browserView.webContents.focus()
     this.emit("active", this);
     return this;
@@ -411,16 +417,6 @@ const TabPrivate = {
       }
     })
     this.browserView.webContents.loadURL(this.url)
-
-    this.browserView.webContents.on('did-finish-load', () => {
-      this.browserView.webContents.insertCSS(fs.readFileSync(path.join(__dirname, '../assets/css/mediumView.css'), 'utf8'))
-      this.browserView.setBounds({
-        x: 240,
-        y: 35,
-        width: Remote.getCurrentWindow().getBounds().width - 240,
-        height: Remote.getCurrentWindow().getBounds().height - 35
-      })
-    })
 
     this.browserView.webContents.on('did-navigate', (event, url) => {
       if (url.startsWith('https://medium.com/new-story')) {
