@@ -439,6 +439,16 @@ const TabPrivate = {
           ready: () => this.browserView.webContents.loadURL(fromURL)
         })
       }
+      
+      if(url.startsWith('https://medium.com/p') && url.includes('/edit')){
+        this.tabGroup.addTab({
+          title: 'Untitled',
+          src: url,
+          visible: true,
+          active: true,
+          ready: () => this.browserView.webContents.loadURL(fromURL)
+        })
+      }
     })
 
     this.browserView.webContents.on('new-window', (e, url) => {

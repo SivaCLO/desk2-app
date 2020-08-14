@@ -108,7 +108,7 @@ function createWindow () {
             nodeIntegration: true
         }
       });
-      integrationTokenWin.webContents.openDevTools({mode:'undocked'})
+      // integrationTokenWin.webContents.openDevTools({mode:'undocked'})
       integrationTokenWin.loadURL(path.join('file://', __dirname, '/integrationToken.html'))
       integrationTokenWin.on('closed', () => {
         integrationTokenWin = null;
@@ -120,5 +120,8 @@ function createWindow () {
     store.set('userDetails',data)
     mainWindow.webContents.send('open_import_dialogue', data)
     integrationTokenWin && integrationTokenWin.close();
+  })
+  ipcMain.on('reset_token',(e,data)=>{
+    store.set('userDetails',null)
   })
 }
