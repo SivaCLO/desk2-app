@@ -112,7 +112,7 @@ let template = [{
     click: (item, focusedWindow) => {
       if (focusedWindow) {
         focusedWindow.webContents.openDevTools({mode:'undocked'})
-        focusedWindow.getBrowserView().webContents.openDevTools({mode:'undocked'})
+        focusedWindow.getBrowserView().webContents && focusedWindow.getBrowserView().webContents.openDevTools({mode:'undocked'})
       }
     }
   }, {
