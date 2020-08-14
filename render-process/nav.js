@@ -1,23 +1,4 @@
 const currentWindow = require('electron').remote.getCurrentWindow()
-const TabGroup = require('./tab')
-
-const tabGroup = new TabGroup({
-  newTab: {
-    title: 'Untitled',
-    src: 'https://medium.com/new-story',
-    visible: true,
-    active: true
-  }
-})
-
-tabGroup.addTab({
-  title: '',
-  src: 'https://medium.com/me/stories/drafts',
-  iconURL: "assets/app-icon/png/512.png",
-  visible: true,
-  active: true,
-  closable: false
-})
 
 document.body.addEventListener('click', (event) => {
   if (event.target.dataset.action) {
