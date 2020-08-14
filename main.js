@@ -92,22 +92,17 @@ function createWindow () {
     mainWindow = null
   })
 
-  // Loading Home Page
-  mediumView.webContents.loadURL(Config.MEDIUMVIEW_HOME)
-  resizeMediumView()
-
 
   //ipc Messages
+  let integrationTokenWin;
   ipcMain.on('import_a_story', (event) => {
-    const integrationToken = store.get('integrationToken')
-    console.log('token from store ',integrationToken)
-    if(integrationToken){
-      mainWindow.webContents.send('open_import_dialogue', integrationToken)
-      // openImportDialog()
+    const userDetails = store.get('userDetails');
+    if(userDetails){
+      mainWindow.webContents.send('open_import_dialogue', userDetails)
     }else{
-      let integrationTokenWin = new BrowserWindow({
-        width: 400,
-        height: 300,
+      integrationTokenWin = new BrowserWindow({
+        width: 727,
+        height: 509,
         show: true,
         webPreferences: {
             nodeIntegration: true
@@ -115,32 +110,15 @@ function createWindow () {
       });
       integrationTokenWin.webContents.openDevTools({mode:'undocked'})
       integrationTokenWin.loadURL(path.join('file://', __dirname, '/integrationToken.html'))
-      ipcMain.on('save_integration_token',(e,data)=>{
-        store.set('integrationToken',data.token);
-        console.log('token saved ',data.token);
-        integrationTokenWin.close()
-        mainWindow.webContents.send('open_import_dialogue', data.token)
-        // openImportDialog()
-      })
-
       integrationTokenWin.on('closed', () => {
         integrationTokenWin = null;
       });
     }
   })
 
-  ipcMain.on('reset_integration_token',()=>{
-    console.log('inside reset token')
-    store.set('integrationToken',null)
-  })
-}
-function openImportDialog(){
-  dialog.showOpenDialog(mainWindow,{
-    properties:["openFile",'openDirectory'],
-    filters:[{ name: 'Custom File Type', extensions: ['md']}]
-  }).then(file=>{
-    console.log('files ',file)
-  }).catch(e=>{
-    console.log('error in fetching file ',e)
+  ipcMain.on('save_userDetails',(e,data)=>{
+    store.set('userDetails',data)
+    mainWindow.webContents.send('open_import_dialogue', data)
+    integrationTokenWin && integrationTokenWin.close();
   })
 }
