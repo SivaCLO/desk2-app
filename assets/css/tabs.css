@@ -1,0 +1,148 @@
+.etabs-tabgroup {
+    position: absolute;
+    width: 100%;
+    margin-left: 240px;
+    height: 35px;
+    background-color: var(--color-bg);
+    cursor: default;
+    font: caption;
+    font-size: 14px;
+    -webkit-user-select: none;
+    user-select: none;
+    display: none;
+}
+
+.etabs-tabgroup.visible {
+    display: block;
+}
+
+.etabs-tabs {
+}
+
+.etabs-tab {
+    display: none;
+    position: relative;
+    color: #333;
+    height: 35px;
+    padding: 6px 8px 4px;
+    border-left: 1px solid var(--color-bg);
+    border-bottom: none;
+    font: caption;
+    font-size: 14px;
+    cursor: default;
+    background-color: var(--color-border);
+    color: var(--color-subtle)
+}
+
+/* Dragula */
+.etabs-tab.gu-mirror {
+    padding-bottom: 0;
+}
+
+.etabs-tab:first-child {
+    border-left: none;
+}
+
+.etabs-tab.visible {
+    display: inline-block;
+    float: left;
+}
+
+.etabs-tab.active {
+    background-color: #fff;
+    color: var(--color-strong)
+}
+
+.etabs-tab.flash {
+    background: linear-gradient(to bottom, rgba(255,243,170,1) 0%,rgba(255,227,37,1) 100%);
+}
+
+.etabs-buttons {
+    float: left;
+}
+
+.etabs-buttons button {
+    float: left;
+    border: 1px solid var(--color-accent);
+    font-size: 12px;
+    border-radius: 2px;
+    margin: 8px 7px;
+    width: 24px;
+    text-align: center;
+    padding: 0;
+    color: var(--color-accent);
+}
+
+.etabs-buttons button:hover {
+    background-color: var(--color-accent);
+    color: white;
+}
+
+.etabs-tab-badge {
+    position: absolute;
+    right: 0;
+    top: -7px;
+    background: red;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 10px;
+    padding: 0 5px;
+}
+
+.etabs-tab-badge.hidden {
+    display: none;
+}
+
+.etabs-tab-icon {
+    display: inline-block;
+    height: 16px;
+}
+
+.etabs-tab-icon img {
+    max-width: 25px;
+    max-height: 25px;
+}
+
+.etabs-tab-title {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.etabs-tab-title.hidden {
+    display: none;
+}
+
+.etabs-tab-buttons.hidden {
+    display: none;
+}
+
+.etabs-tab-buttons {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.etabs-tab-buttons button {
+    display: inline-block;
+    color: #333;
+    background: none;
+    border: none;
+    width: 16px;
+    padding: 0;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.etabs-tab-buttons button:hover {
+    color: #eee;
+    background-color: #aaa;
+}
+
+.etabs-views {
+    position: relative;
+    border-top: 1px solid #aaa;
+    height: calc(100vh - 33px);
+}
+
+.etab-view {
+    position: relative;
+}

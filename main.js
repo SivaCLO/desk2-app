@@ -3,7 +3,6 @@ require('update-electron-app')({
 })
 
 const path = require('path')
-const fs = require('fs')
 const Config = require('./config')
 const glob = require('glob')
 const { app, session, shell, BrowserView, BrowserWindow } = require('electron')
@@ -56,36 +55,6 @@ initialize()
 
 function createWindow () {
 
-  // Create Medium View
-  let mediumView = new BrowserView({
-    webPreferences: {
-      allowRunningInsecureContent: true,
-      preload: path.join(__dirname, 'medium-process/mediumView.js'),
-    }
-  })
-
-  function resizeMediumView () {
-    mediumView.setBounds({
-      x: 240,
-      y: 0,
-      width: mainWindow.getBounds().width - 240,
-      height: mainWindow.getBounds().height
-    })
-  }
-
-  mediumView.webContents.on('dom-ready', () => {
-    mediumView.webContents.insertCSS(fs.readFileSync(path.join(__dirname, 'assets/css/mediumView.css'), 'utf8'))
-  })
-  mediumView.webContents.on('did-navigate', (event, url) => {
-    if (url.startsWith('https://medium.com/new-story')) {
-      console.log('New Story opened')
-    }
-  })
-  mediumView.webContents.on('new-window', (e, url) => {
-    e.preventDefault()
-    shell.openExternal(url)
-  })
-
   // Create Main Window
   const lastWindowState = store.get('lastWindowState') || Config.WINDOW_SIZE
   const windowOptions = {
@@ -106,9 +75,13 @@ function createWindow () {
 
   mainWindow = new BrowserWindow(windowOptions)
   mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
-  mainWindow.setBrowserView(mediumView)
   mainWindow.on('resize', () => {
-    resizeMediumView()
+    mainWindow.getBrowserView().setBounds({
+      x: 240,
+      y: 32,
+      width: mainWindow.getContentBounds().width - 240,
+      height: mainWindow.getContentBounds().height - 32
+    })
   })
   mainWindow.on('close', () => {
     if (!mainWindow.fullScreen) {
@@ -116,11 +89,6 @@ function createWindow () {
     }
   })
   mainWindow.on('closed', () => {
-    mediumView = null
     mainWindow = null
   })
-
-  // Loading Home Page
-  mediumView.webContents.loadURL(Config.MEDIUMVIEW_HOME)
-  resizeMediumView()
 }
