@@ -6,7 +6,7 @@ const path = require('path')
 const fs = require('fs')
 const Config = require('./config')
 const glob = require('glob')
-const { app, session, shell, BrowserView, BrowserWindow } = require('electron')
+const { app, session, shell, BrowserView, BrowserWindow, ipcMain,dialog } = require('electron')
 const Store = require('electron-store')
 
 const debug = /--debug/.test(process.argv[2])
@@ -123,4 +123,52 @@ function createWindow () {
   // Loading Home Page
   mediumView.webContents.loadURL(Config.MEDIUMVIEW_HOME)
   resizeMediumView()
+
+
+  //ipc Messages
+  ipcMain.on('import_a_story', (event) => {
+    const integrationToken = store.get('integrationToken')
+    console.log('token from store ',integrationToken)
+    if(integrationToken){
+      mainWindow.webContents.send('open_import_dialogue', integrationToken)
+      // openImportDialog()
+    }else{
+      let integrationTokenWin = new BrowserWindow({
+        width: 400,
+        height: 300,
+        show: true,
+        webPreferences: {
+            nodeIntegration: true
+        }
+      });
+      integrationTokenWin.webContents.openDevTools({mode:'undocked'})
+      integrationTokenWin.loadURL(path.join('file://', __dirname, '/integrationToken.html'))
+      ipcMain.on('save_integration_token',(e,data)=>{
+        store.set('integrationToken',data.token);
+        console.log('token saved ',data.token);
+        integrationTokenWin.close()
+        mainWindow.webContents.send('open_import_dialogue', data.token)
+        // openImportDialog()
+      })
+
+      integrationTokenWin.on('closed', () => {
+        integrationTokenWin = null;
+      });
+    }
+  })
+
+  ipcMain.on('reset_integration_token',()=>{
+    console.log('inside reset token')
+    store.set('integrationToken',null)
+  })
+}
+function openImportDialog(){
+  dialog.showOpenDialog(mainWindow,{
+    properties:["openFile",'openDirectory'],
+    filters:[{ name: 'Custom File Type', extensions: ['md']}]
+  }).then(file=>{
+    console.log('files ',file)
+  }).catch(e=>{
+    console.log('error in fetching file ',e)
+  })
 }
