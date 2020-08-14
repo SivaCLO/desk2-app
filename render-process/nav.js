@@ -71,14 +71,14 @@ ipcRenderer.on('open_import_dialogue', (evt, token) => {
 
 function handleAction (event) {
   // Update BrowserView to point to the right action
-  let action = event.target.dataset.action;
-  if(action === 'stats' || action ==='settings'){
+  let action = event.target.dataset.action
+  if (action === 'stats' || action === 'settings') {
     currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me/${action}`)
-  }else if(action === "draft"){
+  } else if (action === 'draft') {
     currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`)
-  }else if(action === "published"){
+  } else if (action === 'published') {
     currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me/stories/public`)
-  }else if(action === "profile"){
+  } else if (action === 'profile') {
     currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me`)
   }else if(action === "new"){
     currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/new-story`)
