@@ -1,51 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-
-  <link rel="stylesheet" href="assets/css/variables.css">
-  <link rel="stylesheet" href="assets/css/nativize.css">
-  <link rel="stylesheet" href="assets/css/global.css">
-  <link rel="stylesheet" href="assets/css/nav.css">
-  <link rel="stylesheet" href="assets/css/tabs.css">
-</head>
-<body>
-
-  <nav class="nav js-nav is-shown">
-    <header class="nav-header">
-    </header>
-
-    <div class="nav-item">
-      <button type="button" id="button-draft" data-action="draft" class="nav-button">Drafts</button>
-      <button type="button" id="button-import" data-action="import" class="nav-button">Import a story</button>
-      <button type="button" id="button-published" data-action="published" class="nav-button">Published</button>
-      <button type="button" id="button-stats" data-action="stats" class="nav-button">Stats</button>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/global.css" />
+    <link rel="stylesheet" href="assets/css/tabs.css" />
+    <link rel="stylesheet" href="assets/css/nav.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://use.fontawesome.com/93a8f50001.js"></script>
+  </head>
+  <body>
+    <div class="etabs-tabgroup">
+      <div class="etabs-tabs"></div>
+      <div class="etabs-buttons"></div>
     </div>
 
-    <div class="nav-item">
-      <button type="button" id="button-settings" data-action="settings" class="nav-button">Settings</button>
-      <button type="button" id="button-profile" data-action="profile" class="nav-button">Profile</button>
-      <button type="button" id="button-reset-token" data-action="reset-token" class="nav-button">Reset Token</button>
+    <div class="medium-nav">
+      <div class="container">
+        <div class="row">
+          <div class="col text-left">
+            <button type="button" class="medium-action" data-action="drafts">
+              <i class="fa fa-home" data-action="drafts"></i>
+            </button>
+            <button type="button" class="medium-action" data-action="back">
+              <i class="fa fa-arrow-left" data-action="back"></i>
+            </button>
+            <button type="button" class="medium-action" data-action="forward">
+              <i class="fa fa-arrow-right" data-action="forward"></i>
+            </button>
+            <button type="button" class="medium-action" data-action="bookmarks">
+              <i class="fa fa-star" data-action="bookmarks"></i>
+            </button>
+          </div>
+          <div class="col text-center">
+            <div class="medium-address" id="medium-address">Your stories</div>
+          </div>
+          <div class="col text-right">
+            <button
+              type="button"
+              class="medium-action medium-action-warning"
+              id="trial-days"
+              data-action="trial-warning"
+            >
+              15 days left
+            </button>
+            <button
+              type="button"
+              class="medium-action"
+              data-action="import-draft"
+            >
+              <i class="fa fa-download" data-action="import-draft"></i>
+            </button>
+            <button type="button" class="medium-action" data-action="new-draft">
+              <i class="fa fa-plus" data-action="new-draft"></i>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <footer class="nav-footer">
-      <h1 class="nav-title"><strong>Medium</strong>Desk</h1>
-      <a class="nav-footer-logo" href="https://twitter.com/mediumdesktop" aria-label="Homepage">
-        @mediumdesktop
-      </a>
-    </footer>
-  </nav>
-
-  <div class="etabs-tabgroup">
-    <div class="etabs-tabs"></div>
-    <div class="etabs-buttons"></div>
-  </div>
-
-  <script>
-    require('./render-process/ex-links')
-    require('./render-process/nav')
-    require('./render-process/tabs')
-    require('./render-process/normalize-shortcuts')
-  </script>
-</body>
+    <script>
+      require("./render-process/tabs");
+      require("./render-process/nav");
+      require("./render-process/ex-links");
+      require("./render-process/normalize-shortcuts");
+    </script>
+  </body>
 </html>

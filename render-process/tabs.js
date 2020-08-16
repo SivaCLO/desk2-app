@@ -1,4 +1,4 @@
-const TabGroup = require('./electron-tabs');
+const TabGroup = require("./electron-tabs");
 const { ipcRenderer } = require("electron");
 const { dialog } = require("electron").remote;
 var fs = require("fs");
@@ -6,21 +6,26 @@ const axios = require("axios");
 
 const Tabs = new TabGroup({
   newTab: {
-    title: 'Untitled',
-    src: 'https://medium.com/new-story',
+    title: "Untitled",
+    src: "https://medium.com/new-story",
     visible: true,
-    active: true
-  }
-})
+    active: true,
+  },
+});
 
+// Adding Default Tab
 Tabs.addTab({
-  title: '',
-  src: 'https://medium.com/me/stories/drafts',
+  title: "",
+  src: "https://medium.com/me/stories/drafts",
   iconURL: "assets/app-icon/png/512.png",
   visible: true,
   active: true,
-  closable: false
-})
+  closable: false,
+});
+
+function newTab () {
+  Tabs.addTab();
+};
 
 ipcRenderer.on("open_import_dialogue", (evt, data) => {
   dialog
@@ -49,14 +54,14 @@ ipcRenderer.on("open_import_dialogue", (evt, data) => {
           },
         })
           .then(function (postResponse) {
-            console.log('postResponse ',postResponse)
+            console.log("postResponse ", postResponse);
             Tabs.addTab({
-              title: 'Untitled',
+              title: "Untitled",
               src: postResponse.data.data.url,
               visible: true,
               active: true,
-              closable: true
-            })
+              closable: true,
+            });
           })
           .catch(function (error) {
             console.log(error);
@@ -67,3 +72,5 @@ ipcRenderer.on("open_import_dialogue", (evt, data) => {
       console.log("error in fetching file ", e);
     });
 });
+
+module.exports = { newTab }

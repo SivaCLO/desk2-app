@@ -1,18 +1,18 @@
 const EventEmitter = require("events");
-const Remote = require('electron').remote
-const path = require('path');
-const fs = require('fs')
+const Remote = require("electron").remote;
+const path = require("path");
 
 if (!document) {
   throw Error("electron-tabs module must be called in renderer process");
 }
 
 class TabGroup extends EventEmitter {
-  constructor (args = {}) {
+  constructor(args = {}) {
     super();
-    let options = this.options = {
+    let options = (this.options = {
       tabContainerSelector: args.tabContainerSelector || ".etabs-tabs",
-      buttonsContainerSelector: args.buttonsContainerSelector || ".etabs-buttons",
+      buttonsContainerSelector:
+        args.buttonsContainerSelector || ".etabs-buttons",
       viewContainerSelector: args.viewContainerSelector || ".etabs-views",
       tabClass: args.tabClass || "etabs-tab",
       viewClass: args.viewClass || "etabs-view",
@@ -20,8 +20,8 @@ class TabGroup extends EventEmitter {
       newTab: args.newTab,
       newTabButtonText: args.newTabButtonText || "&#65291;",
       visibilityThreshold: args.visibilityThreshold || 0,
-      ready: args.ready
-    };
+      ready: args.ready,
+    });
     this.tabContainer = document.querySelector(options.tabContainerSelector);
     this.viewContainer = document.querySelector(options.viewContainerSelector);
     this.tabs = [];
@@ -33,7 +33,7 @@ class TabGroup extends EventEmitter {
     }
   }
 
-  addTab (args = this.options.newTab) {
+  addTab(args = this.options.newTab) {
     if (typeof args === "function") {
       args = args(this);
     }
@@ -49,7 +49,7 @@ class TabGroup extends EventEmitter {
     return tab;
   }
 
-  getTab (id) {
+  getTab(id) {
     for (let i in this.tabs) {
       if (this.tabs[i].id === id) {
         return this.tabs[i];
@@ -58,7 +58,7 @@ class TabGroup extends EventEmitter {
     return null;
   }
 
-  getTabByPosition (position) {
+  getTabByPosition(position) {
     let fromRight = position < 0;
     for (let i in this.tabs) {
       if (this.tabs[i].getPosition(fromRight) === position) {
@@ -68,7 +68,7 @@ class TabGroup extends EventEmitter {
     return null;
   }
 
-  getTabByRelPosition (position) {
+  getTabByRelPosition(position) {
     position = this.getActiveTab().getPosition() + position;
     if (position <= 0) {
       return null;
@@ -76,24 +76,24 @@ class TabGroup extends EventEmitter {
     return this.getTabByPosition(position);
   }
 
-  getNextTab () {
+  getNextTab() {
     return this.getTabByRelPosition(1);
   }
 
-  getPreviousTab () {
+  getPreviousTab() {
     return this.getTabByRelPosition(-1);
   }
 
-  getTabs () {
+  getTabs() {
     return this.tabs.slice();
   }
 
-  eachTab (fn) {
+  eachTab(fn) {
     this.getTabs().forEach(fn);
     return this;
   }
 
-  getActiveTab () {
+  getActiveTab() {
     if (this.tabs.length === 0) return null;
     return this.tabs[0];
   }
@@ -102,7 +102,9 @@ class TabGroup extends EventEmitter {
 const TabGroupPrivate = {
   initNewTabButton: function () {
     if (!this.options.newTab) return;
-    let container = document.querySelector(this.options.buttonsContainerSelector);
+    let container = document.querySelector(
+      this.options.buttonsContainerSelector
+    );
     let button = container.appendChild(document.createElement("button"));
     button.classList.add(`${this.options.tabClass}-button-new`);
     button.innerHTML = this.options.newTabButtonText;
@@ -150,11 +152,11 @@ const TabGroupPrivate = {
       this.tabs[0].activate();
     }
     return this;
-  }
+  },
 };
 
 class Tab extends EventEmitter {
-  constructor (tabGroup, id, args) {
+  constructor(tabGroup, id, args) {
     super();
     this.tabGroup = tabGroup;
     this.id = id;
@@ -175,47 +177,47 @@ class Tab extends EventEmitter {
     }
   }
 
-  setTitle (title) {
+  setTitle(title) {
     if (this.isClosed) return;
     let span = this.tabElements.title;
-    if(title !== "") {
+    if (title !== "") {
       span.innerHTML = title;
       span.title = title;
-      span.classList.remove('hidden');
+      span.classList.remove("hidden");
     } else {
-      span.classList.add('hidden');
+      span.classList.add("hidden");
     }
     this.title = title;
     this.emit("title-changed", title, this);
     return this;
   }
 
-  getTitle () {
+  getTitle() {
     if (this.isClosed) return;
     return this.title;
   }
 
-  setBadge (badge) {
+  setBadge(badge) {
     if (this.isClosed) return;
     let span = this.tabElements.badge;
     this.badge = badge;
 
     if (badge) {
       span.innerHTML = badge;
-      span.classList.remove('hidden');
+      span.classList.remove("hidden");
     } else {
-      span.classList.add('hidden');
+      span.classList.add("hidden");
     }
 
     this.emit("badge-changed", badge, this);
   }
 
-  getBadge () {
+  getBadge() {
     if (this.isClosed) return;
     return this.badge;
   }
 
-  setIcon (iconURL, icon) {
+  setIcon(iconURL, icon) {
     if (this.isClosed) return;
     this.iconURL = iconURL;
     this.icon = icon;
@@ -231,13 +233,13 @@ class Tab extends EventEmitter {
     return this;
   }
 
-  getIcon () {
+  getIcon() {
     if (this.isClosed) return;
     if (this.iconURL) return this.iconURL;
     return this.icon;
   }
 
-  setPosition (newPosition) {
+  setPosition(newPosition) {
     let tabContainer = this.tabGroup.tabContainer;
     let tabs = tabContainer.children;
     let oldPosition = this.getPosition() - 1;
@@ -266,7 +268,7 @@ class Tab extends EventEmitter {
     return this;
   }
 
-  getPosition (fromRight) {
+  getPosition(fromRight) {
     let position = 0;
     let tab = this.tab;
     while ((tab = tab.previousSibling) != null) position++;
@@ -282,7 +284,7 @@ class Tab extends EventEmitter {
     return position;
   }
 
-  activate () {
+  activate() {
     if (this.isClosed) return;
     let activeTab = this.tabGroup.getActiveTab();
     if (activeTab) {
@@ -291,19 +293,19 @@ class Tab extends EventEmitter {
     }
     TabGroupPrivate.setActiveTab.bind(this.tabGroup)(this);
     this.tab.classList.add("active");
-    Remote.getCurrentWindow().setBrowserView(this.browserView)
+    Remote.getCurrentWindow().setBrowserView(this.browserView);
     this.browserView.setBounds({
-      x: 240,
-      y: 35,
-      width: Remote.getCurrentWindow().getContentBounds().width - 240,
-      height: Remote.getCurrentWindow().getContentBounds().height - 35
-    })
-    this.browserView.webContents.focus()
+      x: 0,
+      y: 80,
+      width: Remote.getCurrentWindow().getContentBounds().width,
+      height: Remote.getCurrentWindow().getContentBounds().height - 80,
+    });
+    this.browserView.webContents.focus();
     this.emit("active", this);
     return this;
   }
 
-  show (flag) {
+  show(flag) {
     if (this.isClosed) return;
     if (flag !== false) {
       this.tab.classList.add("visible");
@@ -315,11 +317,11 @@ class Tab extends EventEmitter {
     return this;
   }
 
-  hide () {
+  hide() {
     return this.show(false);
   }
 
-  flash (flag) {
+  flash(flag) {
     if (this.isClosed) return;
     if (flag !== false) {
       this.tab.classList.add("flash");
@@ -331,21 +333,22 @@ class Tab extends EventEmitter {
     return this;
   }
 
-  unflash () {
+  unflash() {
     return this.flash(false);
   }
 
-  hasClass (classname) {
+  hasClass(classname) {
     return this.tab.classList.contains(classname);
   }
 
-  close (force) {
+  close(force) {
     const abortController = new AbortController();
     const abort = () => abortController.abort();
     this.emit("closing", this, abort);
 
     const abortSignal = abortController.signal;
-    if (this.isClosed || (!this.closable && !force) || abortSignal.aborted) return;
+    if (this.isClosed || (!this.closable && !force) || abortSignal.aborted)
+      return;
 
     this.isClosed = true;
     let tabGroup = this.tabGroup;
@@ -366,7 +369,7 @@ const TabPrivate = {
     let tabClass = this.tabGroup.options.tabClass;
 
     // Create tab element
-    let tab = this.tab = document.createElement("div");
+    let tab = (this.tab = document.createElement("div"));
     tab.classList.add(tabClass);
     for (let el of ["icon", "title", "buttons", "badge"]) {
       let span = tab.appendChild(document.createElement("span"));
@@ -387,13 +390,13 @@ const TabPrivate = {
     let container = this.tabElements.buttons;
     let tabClass = this.tabGroup.options.tabClass;
     if (this.closable) {
-      container.classList.remove("hidden")
+      container.classList.remove("hidden");
       let button = container.appendChild(document.createElement("button"));
       button.classList.add(`${tabClass}-button-close`);
       button.innerHTML = this.tabGroup.options.closeButtonText;
       button.addEventListener("click", this.close.bind(this, false), false);
     } else {
-      container.classList.add("hidden")
+      container.classList.add("hidden");
     }
   },
 
@@ -414,50 +417,52 @@ const TabPrivate = {
         this.activate();
       }
     };
-    this.tab.addEventListener("mousedown", tabMouseDownHandler.bind(this), false);
+    this.tab.addEventListener(
+      "mousedown",
+      tabMouseDownHandler.bind(this),
+      false
+    );
   },
 
   initBrowserView: function () {
     this.browserView = new Remote.BrowserView({
       webPreferences: {
         allowRunningInsecureContent: true,
-        preload: path.join(__dirname, '../medium-process/mediumView.js')
-      }
-    })
-    this.browserView.webContents.loadURL(this.url)
+        preload: path.join(__dirname, "../medium-process/mediumView.js"),
+      },
+    });
+    this.browserView.webContents.loadURL(this.url);
 
-    this.browserView.webContents.on('will-navigate', (e, url) => {
-      const fromURL = this.browserView.webContents.getURL()
-      console.log("From: " + fromURL)
-      console.log("To: " + url)
-      if (url.startsWith('https://medium.com/new-story')) {
+    this.browserView.webContents.on("will-navigate", (e, url) => {
+      const fromURL = this.browserView.webContents.getURL();
+      console.log("From: " + fromURL);
+      console.log("To: " + url);
+      if (url.startsWith("https://medium.com/new-story")) {
         this.tabGroup.addTab({
-          title: 'Untitled',
-          src: 'https://medium.com/new-story',
+          title: "Untitled",
+          src: "https://medium.com/new-story",
           visible: true,
           active: true,
-          ready: () => this.browserView.webContents.loadURL(fromURL)
-        })
+          ready: () => this.browserView.webContents.loadURL(fromURL),
+        });
       }
-      
-      if(url.startsWith('https://medium.com/p') && url.includes('/edit')){
+
+      if (url.startsWith("https://medium.com/p") && url.includes("/edit")) {
         this.tabGroup.addTab({
-          title: 'Untitled',
+          title: "Untitled",
           src: url,
           visible: true,
           active: true,
-          ready: () => this.browserView.webContents.loadURL(fromURL)
-        })
+          ready: () => this.browserView.webContents.loadURL(fromURL),
+        });
       }
-    })
+    });
 
-    this.browserView.webContents.on('new-window', (e, url) => {
-      e.preventDefault()
-      Remote.shell.openExternal(url)
-    })
-
+    this.browserView.webContents.on("new-window", (e, url) => {
+      e.preventDefault();
+      Remote.shell.openExternal(url);
+    });
   },
 };
 
 module.exports = TabGroup;
-
