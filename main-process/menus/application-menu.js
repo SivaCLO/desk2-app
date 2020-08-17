@@ -71,7 +71,7 @@ let template = [
       },
       { type: "separator" },
       {
-        label: "Email-SingIn",
+        label: "Email-SignIn",
         accelerator: "Alt+Cmd+LOrCtrl+Alt+L",
         click() {
           emailSignInWindow = new BrowserWindow({
