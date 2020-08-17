@@ -123,7 +123,11 @@ function createWindow() {
       });
     }
   });
-
+  ipcMain.on("open_email_signin", (e, data) => {
+    if (data) {
+      mainWindow.getBrowserView().webContents.loadURL(data);
+    }
+  });
   ipcMain.on("save_userDetails", (e, data) => {
     store.set("userDetails", data);
     mainWindow.webContents.send("open_import_dialogue", data);
