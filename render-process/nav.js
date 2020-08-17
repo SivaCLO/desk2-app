@@ -1,6 +1,6 @@
 const currentWindow = require("electron").remote.getCurrentWindow();
 const { ipcRenderer } = require("electron");
-const { newTab } = require("./tabs");
+const { newTab } = require("./tabs/tabs");
 
 document.body.addEventListener("click", (event) => {
   if (event.target.dataset.action) {
