@@ -7,7 +7,7 @@
   "bin": "cli.js",
   "scripts": {
     "start": "electron .",
-    "dev": "nodemon --exec electron . --debug",
+    "dev": "electron . --debug",
     "package": "npm-run-all package:*",
     "package:mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --out=out --icon=assets/app-icon/mac/app.icns --osx-sign.identity='Developer ID Application: Clove, LLC.' --extend-info=assets/mac/info.plist",
     "package:win": "electron-packager . --overwrite --platform=win32 --arch=ia32 --out=out --icon=assets/app-icon/win/app.ico",
@@ -43,7 +43,6 @@
     "electron-shortcut-normalizer": "^1.0.0",
     "electron-store": "^6.0.0",
     "glob": "^7.1.0",
-    "nodemon": "^2.0.4",
     "update-electron-app": "^1.5.0"
   }
 }
