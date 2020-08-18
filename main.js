@@ -6,14 +6,13 @@ const path = require("path");
 const Config = require("./config");
 const glob = require("glob");
 const { app, session, BrowserWindow, ipcMain } = require("electron");
-const Store = require("electron-store");
+const { defaultStore } = require("./main-process/electron-store/store");
 
 const debug = /--debug/.test(process.argv[2]);
 
 if (process.mas) app.setName("MediumDesk");
 
 let mainWindow = null;
-const store = new Store();
 
 function initialize() {
   // Making Single Instance
@@ -63,7 +62,7 @@ initialize();
 
 function createWindow() {
   // Create Main Window
-  const lastWindowState = store.get("lastWindowState") || Config.WINDOW_SIZE;
+  const lastWindowState = defaultStore.get("lastWindowState") || Config.WINDOW_SIZE;
   const windowOptions = {
     x: lastWindowState.x,
     y: lastWindowState.y,
@@ -93,47 +92,16 @@ function createWindow() {
   });
   mainWindow.on("close", () => {
     if (!mainWindow.fullScreen) {
-      store.set("lastWindowState", mainWindow.getBounds());
+      defaultStore.set("lastWindowState", mainWindow.getBounds());
     }
   });
   mainWindow.on("closed", () => {
     mainWindow = null;
   });
 
-  //ipc Messages
-  let integrationTokenWin;
-  ipcMain.on("import_a_story", (event) => {
-    const userDetails = store.get("userDetails");
-    if (userDetails) {
-      mainWindow.webContents.send("open_import_dialogue", userDetails);
-    } else {
-      integrationTokenWin = new BrowserWindow({
-        width: 727,
-        height: 509,
-        show: true,
-        webPreferences: {
-          nodeIntegration: true,
-        },
-      });
-      integrationTokenWin.loadURL(
-        path.join("file://", __dirname, "/render-process/integration-token/integration-token.html")
-      );
-      integrationTokenWin.on("closed", () => {
-        integrationTokenWin = null;
-      });
-    }
-  });
   ipcMain.on("open_email_signin", (e, data) => {
     if (data) {
       mainWindow.getBrowserView().webContents.loadURL(data);
     }
-  });
-  ipcMain.on("save_userDetails", (e, data) => {
-    store.set("userDetails", data);
-    mainWindow.webContents.send("open_import_dialogue", data);
-    integrationTokenWin && integrationTokenWin.close();
-  });
-  ipcMain.on("reset_token", (e, data) => {
-    store.set("userDetails", null);
   });
 }
