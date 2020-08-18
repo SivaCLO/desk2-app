@@ -7,6 +7,7 @@ class DraftView {
       webPreferences: {
         allowRunningInsecureContent: true,
         preload: path.join(__dirname, "./custom.js"),
+        nodeIntegration: true,
       },
     });
 
@@ -19,6 +20,13 @@ class DraftView {
       //   mediumTab.activate();
       //   this.browserView.webContents.loadURL(fromURL);
       // });
+    });
+
+    this.browserView.webContents.on("dom-ready", () => {
+      this.browserView.webContents.executeJavaScript(
+        'document.getElementsByClassName("js-metabarLogoLeft").item(0).hidden=true;' +
+          'document.getElementsByClassName("buttonSet buttonSet--wide").item(0).style.display="none";'
+      );
     });
 
     this.browserView.webContents.on("new-window", (e, url) => {
