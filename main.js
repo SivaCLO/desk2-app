@@ -116,7 +116,7 @@ function createWindow() {
         },
       });
       integrationTokenWin.loadURL(
-        path.join("file://", __dirname, "/integrationToken.html")
+        path.join("file://", __dirname, "/render-process/integration-token/integration-token.html")
       );
       integrationTokenWin.on("closed", () => {
         integrationTokenWin = null;

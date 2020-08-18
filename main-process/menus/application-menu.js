@@ -84,7 +84,7 @@ let template = [
           });
           emailSignInWindow.loadURL(
             url.format({
-              pathname: path.join(__dirname, "../../emailsignin.html"),
+              pathname: path.join(__dirname, "../../render-process/email-signin/email-signin.html"),
               protocol: "file",
               slashes: true,
             })
