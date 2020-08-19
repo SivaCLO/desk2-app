@@ -1,9 +1,6 @@
 const { BrowserWindow, Menu, app, shell, dialog } = require("electron");
-var ipcMain = require("electron").ipcMain;
-const path = require("path");
-const url = require("url");
+const { openEmailSignInWindow } = require("../windows/email-signin-window");
 let currentWindow = null;
-let emailSignInWindow = null;
 
 let template = [
   {
@@ -71,24 +68,10 @@ let template = [
       },
       { type: "separator" },
       {
-        label: "Email-SignIn",
+        label: "Email SignIn",
         accelerator: "Alt+Cmd+LOrCtrl+Alt+L",
         click() {
-          emailSignInWindow = new BrowserWindow({
-            // parent: win,
-            width: 400,
-            height: 300,
-            webPreferences: {
-              nodeIntegration: true,
-            },
-          });
-          emailSignInWindow.loadURL(
-            url.format({
-              pathname: path.join(__dirname, "../../render-process/email-signin/email-signin.html"),
-              protocol: "file",
-              slashes: true,
-            })
-          );
+          openEmailSignInWindow();
         },
       },
     ],
@@ -177,10 +160,12 @@ let template = [
         click: (item, focusedWindow) => {
           if (focusedWindow) {
             focusedWindow.webContents.openDevTools({ mode: "undocked" });
-            focusedWindow.getBrowserView().webContents &&
-              focusedWindow
-                .getBrowserView()
-                .webContents.openDevTools({ mode: "undocked" });
+            if (focusedWindow.getBrowserView()) {
+              focusedWindow.getBrowserView().webContents &&
+                focusedWindow
+                  .getBrowserView()
+                  .webContents.openDevTools({ mode: "undocked" });
+            }
           }
         },
       },
@@ -368,11 +353,6 @@ if (process.platform === "win32") {
 app.on("ready", () => {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
-
-  ipcMain.on("close_email_signin", () => {
-    console.log("Closing Email SignIn");
-    emailSignInWindow.close();
-  });
 });
 
 app.on("browser-window-created", (event, win) => {

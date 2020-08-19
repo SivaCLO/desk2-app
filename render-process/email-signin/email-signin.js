@@ -7,7 +7,7 @@ document.getElementById("submit").addEventListener("click", function () {
   const token = loginUrl.includes("token");
 
   if (domainName && token) {
-    ipcRenderer.send("open_email_signin", loginUrl);
-    ipcRenderer.send("close_email_signin");
+    ipcRenderer.send("load-url-medium-view", loginUrl);
+    ipcRenderer.send("close-email-signin-window");
   }
 });
