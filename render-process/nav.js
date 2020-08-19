@@ -15,6 +15,8 @@ function handleAction(event) {
     currentWindow
       .getBrowserView()
       .webContents.loadURL(`https://medium.com/me/stories/drafts`);
+  } else if (action === "refresh") {
+    currentWindow.getBrowserView().webContents.reload();
   } else if (action === "back") {
     currentWindow.getBrowserView().webContents.goBack();
   } else if (action === "forward") {
