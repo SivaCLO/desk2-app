@@ -1,9 +1,12 @@
-const { app, session, BrowserWindow, ipcMain } = require("electron");
+const { app, session, BrowserWindow, ipcMain, dialog } = require("electron");
 const { defaultStore } = require("../electron-store/store");
 const path = require("path");
 const Config = require("../../config");
+const { autoUpdater } = require("electron-updater");
 
 let mainWindow = null;
+
+const debug = /--debug/.test(process.argv[2]);
 
 function createMainWindow() {
   // Create Main Window
@@ -46,20 +49,23 @@ function createMainWindow() {
   });
 
   ipcMain.on("load-url-medium-view", (e, url) => {
-    mainWindow.getBrowserView().webContents.loadURL(url)
-  })
+    mainWindow.getBrowserView().webContents.loadURL(url);
+  });
 }
 
 app.on("ready", () => {
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders[
       "User-Agent"
-      ] = session.defaultSession
+    ] = session.defaultSession
       .getUserAgent()
       .replace("Electron/" + process.versions.electron, "");
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
   createMainWindow();
+  if (!debug) {
+    autoUpdater.checkForUpdates();
+  }
 });
 
 app.on("activate", () => {
@@ -84,3 +90,33 @@ app.on("window-all-closed", () => {
   }
 });
 
+autoUpdater.logger = require("electron-log");
+
+autoUpdater.on("checking-for-update", () => {
+  showUpdateMessage("Checking for update...");
+});
+
+autoUpdater.on("update-available", (info) => {
+  showUpdateMessage("Update available.");
+});
+
+autoUpdater.on("update-not-available", (info) => {
+  showUpdateMessage("Update not available.");
+});
+
+autoUpdater.on("error", (err) => {
+  showUpdateMessage("Error in auto-updater. " + err);
+});
+
+autoUpdater.on("update-downloaded", (info) => {
+  showUpdateMessage("Update downloaded");
+});
+
+function showUpdateMessage(message) {
+  dialog.showMessageBox(mainWindow, {
+    title: "Update  status",
+    buttons: ["OK"],
+    type: "warning",
+    message,
+  });
+}
