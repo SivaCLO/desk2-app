@@ -10,7 +10,7 @@
         <string>mediumdesk</string>
       </array>
       <key>CFBundleURLName</key>
-      <string>MediumDesk</string>
+      <string>com.clovecrypto.MediumDesk</string>
     </dict>
   </array>
   <key>TeamID</key>
