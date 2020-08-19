@@ -1,6 +1,5 @@
 const EventEmitter = require("events");
 const Remote = require("electron").remote;
-const path = require("path");
 
 if (!document) {
   throw Error("electron-tabs module must be called in renderer process");
@@ -165,10 +164,9 @@ class Tab extends EventEmitter {
     this.iconURL = args.iconURL;
     this.icon = args.icon;
     this.closable = args.closable === false ? false : true;
-    this.url = args.src;
     this.tabElements = {};
+    this.browserView = args.browserView
     TabPrivate.initTab.bind(this)();
-    TabPrivate.initBrowserView.bind(this)();
     if (args.visible !== false) {
       this.show();
     }
@@ -422,47 +420,7 @@ const TabPrivate = {
       tabMouseDownHandler.bind(this),
       false
     );
-  },
-
-  initBrowserView: function () {
-    this.browserView = new Remote.BrowserView({
-      webPreferences: {
-        allowRunningInsecureContent: true,
-        preload: path.join(__dirname, "../medium-process/mediumView.js"),
-      },
-    });
-    this.browserView.webContents.loadURL(this.url);
-
-    this.browserView.webContents.on("will-navigate", (e, url) => {
-      const fromURL = this.browserView.webContents.getURL();
-      console.log("From: " + fromURL);
-      console.log("To: " + url);
-      if (url.startsWith("https://medium.com/new-story")) {
-        this.tabGroup.addTab({
-          title: "Untitled",
-          src: "https://medium.com/new-story",
-          visible: true,
-          active: true,
-          ready: () => this.browserView.webContents.loadURL(fromURL),
-        });
-      }
-
-      if (url.startsWith("https://medium.com/p") && url.includes("/edit")) {
-        this.tabGroup.addTab({
-          title: "Untitled",
-          src: url,
-          visible: true,
-          active: true,
-          ready: () => this.browserView.webContents.loadURL(fromURL),
-        });
-      }
-    });
-
-    this.browserView.webContents.on("new-window", (e, url) => {
-      e.preventDefault();
-      Remote.shell.openExternal(url);
-    });
-  },
+  }
 };
 
 module.exports = TabGroup;

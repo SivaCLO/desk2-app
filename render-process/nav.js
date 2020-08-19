@@ -1,6 +1,6 @@
 const currentWindow = require("electron").remote.getCurrentWindow();
 const { ipcRenderer } = require("electron");
-const { newTab } = require("./tabs");
+const { newTab } = require("./tabs/tabs");
 
 document.body.addEventListener("click", (event) => {
   if (event.target.dataset.action) {
@@ -22,6 +22,6 @@ function handleAction(event) {
   } else if (action === "new-draft") {
     newTab();
   } else if (action === "import-draft") {
-    ipcRenderer.send("import_a_story");
+    ipcRenderer.send("open-import-draft-window");
   }
 }
