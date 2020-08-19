@@ -22,6 +22,6 @@ function handleAction(event) {
   } else if (action === "new-draft") {
     newTab();
   } else if (action === "import-draft") {
-    ipcRenderer.send("import_draft");
+    ipcRenderer.send("open-import-draft-window");
   }
 }

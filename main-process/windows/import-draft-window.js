@@ -5,10 +5,11 @@ const axios = require("axios");
 const { defaultStore } = require("../electron-store/store");
 
 let integrationTokenWin;
-ipcMain.on("import_draft", (event) => {
+
+ipcMain.on("open-import-draft-window", (event) => {
   const userDetails = defaultStore.get("userDetails");
   if (userDetails) {
-    importDraft(event, userDetails);
+    showSystemDialog(event, userDetails);
   } else {
     integrationTokenWin = new BrowserWindow({
       width: 727,
@@ -35,11 +36,11 @@ ipcMain.on("import_draft", (event) => {
 
 ipcMain.on("save_userDetails", (event, data) => {
   defaultStore.set("userDetails", data);
-  importDraft(event, data);
+  showSystemDialog(event, data);
   integrationTokenWin && integrationTokenWin.close();
 });
 
-function importDraft(event, data) {
+function showSystemDialog(event, data) {
   dialog
     .showOpenDialog({
       properties: ["openFile", "openDirectory"],
