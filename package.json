@@ -1,7 +1,7 @@
 {
   "name": "mediumdesk",
   "productName": "MediumDesk",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Minimal Desktop App for Medium developed by Medium enthusiasts",
   "main": "main.js",
   "bin": "cli.js",
@@ -12,7 +12,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps",
-    "release": "electron-builder -mwl"
+    "release": "electron-builder -m"
   },
   "repository": "https://github.com/sivahq/mediumdesk-v2",
   "author": "Siva Ragavan",
@@ -49,17 +49,20 @@
     "productName": "MediumDesk",
     "mac": {
       "category": "public.app-category.utilities",
-      "type": "distribution"
+      "type": "distribution",
+      "target":["dmg", "zip"],
+      "icon":"assets/app-icon/mac/app.icns",
+      "entitlements":"assets/mac/info.plist"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon":"assets/app-icon/win/app.ico"
     },
     "publish": [
       {
         "provider": "github",
         "owner": "sivahq",
-        "repo": "mediumdesk-updates",
-        "token": "c425bcee75779c0c29891512377033d2a2a9cbd8"
+        "repo": "mediumdesk-updates"
       }
     ]
   }

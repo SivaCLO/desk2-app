@@ -1,7 +1,7 @@
 const path = require("path");
 const Config = require("./config");
 const glob = require("glob");
-const { app, session, BrowserWindow, ipcMain } = require("electron");
+const { app, session, BrowserWindow, ipcMain, dialog } = require("electron");
 const Store = require("electron-store");
 
 const { autoUpdater } = require("electron-updater")
@@ -43,7 +43,7 @@ function initialize() {
       }
     );
     createWindow();
-    autoUpdater.checkForUpdatesAndNotify()
+    autoUpdater.checkForUpdates()
     autoUpdater.logger = require("electron-log")
   });
   app.on("activate", () => {
@@ -56,6 +56,28 @@ function initialize() {
       app.quit();
     }
   });
+
+  autoUpdater.on('checking-for-update', () => {
+    showUpdateMessage('Checking for update...')
+  })
+  
+  autoUpdater.on('update-available', (info) => {
+    showUpdateMessage('Update available.')
+  })
+  
+  autoUpdater.on('update-not-available', (info) => {
+    showUpdateMessage('Update not available.')
+  })
+  
+  autoUpdater.on('error', (err) => {
+    showUpdateMessage('Error in auto-updater. ' + err)
+  })
+  
+  
+  autoUpdater.on('update-downloaded', (info) => {
+    showUpdateMessage('Update downloaded')
+  })
+
 
 }
 
@@ -132,4 +154,13 @@ function createWindow() {
   ipcMain.on("reset_token", (e, data) => {
     store.set("userDetails", null);
   });
+}
+
+function showUpdateMessage(message){
+  dialog.showMessageBox(mainWindow, {
+    title: 'Update  status',
+    buttons: ['OK'],
+    type: 'warning',
+    message,
+   });
 }
