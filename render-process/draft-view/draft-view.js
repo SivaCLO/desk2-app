@@ -1,3 +1,4 @@
+const { ipcRenderer } = require("electron");
 const Remote = require("electron").remote;
 const path = require("path");
 
@@ -13,20 +14,17 @@ class DraftView {
 
     this.browserView.webContents.loadURL(url || "https://medium.com/new-story");
 
-    this.browserView.webContents.on("will-navigate", (e, url) => {
-      // const fromURL = this.browserView.webContents.getURL();
-      // const mediumTab = this.tabGroup.getTab(0);
-      // mediumTab.loadURL(url).then((r) => {
-      //   mediumTab.activate();
-      //   this.browserView.webContents.loadURL(fromURL);
-      // });
-    });
-
-    this.browserView.webContents.on("dom-ready", () => {
+    this.browserView.webContents.on("did-finish-load", () => {
       this.browserView.webContents.executeJavaScript(
         'document.getElementsByClassName("js-metabarLogoLeft").item(0).hidden=true;' +
           'document.getElementsByClassName("buttonSet buttonSet--wide").item(0).style.display="none";'
       );
+    });
+
+    this.browserView.webContents.on("will-navigate", (e, url) => {
+      const fromURL = this.browserView.webContents.getURL();
+      Remote.shell.openExternal(url);
+      this.browserView.webContents.loadURL(fromURL);
     });
 
     this.browserView.webContents.on("new-window", (e, url) => {
