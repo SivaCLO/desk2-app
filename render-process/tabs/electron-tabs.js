@@ -165,7 +165,8 @@ class Tab extends EventEmitter {
     this.icon = args.icon;
     this.closable = args.closable === false ? false : true;
     this.tabElements = {};
-    this.browserView = args.browserView
+    this.view = args.view;
+    this.view.tabs = tabGroup;
     TabPrivate.initTab.bind(this)();
     if (args.visible !== false) {
       this.show();
@@ -291,14 +292,14 @@ class Tab extends EventEmitter {
     }
     TabGroupPrivate.setActiveTab.bind(this.tabGroup)(this);
     this.tab.classList.add("active");
-    Remote.getCurrentWindow().setBrowserView(this.browserView);
-    this.browserView.setBounds({
+    Remote.getCurrentWindow().setBrowserView(this.view.browserView);
+    this.view.browserView.setBounds({
       x: 0,
       y: 80,
       width: Remote.getCurrentWindow().getContentBounds().width,
       height: Remote.getCurrentWindow().getContentBounds().height - 80,
     });
-    this.browserView.webContents.focus();
+    this.view.browserView.webContents.focus();
     this.emit("active", this);
     return this;
   }
@@ -420,7 +421,7 @@ const TabPrivate = {
       tabMouseDownHandler.bind(this),
       false
     );
-  }
+  },
 };
 
 module.exports = TabGroup;

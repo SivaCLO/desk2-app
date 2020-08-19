@@ -8,7 +8,7 @@ const Tabs = new TabGroup({
     title: "Untitled",
     visible: true,
     active: true,
-    browserView: new DraftView().browserView,
+    view: new DraftView(),
   },
 });
 Tabs.addTab({
@@ -16,7 +16,7 @@ Tabs.addTab({
   iconURL: "assets/app-icon/png/512.png",
   visible: true,
   active: true,
-  browserView: new MediumView().browserView,
+  view: new MediumView(),
   closable: false,
 });
 
@@ -25,7 +25,7 @@ function newTab(url, ready) {
     title: "Untitled",
     visible: true,
     active: true,
-    browserView: new DraftView(url).browserView,
+    view: new DraftView(url),
     ready: ready,
   });
 }

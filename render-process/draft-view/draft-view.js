@@ -23,8 +23,14 @@ class DraftView {
 
     this.browserView.webContents.on("will-navigate", (e, url) => {
       const fromURL = this.browserView.webContents.getURL();
-      Remote.shell.openExternal(url);
-      this.browserView.webContents.loadURL(fromURL);
+      if (url.includes("postPublishedType")) {
+        this.tabs.getActiveTab().close();
+        this.tabs.getTab(0).activate();
+        this.tabs.getTab(0).view.browserView.webContents.loadURL(url);
+      } else {
+        Remote.shell.openExternal(url);
+        this.browserView.webContents.loadURL(fromURL);
+      }
     });
 
     this.browserView.webContents.on("new-window", (e, url) => {
