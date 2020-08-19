@@ -5,17 +5,14 @@
   "description": "Minimal Desktop App for Medium developed by Medium enthusiasts",
   "main": "main.js",
   "bin": "cli.js",
+  "license": "CC0-1.0",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --debug",
-    "package": "npm-run-all package:*",
-    "package:mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --out=out --icon=assets/app-icon/mac/app.icns --osx-sign.identity='Developer ID Application: Clove, LLC.' --extend-info=assets/mac/info.plist",
-    "package:win": "electron-packager . --overwrite --platform=win32 --arch=ia32 --out=out --icon=assets/app-icon/win/app.ico",
-    "package:linux": "electron-packager . --overwrite --platform=linux --arch=x64 --out=out",
-    "package:sign-exe": "signcode './out/MediumDesk-win32-ia32/MediumDesk.exe' --cert ~/mediumdesk.p12 --prompt --name 'MediumDesk' --url 'https://mediumdesk.com'",
-    "release": "node ./script/release.js",
-    "prepack": "check-for-leaks",
-    "prepush": "check-for-leaks"
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps",
+    "release": "electron-builder -mwl"
   },
   "repository": "https://github.com/sivahq/mediumdesk-v2",
   "author": "Siva Ragavan",
@@ -24,6 +21,8 @@
     "chai": "^3.4.1",
     "chai-as-promised": "^6.0.0",
     "check-for-leaks": "^1.2.1",
+    "electron": "^9.1.2",
+    "electron-builder": "^22.8.0",
     "electron-packager": "^15.0.0",
     "eslint": "^7.5.0",
     "husky": "^0.14.3",
@@ -37,12 +36,31 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "electron": "^9.1.2",
     "electron-log": "^4.2.2",
     "electron-settings": "^4.0.2",
     "electron-shortcut-normalizer": "^1.0.0",
     "electron-store": "^6.0.0",
+    "electron-updater": "^4.3.4",
     "glob": "^7.1.0",
     "update-electron-app": "^1.5.0"
+  },
+  "build": {
+    "appId": "com.clovecrypto.MediumDesk",
+    "productName": "MediumDesk",
+    "mac": {
+      "category": "public.app-category.utilities",
+      "type": "distribution"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "sivahq",
+        "repo": "mediumdesk-updates",
+        "token": "c425bcee75779c0c29891512377033d2a2a9cbd8"
+      }
+    ]
   }
 }

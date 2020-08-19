@@ -1,13 +1,10 @@
-require("update-electron-app")({
-  logger: require("electron-log"),
-});
-
 const path = require("path");
 const Config = require("./config");
 const glob = require("glob");
 const { app, session, BrowserWindow, ipcMain } = require("electron");
 const Store = require("electron-store");
 
+const { autoUpdater } = require("electron-updater")
 const debug = /--debug/.test(process.argv[2]);
 
 if (process.mas) app.setName("MediumDesk");
@@ -46,6 +43,8 @@ function initialize() {
       }
     );
     createWindow();
+    autoUpdater.checkForUpdatesAndNotify()
+    autoUpdater.logger = require("electron-log")
   });
   app.on("activate", () => {
     if (mainWindow === null) {
@@ -57,6 +56,7 @@ function initialize() {
       app.quit();
     }
   });
+
 }
 
 initialize();
