@@ -15,5 +15,7 @@
   </array>
   <key>TeamID</key>
   <string>897MXA578H</string>
+   <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+  <true/>
 </dict>
 </plist>
