@@ -15,7 +15,7 @@
     "release": "electron-builder -m"
   },
   "repository": "https://github.com/sivahq/mediumdesk-v2",
-  "author": "Siva Ragavan",
+  "author": "Clove Inc.",
   "devDependencies": {
     "@octokit/rest": "^16.3.2",
     "chai": "^3.4.1",
