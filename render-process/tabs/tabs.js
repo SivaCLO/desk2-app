@@ -9,6 +9,7 @@ const Tabs = new TabGroup({
     visible: true,
     active: true,
     view: new DraftView(),
+    tools: "draft-tools",
   },
 });
 Tabs.addTab({
@@ -18,6 +19,7 @@ Tabs.addTab({
   active: true,
   view: new MediumView(),
   closable: false,
+  tools: "medium-tools",
 });
 
 function newTab(url, ready) {
@@ -27,6 +29,7 @@ function newTab(url, ready) {
     active: true,
     view: new DraftView(url),
     ready: ready,
+    tools: "draft-tools",
   });
 }
 
@@ -34,4 +37,4 @@ ipcRenderer.on("new_tab", (event, url) => {
   newTab(url);
 });
 
-module.exports = { newTab };
+module.exports = { newTab, Tabs };

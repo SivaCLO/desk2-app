@@ -1,25 +1,28 @@
-/* Nav */
-
-.medium-nav {
+.toolbar {
   height: 45px;
   border-bottom: 1px solid var(--color-border);
   margin-top: 35px;
   width: 100%;
   background-color: var(--color-bg);
+  display: none;
 }
 
-.medium-nav .container {
+.toolbar.active {
+  display: block;
+}
+
+.toolbar .container {
   max-width: 900px;
 }
 
-.medium-nav .row {
+.toolbar .row {
   padding: 5px;
   height: 45px;
 }
 
-.medium-address {
+.tools-title {
   color: var(--color-subtle);
-  padding: 10px 8px;
+  padding: 9px 8px;
   font-size: 12px;
 }
 
@@ -32,10 +35,6 @@
   border-radius: 3px;
   text-align: center;
   padding: 4px 8px;
-}
-
-.medium-action-text {
-  border: 1px solid var(--color-accent);
 }
 
 .medium-action-warning {
