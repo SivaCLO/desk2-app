@@ -12,9 +12,7 @@ class TabGroup extends EventEmitter {
       tabContainerSelector: args.tabContainerSelector || ".etabs-tabs",
       buttonsContainerSelector:
         args.buttonsContainerSelector || ".etabs-buttons",
-      viewContainerSelector: args.viewContainerSelector || ".etabs-views",
       tabClass: args.tabClass || "etabs-tab",
-      viewClass: args.viewClass || "etabs-view",
       closeButtonText: args.closeButtonText || "&#215;",
       newTab: args.newTab,
       newTabButtonText: args.newTabButtonText || "&#65291;",
@@ -22,7 +20,6 @@ class TabGroup extends EventEmitter {
       ready: args.ready,
     });
     this.tabContainer = document.querySelector(options.tabContainerSelector);
-    this.viewContainer = document.querySelector(options.viewContainerSelector);
     this.tabs = [];
     this.newTabId = 0;
     TabGroupPrivate.initNewTabButton.bind(this)();
@@ -167,6 +164,7 @@ class Tab extends EventEmitter {
     this.tabElements = {};
     this.view = args.view;
     this.view.tabs = tabGroup;
+    this.tools = args.tools;
     TabPrivate.initTab.bind(this)();
     if (args.visible !== false) {
       this.show();
@@ -285,13 +283,29 @@ class Tab extends EventEmitter {
 
   activate() {
     if (this.isClosed) return;
+
+    // Deactivate previous Tab
     let activeTab = this.tabGroup.getActiveTab();
     if (activeTab) {
       activeTab.tab.classList.remove("active");
       activeTab.emit("inactive", activeTab);
     }
+
+    // Activate Tab
     TabGroupPrivate.setActiveTab.bind(this.tabGroup)(this);
     this.tab.classList.add("active");
+
+    // Activate Tools
+    let toolbars = document.getElementsByClassName("toolbar");
+    Array.prototype.forEach.call(toolbars, (toolbar) => {
+      if (toolbar.id === this.tools) {
+        toolbar.classList.add("active");
+      } else {
+        toolbar.classList.remove("active");
+      }
+    });
+
+    // Activate View
     Remote.getCurrentWindow().setBrowserView(this.view.browserView);
     this.view.browserView.setBounds({
       x: 0,
@@ -300,6 +314,7 @@ class Tab extends EventEmitter {
       height: Remote.getCurrentWindow().getContentBounds().height - 80,
     });
     this.view.browserView.webContents.focus();
+
     this.emit("active", this);
     return this;
   }

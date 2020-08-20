@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="assets/css/variables.css" />
     <link rel="stylesheet" href="assets/css/global.css" />
     <link rel="stylesheet" href="assets/css/tabs.css" />
-    <link rel="stylesheet" href="assets/css/nav.css" />
+    <link rel="stylesheet" href="assets/css/tools.css" />
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -35,7 +35,7 @@
       <div class="etabs-buttons"></div>
     </div>
 
-    <div class="medium-nav">
+    <section id="medium-tools" class="toolbar">
       <div class="container">
         <div class="row">
           <div class="col text-left">
@@ -56,7 +56,7 @@
             </button>
           </div>
           <div class="col text-center">
-            <div class="medium-address" id="medium-address">Your stories</div>
+            <div class="tools-title" id="medium-title">Your stories</div>
           </div>
           <div class="col text-right">
             <button
@@ -80,11 +80,33 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <section id="draft-tools" class="toolbar">
+      <div class="container">
+        <div class="row">
+          <div class="col text-left">
+            <button type="button" class="medium-action" data-action="backToDrafts">
+              <i class="fa fa-arrow-left" data-action="backToDrafts"></i>
+              Back to Drafts
+            </button>
+          </div>
+          <div class="col text-center">
+            <div class="tools-title" id="draft-title">Draft</div>
+          </div>
+          <div class="col text-right">
+            <button type="button" class="medium-action" data-action="zen-mode">
+              <i class="fa fa-arrow-up" data-action="zen-mode"></i>
+              Zen Mode
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <script>
       require("./render-process/tabs/tabs");
-      require("./render-process/nav");
+      require("./render-process/tools/tools");
       require("./render-process/ex-links");
       require("./render-process/normalize-shortcuts");
     </script>
