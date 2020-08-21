@@ -24,6 +24,10 @@
   color: var(--color-subtle);
   padding: 9px 8px;
   font-size: 12px;
+  max-width: 400px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .medium-action {

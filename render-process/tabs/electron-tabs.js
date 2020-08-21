@@ -1,5 +1,7 @@
 const EventEmitter = require("events");
 const Remote = require("electron").remote;
+const MediumView = require("../medium-view/medium-view");
+const DraftView = require("../draft-view/draft-view");
 
 if (!document) {
   throw Error("electron-tabs module must be called in renderer process");
@@ -162,9 +164,14 @@ class Tab extends EventEmitter {
     this.icon = args.icon;
     this.closable = args.closable === false ? false : true;
     this.tabElements = {};
-    this.view = args.view;
-    this.view.tabs = tabGroup;
-    this.tools = args.tools;
+    this.url = args.url;
+    this.viewType = args.viewType;
+    if (this.viewType === "draft") {
+      this.view = new DraftView(this.url, this, tabGroup);
+    } else {
+      this.view = new MediumView(this, tabGroup);
+    }
+    this.tools = this.viewType + "-tools";
     TabPrivate.initTab.bind(this)();
     if (args.visible !== false) {
       this.show();
@@ -178,9 +185,16 @@ class Tab extends EventEmitter {
     if (this.isClosed) return;
     let span = this.tabElements.title;
     if (title !== "") {
-      span.innerHTML = title;
-      span.title = title;
-      span.classList.remove("hidden");
+      title = title.replace(/ – Medium/, "");
+      if (this.viewType === "draft") {
+        span.innerHTML = title;
+        span.title = title;
+        span.classList.remove("hidden");
+      } else {
+        let toolTitle = document.getElementById(this.tools + "-title")
+        toolTitle.innerHTML = title;
+        toolTitle.title = title;
+      }
     } else {
       span.classList.add("hidden");
     }
@@ -314,6 +328,7 @@ class Tab extends EventEmitter {
       height: Remote.getCurrentWindow().getContentBounds().height - 80,
     });
     this.view.browserView.webContents.focus();
+    this.setTitle(this.view.browserView.webContents.getTitle());
 
     this.emit("active", this);
     return this;

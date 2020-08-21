@@ -1,35 +1,32 @@
 const TabGroup = require("./electron-tabs");
 const { ipcRenderer } = require("electron");
-const MediumView = require("../medium-view/medium-view");
-const DraftView = require("../draft-view/draft-view");
 
 const Tabs = new TabGroup({
   newTab: {
-    title: "Untitled",
+    title: "Loading...",
     visible: true,
     active: true,
-    view: new DraftView(),
-    tools: "draft-tools",
+    viewType: "draft",
   },
 });
+
 Tabs.addTab({
   title: "",
   iconURL: "assets/app-icon/png/512.png",
   visible: true,
   active: true,
-  view: new MediumView(),
+  viewType: "medium",
   closable: false,
-  tools: "medium-tools",
 });
 
 function newTab(url, ready) {
   Tabs.addTab({
-    title: "Untitled",
+    title: "Loading...",
     visible: true,
     active: true,
-    view: new DraftView(url),
+    viewType: "draft",
+    url: url,
     ready: ready,
-    tools: "draft-tools",
   });
 }
 

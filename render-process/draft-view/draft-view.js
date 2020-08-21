@@ -3,7 +3,10 @@ const Remote = require("electron").remote;
 const path = require("path");
 
 class DraftView {
-  constructor(url) {
+  constructor(url, tab, tabs) {
+    this.tab = tab;
+    this.tabs = tabs;
+
     this.browserView = new Remote.BrowserView({
       webPreferences: {
         allowRunningInsecureContent: true,
@@ -27,9 +30,13 @@ class DraftView {
       const fromURL = this.browserView.webContents.getURL();
       Remote.shell.openExternal(url);
       if (url.includes("postPublishedType")) {
-        this.tabs.getActiveTab().close();
+        this.tab.close();
         this.tabs.getTab(0).activate();
-        this.tabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/public");
+        this.tabs
+          .getTab(0)
+          .view.browserView.webContents.loadURL(
+            "https://medium.com/me/stories/public"
+          );
       } else {
         this.browserView.webContents.loadURL(fromURL);
       }
@@ -38,6 +45,10 @@ class DraftView {
     this.browserView.webContents.on("new-window", (e, url) => {
       e.preventDefault();
       Remote.shell.openExternal(url);
+    });
+
+    this.browserView.webContents.on("page-title-updated", (e, title) => {
+      this.tab.setTitle(title);
     });
   }
 }
