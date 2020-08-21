@@ -49,5 +49,13 @@ function handleAction(event) {
   else if (action === "backToDrafts") {
     Tabs.getTab(0).activate();
     Tabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/drafts");
+  } else if (action === "zen-mode") {
+    document.getElementById("tabs").classList.remove("visible");
+    document.getElementById("draft-tools").classList.remove("active");
+    document.getElementById("zen-tools").classList.add("active");
+  } else if (action === "exit-zen-mode") {
+    document.getElementById("zen-tools").classList.remove("active");
+    document.getElementById("draft-tools").classList.add("active");
+    document.getElementById("tabs").classList.add("visible");
   }
 }

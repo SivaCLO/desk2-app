@@ -30,7 +30,7 @@
     <script src="https://use.fontawesome.com/93a8f50001.js"></script>
   </head>
   <body>
-    <div class="etabs-tabgroup" style="-webkit-app-region: drag;">
+    <div id="tabs" class="etabs-tabgroup" style="-webkit-app-region: drag;">
       <div class="etabs-tabs"></div>
       <div class="etabs-buttons"></div>
     </div>
@@ -98,7 +98,19 @@
           </div>
           <div class="col text-right">
             <button type="button" class="medium-action" data-action="zen-mode" data-tooltip="Turn on zen mode">
-              <i class="fa fa-arrow-up" data-action="zen-mode" data-tooltip="Turn on zen mode"></i>
+              <i class="fa fa-arrow-up" data-action="zen-mode" data-tooltip="Enter zen mode"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="zen-tools" class="zen-toolbar" style="-webkit-app-region: drag;">
+      <div class="container">
+        <div class="row">
+          <div class="col text-right">
+            <button type="button" class="zen-medium-action" data-action="exit-zen-mode">
+              <i class="fa fa-arrow-down" data-action="exit-zen-mode"></i>
             </button>
           </div>
         </div>
