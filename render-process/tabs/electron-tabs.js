@@ -12,8 +12,7 @@ class TabGroup extends EventEmitter {
     super();
     let options = (this.options = {
       tabContainerSelector: args.tabContainerSelector || ".etabs-tabs",
-      buttonsContainerSelector:
-        args.buttonsContainerSelector || ".etabs-buttons",
+      buttonsContainerSelector: args.buttonsContainerSelector || ".etabs-buttons",
       tabClass: args.tabClass || "etabs-tab",
       closeButtonText: args.closeButtonText || "&#215;",
       newTab: args.newTab,
@@ -100,9 +99,7 @@ class TabGroup extends EventEmitter {
 const TabGroupPrivate = {
   initNewTabButton: function () {
     if (!this.options.newTab) return;
-    let container = document.querySelector(
-      this.options.buttonsContainerSelector
-    );
+    let container = document.querySelector(this.options.buttonsContainerSelector);
     let button = container.appendChild(document.createElement("button"));
     button.classList.add(`${this.options.tabClass}-button-new`);
     button.innerHTML = this.options.newTabButtonText;
@@ -193,6 +190,8 @@ class Tab extends EventEmitter {
         let toolTitle = document.getElementById(this.tools + "-title");
         if (this.view.browserView.webContents.getURL().endsWith("/edit")) {
           toolTitle.innerHTML = this.view.browserView.webContents.getURL();
+        } else if (this.view.browserView.webContents.getURL().endsWith("/new-story")) {
+          toolTitle.innerHTML = "Start typing to create a new story";
         } else {
           toolTitle.innerHTML = "";
         }
@@ -382,8 +381,7 @@ class Tab extends EventEmitter {
     this.emit("closing", this, abort);
 
     const abortSignal = abortController.signal;
-    if (this.isClosed || (!this.closable && !force) || abortSignal.aborted)
-      return;
+    if (this.isClosed || (!this.closable && !force) || abortSignal.aborted) return;
 
     this.isClosed = true;
     let tabGroup = this.tabGroup;
@@ -452,11 +450,7 @@ const TabPrivate = {
         this.activate();
       }
     };
-    this.tab.addEventListener(
-      "mousedown",
-      tabMouseDownHandler.bind(this),
-      false
-    );
+    this.tab.addEventListener("mousedown", tabMouseDownHandler.bind(this), false);
   },
 };
 
