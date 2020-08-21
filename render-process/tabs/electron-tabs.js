@@ -190,8 +190,14 @@ class Tab extends EventEmitter {
         span.innerHTML = title;
         span.title = title;
         span.classList.remove("hidden");
+        let toolTitle = document.getElementById(this.tools + "-title");
+        if (this.view.browserView.webContents.getURL().endsWith("/edit")) {
+          toolTitle.innerHTML = this.view.browserView.webContents.getURL();
+        } else {
+          toolTitle.innerHTML = "";
+        }
       } else {
-        let toolTitle = document.getElementById(this.tools + "-title")
+        let toolTitle = document.getElementById(this.tools + "-title");
         toolTitle.innerHTML = title;
         toolTitle.title = title;
       }

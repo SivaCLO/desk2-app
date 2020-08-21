@@ -50,6 +50,13 @@ class DraftView {
     this.browserView.webContents.on("page-title-updated", (e, title) => {
       this.tab.setTitle(title);
     });
+
+    this.browserView.webContents.on("did-navigate-in-page", (event) => {
+      if (this.browserView.webContents.getURL().endsWith("/edit")) {
+        let toolTitle = document.getElementById("draft-tools-title");
+        toolTitle.innerHTML = this.browserView.webContents.getURL();
+      }
+    });
   }
 }
 
