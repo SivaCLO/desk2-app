@@ -1,4 +1,4 @@
-const currentWindow = require("electron").remote.getCurrentWindow();
+const Remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
 const { newTab, Tabs } = require("../tabs/tabs");
 
@@ -14,24 +14,30 @@ function handleAction(event) {
 
   // Medium Tools
   if (action === "home") {
-    currentWindow
+    Remote.getCurrentWindow()
       .getBrowserView()
       .webContents.loadURL(`https://medium.com/me/stories/drafts`);
   } else if (action === "refresh") {
-    currentWindow.getBrowserView().webContents.reload();
+    Remote.getCurrentWindow().getBrowserView().webContents.reload();
   } else if (action === "back") {
-    currentWindow.getBrowserView().webContents.goBack();
+    Remote.getCurrentWindow().getBrowserView().webContents.goBack();
   } else if (action === "forward") {
-    currentWindow.getBrowserView().webContents.goForward();
+    Remote.getCurrentWindow().getBrowserView().webContents.goForward();
   } else if (action === "new-draft") {
     newTab();
   } else if (action === "import-draft") {
     ipcRenderer.send("open-import-draft-window");
+  } else if (action === "open-link") {
+    Remote.shell.openExternal(
+      Remote.getCurrentWindow().getBrowserView().webContents.getURL()
+    );
   }
 
   // Draft Tools
   else if (action === "backToDrafts") {
     Tabs.getTab(0).activate();
-    Tabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/drafts");
+    Tabs.getTab(0).view.browserView.webContents.loadURL(
+      "https://medium.com/me/stories/drafts"
+    );
   }
 }

@@ -41,6 +41,10 @@
   padding: 4px 8px;
 }
 
+.medium-action-link:hover {
+  color: var(--color-subtle);
+}
+
 .medium-action-warning {
   border: 1px solid darkorange;
   color: darkorange;
