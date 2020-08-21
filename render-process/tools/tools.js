@@ -1,10 +1,28 @@
 const Remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
-const { newTab, Tabs } = require("../tabs/tabs");
+const { Tabs } = require("../tabs/tabs");
 
 document.body.addEventListener("click", (event) => {
   if (event.target.dataset.action) {
     handleAction(event);
+  }
+});
+
+var previousTitle;
+
+document.body.addEventListener("mouseover", (event) => {
+  if (event.target.dataset.tooltip) {
+    if (Tabs.getActiveTab().viewType === "medium") {
+      let mediumToolsTitle = document.getElementById("medium-tools-title");
+      if (!previousTitle) previousTitle = mediumToolsTitle.innerHTML;
+      mediumToolsTitle.innerHTML = "<b>" + event.target.dataset.tooltip + "</b>";
+    } else {
+      let draftToolsTitle = document.getElementById("draft-tools-title");
+      if (!previousTitle) previousTitle = draftToolsTitle.innerHTML;
+      draftToolsTitle.innerHTML = "<b>" + event.target.dataset.tooltip + "</b>";
+    }
+  } else {
+    Tabs.getActiveTab().setTitle(Tabs.getActiveTab().view.browserView.webContents.getTitle());
   }
 });
 
@@ -14,30 +32,22 @@ function handleAction(event) {
 
   // Medium Tools
   if (action === "home") {
-    Remote.getCurrentWindow()
-      .getBrowserView()
-      .webContents.loadURL(`https://medium.com/me/stories/drafts`);
+    Remote.getCurrentWindow().getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`);
   } else if (action === "refresh") {
     Remote.getCurrentWindow().getBrowserView().webContents.reload();
   } else if (action === "back") {
     Remote.getCurrentWindow().getBrowserView().webContents.goBack();
   } else if (action === "forward") {
     Remote.getCurrentWindow().getBrowserView().webContents.goForward();
-  } else if (action === "new-draft") {
-    newTab();
   } else if (action === "import-draft") {
     ipcRenderer.send("open-import-draft-window");
   } else if (action === "open-link") {
-    Remote.shell.openExternal(
-      Remote.getCurrentWindow().getBrowserView().webContents.getURL()
-    );
+    Remote.shell.openExternal(Remote.getCurrentWindow().getBrowserView().webContents.getURL());
   }
 
   // Draft Tools
   else if (action === "backToDrafts") {
     Tabs.getTab(0).activate();
-    Tabs.getTab(0).view.browserView.webContents.loadURL(
-      "https://medium.com/me/stories/drafts"
-    );
+    Tabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/drafts");
   }
 }

@@ -39,20 +39,14 @@
       <div class="container">
         <div class="row">
           <div class="col text-left">
-            <button type="button" class="medium-action" data-action="home">
-              <i class="fa fa-home" data-action="home"></i>
+            <button type="button" class="medium-action" data-action="home" data-tooltip="Open draft list">
+              <i class="fa fa-home" data-action="home" data-tooltip="Open draft list"></i>
             </button>
-            <button type="button" class="medium-action" data-action="refresh">
-              <i class="fa fa-refresh" data-action="refresh"></i>
+            <button type="button" class="medium-action" data-action="back" data-tooltip="Go back">
+              <i class="fa fa-arrow-left" data-action="back" data-tooltip="Go back"></i>
             </button>
-            <button type="button" class="medium-action" data-action="back">
-              <i class="fa fa-arrow-left" data-action="back"></i>
-            </button>
-            <button type="button" class="medium-action" data-action="forward">
-              <i class="fa fa-arrow-right" data-action="forward"></i>
-            </button>
-            <button type="button" class="medium-action" data-action="bookmarks">
-              <i class="fa fa-star" data-action="bookmarks"></i>
+            <button type="button" class="medium-action" data-action="forward" data-tooltip="Go forward">
+              <i class="fa fa-arrow-right" data-action="forward" data-tooltip="Go forward"></i>
             </button>
           </div>
           <div class="col text-center">
@@ -66,18 +60,23 @@
               class="medium-action medium-action-warning"
               id="trial-days"
               data-action="trial-warning"
+              data-tooltip="Your trial period ends in 15 days"
             >
               15 days left
+            </button>
+            <button type="button" class="medium-action" data-action="refresh" data-tooltip="Refresh page">
+              <i class="fa fa-refresh" data-action="refresh" data-tooltip="Refresh page"></i>
+            </button>
+            <button type="button" class="medium-action" data-action="bookmarks" data-tooltip="Open quick links">
+              <i class="fa fa-star" data-action="bookmarks" data-tooltip="Open quick links"></i>
             </button>
             <button
               type="button"
               class="medium-action"
               data-action="import-draft"
+              data-tooltip="Import a markdown file as draft"
             >
-              <i class="fa fa-download" data-action="import-draft"></i>
-            </button>
-            <button type="button" class="medium-action" data-action="new-draft">
-              <i class="fa fa-plus" data-action="new-draft"></i>
+              <i class="fa fa-download" data-action="import-draft" data-tooltip="Import a markdown file as draft"></i>
             </button>
           </div>
         </div>
@@ -88,13 +87,8 @@
       <div class="container">
         <div class="row">
           <div class="col text-left">
-            <button
-              type="button"
-              class="medium-action"
-              data-action="backToDrafts"
-            >
-              <i class="fa fa-arrow-left" data-action="backToDrafts"></i>
-              Back to Drafts
+            <button type="button" class="medium-action" data-action="backToDrafts" data-tooltip="Go back to draft list">
+              <i class="fa fa-arrow-left" data-action="backToDrafts" data-tooltip="Go back to draft list"></i>
             </button>
           </div>
           <div class="col text-center">
@@ -103,9 +97,8 @@
             </a>
           </div>
           <div class="col text-right">
-            <button type="button" class="medium-action" data-action="zen-mode">
-              <i class="fa fa-arrow-up" data-action="zen-mode"></i>
-              Zen Mode
+            <button type="button" class="medium-action" data-action="zen-mode" data-tooltip="Turn on zen mode">
+              <i class="fa fa-arrow-up" data-action="zen-mode" data-tooltip="Turn on zen mode"></i>
             </button>
           </div>
         </div>
