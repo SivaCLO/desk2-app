@@ -57,8 +57,8 @@
         "zip"
       ],
       "icon": "assets/app-icon/mac/app.icns",
-      "entitlements": "assets/mac/info.plist",
-      "entitlementsInherit": "assets/mac/info.plist",
+      "entitlements": "assets/mac/entitlements.mac.plist",
+      "entitlementsInherit": "assets/mac/entitlements.mac.inherit.plist",
       "gatekeeperAssess": false
     },
     "win": {
