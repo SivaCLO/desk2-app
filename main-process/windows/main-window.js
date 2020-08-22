@@ -16,8 +16,8 @@ function createMainWindow() {
     y: lastWindowState.y,
     width: lastWindowState.width,
     height: lastWindowState.height,
-    minWidth: 1200,
-    minHeight: 600,
+    minWidth: 850,
+    minHeight: 500,
     title: app.name,
     titleBarStyle: "hidden",
     webPreferences: {
