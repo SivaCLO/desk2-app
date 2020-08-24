@@ -25,19 +25,39 @@ function createMainWindow() {
     },
   };
   if (process.platform === "linux") {
-    windowOptions.icon = path.join(__dirname, "/assets/app-icon/png/512.png");
+    windowOptions.icon = path.join(__dirname, "../../assets/app-icon/png/512.png");
   }
 
   mainWindow = new BrowserWindow(windowOptions);
   mainWindow.loadURL(path.join("file://", __dirname, "../../index.html"));
   mainWindow.on("resize", () => {
-    mainWindow.getBrowserView().setBounds({
-      x: 0,
-      y: 80,
-      width: mainWindow.getContentBounds().width,
-      height: mainWindow.getContentBounds().height - 80,
-    });
+    resizeWindow();
   });
+  mainWindow.on("maximize", () => {
+    resizeWindow();
+  });
+  mainWindow.on("minimize", () => {
+    resizeWindow();
+  });
+  mainWindow.on("enter-full-screen", () => {
+    resizeWindow();
+  });
+  mainWindow.on("leave-full-screen", () => {
+    resizeWindow();
+  });
+  mainWindow.on("unmaximize", () => {
+    resizeWindow();
+  });
+  function resizeWindow() {
+    mainWindow.getBrowserView() &&
+      mainWindow.getBrowserView().setBounds({
+        x: 0,
+        y: 80,
+        width: mainWindow.getContentBounds().width,
+        height: mainWindow.getContentBounds().height - 80,
+      });
+  }
+
   mainWindow.on("close", () => {
     if (!mainWindow.fullScreen) {
       defaultStore.set("lastWindowState", mainWindow.getBounds());
