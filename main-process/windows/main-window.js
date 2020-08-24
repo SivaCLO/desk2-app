@@ -51,6 +51,31 @@ function createMainWindow() {
   ipcMain.on("load-url-medium-view", (e, url) => {
     mainWindow.getBrowserView().webContents.loadURL(url);
   });
+
+  ipcMain.on('add_tab',(e,tab)=>{
+    console.log('inside add tab ',tab)
+    // let tempTabs = defaultStore.get('tabs')
+    // if(tempTabs && tempTabs.length > 0){
+    //   let filteredTabs = tempTabs.filter(t=>t.id!==tabs.id)
+    //   defaultStore.set('tabs',[...filteredTabs,tabs])
+    //   console.log('tabs stored ',defaultStore.get('tabs'))
+    // }else{
+    //   defaultStore.set('tabs',[tabs])
+    // }
+  })
+
+  ipcMain.on('tab_change',(e,tab)=>{
+    console.log('inside tab change ',tab)
+  })
+
+  ipcMain.on('remove_tab',(e,tabs)=>{
+    console.log('inside remove tab ',tabs)
+    // console.log('tabs to remove',tabs)
+    // let tempTabs = defaultStore.get('tabs')
+    // let filteredTabs = tempTabs.filter(t=>t.id!==tabs.id)
+    // defaultStore.set('tabs',[filteredTabs])
+    // console.log('tabs stored after removed',defaultStore.get('tabs'))
+  })
 }
 
 app.on("ready", () => {

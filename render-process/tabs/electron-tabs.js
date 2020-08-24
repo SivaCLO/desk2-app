@@ -1,5 +1,6 @@
 const EventEmitter = require("events");
 const Remote = require("electron").remote;
+const { ipcRenderer } = require("electron");
 
 if (!document) {
   throw Error("electron-tabs module must be called in renderer process");
@@ -38,6 +39,7 @@ class TabGroup extends EventEmitter {
     let tab = new Tab(this, id, args);
     this.tabs.push(tab);
     // Don't call tab.activate() before a tab is referenced in this.tabs
+    ipcRenderer.send('add_tab',{id})
     if (args.active === true) {
       tab.activate();
     }
@@ -286,6 +288,7 @@ class Tab extends EventEmitter {
 
     // Deactivate previous Tab
     let activeTab = this.tabGroup.getActiveTab();
+     ipcRenderer.send('tab_change',{id: activeTab.id,tab: activeTab.view.browserView.webContents.getURL()})
     if (activeTab) {
       activeTab.tab.classList.remove("active");
       activeTab.emit("inactive", activeTab);
@@ -367,6 +370,7 @@ class Tab extends EventEmitter {
     this.isClosed = true;
     let tabGroup = this.tabGroup;
     tabGroup.tabContainer.removeChild(this.tab);
+    ipcRenderer.send('remove_tab',{id:this.id})
     let activeTab = this.tabGroup.getActiveTab();
     TabGroupPrivate.removeTab.bind(tabGroup)(this, true);
 
