@@ -2,7 +2,10 @@ const Remote = require("electron").remote;
 const path = require("path");
 
 class MediumView {
-  constructor() {
+  constructor(tab, tabs) {
+    this.tab = tab;
+    this.tabs = tabs;
+
     this.browserView = new Remote.BrowserView({
       webPreferences: {
         allowRunningInsecureContent: true,
@@ -28,6 +31,10 @@ class MediumView {
     this.browserView.webContents.on("new-window", (e, url) => {
       e.preventDefault();
       Remote.shell.openExternal(url);
+    });
+
+    this.browserView.webContents.on("page-title-updated", (e, title) => {
+      this.tab.setTitle(title);
     });
   }
 }

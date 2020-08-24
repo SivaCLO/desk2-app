@@ -10,15 +10,14 @@ const debug = /--debug/.test(process.argv[2]);
 
 function createMainWindow() {
   // Create Main Window
-  const lastWindowState =
-    defaultStore.get("lastWindowState") || Config.WINDOW_SIZE;
+  const lastWindowState = defaultStore.get("lastWindowState") || Config.WINDOW_SIZE;
   const windowOptions = {
     x: lastWindowState.x,
     y: lastWindowState.y,
     width: lastWindowState.width,
     height: lastWindowState.height,
-    minWidth: 1000,
-    minHeight: 600,
+    minWidth: 850,
+    minHeight: 500,
     title: app.name,
     titleBarStyle: "hidden",
     webPreferences: {
@@ -80,9 +79,7 @@ function createMainWindow() {
 
 app.on("ready", () => {
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-    details.requestHeaders[
-      "User-Agent"
-    ] = session.defaultSession
+    details.requestHeaders["User-Agent"] = session.defaultSession
       .getUserAgent()
       .replace("Electron/" + process.versions.electron, "");
     callback({ cancel: false, requestHeaders: details.requestHeaders });

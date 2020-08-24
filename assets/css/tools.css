@@ -12,7 +12,7 @@
 }
 
 .toolbar .container {
-  max-width: 900px;
+  max-width: 1075px;
 }
 
 .toolbar .row {
@@ -24,6 +24,10 @@
   color: var(--color-subtle);
   padding: 9px 8px;
   font-size: 12px;
+  max-width: 300px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .medium-action {
@@ -35,6 +39,10 @@
   border-radius: 3px;
   text-align: center;
   padding: 4px 8px;
+}
+
+.medium-action-link:hover {
+  color: var(--color-subtle);
 }
 
 .medium-action-warning {
@@ -53,5 +61,38 @@
 .medium-action-warning:hover {
   background-color: darkorange;
   color: white;
+  text-decoration: none;
+}
+
+.zen-toolbar {
+  height: 35px;
+  width: 100%;
+  display: none;
+}
+
+.zen-toolbar.active {
+  display: block;
+}
+
+.zen-toolbar .container {
+  max-width: none;
+}
+
+.zen-toolbar .col {
+  padding-right: 3px;
+}
+
+.zen-medium-action {
+  color: var(--color-border);
+  background: none;
+  cursor: pointer;
+  margin: 2px 4px;
+  border: none;
+  text-align: center;
+  padding: 4px 8px;
+}
+
+.zen-medium-action:hover {
+  color: var(--color-subtle);
   text-decoration: none;
 }

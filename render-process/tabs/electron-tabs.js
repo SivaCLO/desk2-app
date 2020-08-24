@@ -1,6 +1,8 @@
 const EventEmitter = require("events");
 const Remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
+const MediumView = require("../medium-view/medium-view");
+const DraftView = require("../draft-view/draft-view");
 
 if (!document) {
   throw Error("electron-tabs module must be called in renderer process");
@@ -11,8 +13,7 @@ class TabGroup extends EventEmitter {
     super();
     let options = (this.options = {
       tabContainerSelector: args.tabContainerSelector || ".etabs-tabs",
-      buttonsContainerSelector:
-        args.buttonsContainerSelector || ".etabs-buttons",
+      buttonsContainerSelector: args.buttonsContainerSelector || ".etabs-buttons",
       tabClass: args.tabClass || "etabs-tab",
       closeButtonText: args.closeButtonText || "&#215;",
       newTab: args.newTab,
@@ -100,9 +101,7 @@ class TabGroup extends EventEmitter {
 const TabGroupPrivate = {
   initNewTabButton: function () {
     if (!this.options.newTab) return;
-    let container = document.querySelector(
-      this.options.buttonsContainerSelector
-    );
+    let container = document.querySelector(this.options.buttonsContainerSelector);
     let button = container.appendChild(document.createElement("button"));
     button.classList.add(`${this.options.tabClass}-button-new`);
     button.innerHTML = this.options.newTabButtonText;
@@ -164,9 +163,14 @@ class Tab extends EventEmitter {
     this.icon = args.icon;
     this.closable = args.closable === false ? false : true;
     this.tabElements = {};
-    this.view = args.view;
-    this.view.tabs = tabGroup;
-    this.tools = args.tools;
+    this.url = args.url;
+    this.viewType = args.viewType;
+    if (this.viewType === "draft") {
+      this.view = new DraftView(this.url, this, tabGroup);
+    } else {
+      this.view = new MediumView(this, tabGroup);
+    }
+    this.tools = this.viewType + "-tools";
     TabPrivate.initTab.bind(this)();
     if (args.visible !== false) {
       this.show();
@@ -180,9 +184,24 @@ class Tab extends EventEmitter {
     if (this.isClosed) return;
     let span = this.tabElements.title;
     if (title !== "") {
-      span.innerHTML = title;
-      span.title = title;
-      span.classList.remove("hidden");
+      title = title.replace(/ – Medium/, "");
+      if (this.viewType === "draft") {
+        span.innerHTML = title;
+        span.title = title;
+        span.classList.remove("hidden");
+        let toolTitle = document.getElementById(this.tools + "-title");
+        if (this.view.browserView.webContents.getURL().endsWith("/edit")) {
+          toolTitle.innerHTML = this.view.browserView.webContents.getURL();
+        } else if (this.view.browserView.webContents.getURL().endsWith("/new-story")) {
+          toolTitle.innerHTML = "Start typing to create a new story";
+        } else {
+          toolTitle.innerHTML = "";
+        }
+      } else {
+        let toolTitle = document.getElementById(this.tools + "-title");
+        toolTitle.innerHTML = title;
+        toolTitle.title = title;
+      }
     } else {
       span.classList.add("hidden");
     }
@@ -317,6 +336,7 @@ class Tab extends EventEmitter {
       height: Remote.getCurrentWindow().getContentBounds().height - 80,
     });
     this.view.browserView.webContents.focus();
+    this.setTitle(this.view.browserView.webContents.getTitle());
 
     this.emit("active", this);
     return this;
@@ -364,8 +384,7 @@ class Tab extends EventEmitter {
     this.emit("closing", this, abort);
 
     const abortSignal = abortController.signal;
-    if (this.isClosed || (!this.closable && !force) || abortSignal.aborted)
-      return;
+    if (this.isClosed || (!this.closable && !force) || abortSignal.aborted) return;
 
     this.isClosed = true;
     let tabGroup = this.tabGroup;
@@ -435,11 +454,7 @@ const TabPrivate = {
         this.activate();
       }
     };
-    this.tab.addEventListener(
-      "mousedown",
-      tabMouseDownHandler.bind(this),
-      false
-    );
+    this.tab.addEventListener("mousedown", tabMouseDownHandler.bind(this), false);
   },
 };
 
