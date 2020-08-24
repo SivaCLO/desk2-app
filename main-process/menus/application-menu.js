@@ -1,5 +1,6 @@
 const { BrowserWindow, Menu, app, shell, dialog } = require("electron");
 const { openEmailSignInWindow } = require("../windows/email-signin-window");
+const { showIntegrationWindow } = require("../windows/import-draft-window");
 let currentWindow = null;
 
 let template = [
@@ -7,63 +8,17 @@ let template = [
     label: "File",
     submenu: [
       {
-        label: "New Stroy",
+        label: "New Story",
         accelerator: "CmdOrCtrl+N",
         click() {
-          currentWindow &&
-            currentWindow
-              .getBrowserView()
-              .webContents.loadURL(`https://medium.com/new-story`);
+          currentWindow && currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/new-story`);
         },
       },
       {
         label: "Drafts",
         accelerator: "CmdOrCtrl+D",
         click() {
-          currentWindow &&
-            currentWindow
-              .getBrowserView()
-              .webContents.loadURL(`https://medium.com/me/stories/drafts`);
-        },
-      },
-      {
-        label: "Published",
-        accelerator: "CmdOrCtrl+p",
-        click() {
-          currentWindow &&
-            currentWindow
-              .getBrowserView()
-              .webContents.loadURL(`https://medium.com/me/stories/public`);
-        },
-      },
-      {
-        label: "Stats",
-        accelerator: "Shift+CmdOrCtrl+s",
-        click() {
-          currentWindow &&
-            currentWindow
-              .getBrowserView()
-              .webContents.loadURL(`https://medium.com/me/stats`);
-        },
-      },
-      {
-        label: "Profile",
-        accelerator: "Shift+CmdOrCtrl+p",
-        click() {
-          currentWindow &&
-            currentWindow
-              .getBrowserView()
-              .webContents.loadURL(`https://medium.com/me`);
-        },
-      },
-      {
-        label: "Settings",
-        accelerator: "Alt+CmdOrCtrl+s",
-        click() {
-          currentWindow &&
-            currentWindow
-              .getBrowserView()
-              .webContents.loadURL(`https://medium.com/me/settings`);
+          currentWindow && currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`);
         },
       },
       { type: "separator" },
@@ -72,6 +27,12 @@ let template = [
         accelerator: "Alt+Cmd+LOrCtrl+Alt+L",
         click() {
           openEmailSignInWindow();
+        },
+      },
+      {
+        label: "Change Medium Token",
+        click() {
+          showIntegrationWindow();
         },
       },
     ],
@@ -162,9 +123,7 @@ let template = [
             focusedWindow.webContents.openDevTools({ mode: "undocked" });
             if (focusedWindow.getBrowserView()) {
               focusedWindow.getBrowserView().webContents &&
-                focusedWindow
-                  .getBrowserView()
-                  .webContents.openDevTools({ mode: "undocked" });
+                focusedWindow.getBrowserView().webContents.openDevTools({ mode: "undocked" });
             }
           }
         },
@@ -234,31 +193,36 @@ let template = [
 function addUpdateMenuItems(items, position) {
   if (process.mas) return;
 
-  const version = app.getVersion()
-  let updateItems = [{
-    label: `Version ${version}`,
-    enabled: false
-  }, {
-    label: 'Checking for Update',
-    enabled: false,
-    key: 'checkingForUpdate'
-  }, {
-    label: 'Check for Update',
-    visible: false,
-    key: 'checkForUpdate',
-    click: () => {
-      require('electron-updater').autoUpdater.checkForUpdates()
-    }
-  }, {
-    label: 'Restart and Install Update',
-    enabled: true,
-    visible: false,
-    key: 'restartToUpdate',
-    click: () => {
-      require('electron-updater').autoUpdater.quitAndInstall()
-    }
-  }]
-  
+  const version = app.getVersion();
+  let updateItems = [
+    {
+      label: `Version ${version}`,
+      enabled: false,
+    },
+    {
+      label: "Checking for Update",
+      enabled: false,
+      key: "checkingForUpdate",
+    },
+    {
+      label: "Check for Update",
+      visible: false,
+      key: "checkForUpdate",
+      click: () => {
+        require("electron-updater").autoUpdater.checkForUpdates();
+      },
+    },
+    {
+      label: "Restart and Install Update",
+      enabled: true,
+      visible: false,
+      key: "restartToUpdate",
+      click: () => {
+        require("electron-updater").autoUpdater.quitAndInstall();
+      },
+    },
+  ];
+
   items.splice.apply(items, [position, 0].concat(updateItems));
 }
 
