@@ -72,14 +72,11 @@ function createMainWindow() {
 
   mainWindow.webContents.once('did-finish-load', () => {
     let tempTabs = defaultStore.get('tabs');
-  if(tempTabs && tempTabs.length > 0){
-    console.log('inside restore tabs ',tempTabs);
-    mainWindow.webContents.send('restore_tabs',tempTabs)
-    defaultStore.set('tabs',[])
-    tempTabs = null;
-  }else{
-    console.log('outside restore tabs');
-  }
+    if(tempTabs && tempTabs.length > 0){
+      mainWindow.webContents.send('restore_tabs',tempTabs)
+      defaultStore.set('tabs',[])
+      tempTabs = null;
+    }
   })
 
   ipcMain.on('add_tab',(e,tab)=>{
