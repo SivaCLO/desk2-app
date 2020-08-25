@@ -18,6 +18,12 @@ class DraftView {
 
     this.browserView.webContents.loadURL(url || "https://medium.com/new-story");
 
+    if(url){
+      ipcRenderer.send('add_tab',{
+        id: this.tab.id,
+        url})
+    }
+
     this.browserView.webContents.on("did-finish-load", () => {
       this.browserView.webContents.executeJavaScript(
         'if(document.getElementsByClassName("js-metabarLogoLeft").length > 0) document.getElementsByClassName("js-metabarLogoLeft").item(0).style.display="none";' +
@@ -55,6 +61,10 @@ class DraftView {
       if (this.browserView.webContents.getURL().endsWith("/edit")) {
         let toolTitle = document.getElementById("draft-tools-title");
         toolTitle.innerHTML = this.browserView.webContents.getURL();
+        ipcRenderer.send('add_tab',{
+          id: this.tab.id,
+          url: this.browserView.webContents.getURL()
+        })
       }
     });
   }

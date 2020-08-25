@@ -1,5 +1,6 @@
 const EventEmitter = require("events");
 const Remote = require("electron").remote;
+const { ipcRenderer } = require("electron");
 const MediumView = require("../medium-view/medium-view");
 const DraftView = require("../draft-view/draft-view");
 
@@ -386,6 +387,7 @@ class Tab extends EventEmitter {
     this.isClosed = true;
     let tabGroup = this.tabGroup;
     tabGroup.tabContainer.removeChild(this.tab);
+    ipcRenderer.send('remove_tab',{id:this.id})
     let activeTab = this.tabGroup.getActiveTab();
     TabGroupPrivate.removeTab.bind(tabGroup)(this, true);
 
