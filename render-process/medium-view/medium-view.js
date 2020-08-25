@@ -12,9 +12,7 @@ class MediumView {
         preload: path.join(__dirname, "./custom.js"),
       },
     });
-    this.browserView.webContents.loadURL(
-      "https://medium.com/me/stories/drafts"
-    );
+    this.browserView.webContents.loadURL("https://medium.com/me/stories/drafts");
 
     this.browserView.webContents.on("will-navigate", (e, url) => {
       const fromURL = this.browserView.webContents.getURL();
@@ -22,10 +20,12 @@ class MediumView {
         url.startsWith("https://medium.com/new-story") ||
         (url.startsWith("https://medium.com/p") && url.includes("/edit"))
       ) {
-        require("../tabs/tabs").newTab(url, () =>
-          this.browserView.webContents.loadURL(fromURL)
-        );
+        require("../tabs/tabs").newTab(url, () => this.browserView.webContents.loadURL(fromURL));
       }
+    });
+
+    this.browserView.webContents.on("dom-ready", (e) => {
+      this.browserView.webContents.insertCSS("button:focus {outline:0 !important}");
     });
 
     this.browserView.webContents.on("new-window", (e, url) => {

@@ -18,10 +18,11 @@ class DraftView {
 
     this.browserView.webContents.loadURL(url || "https://medium.com/new-story");
 
-    if(url){
-      ipcRenderer.send('add_tab',{
+    if (url) {
+      ipcRenderer.send("add_tab", {
         id: this.tab.id,
-        url})
+        url,
+      });
     }
 
     this.browserView.webContents.on("did-finish-load", () => {
@@ -38,14 +39,14 @@ class DraftView {
       if (url.includes("postPublishedType")) {
         this.tab.close();
         this.tabs.getTab(0).activate();
-        this.tabs
-          .getTab(0)
-          .view.browserView.webContents.loadURL(
-            "https://medium.com/me/stories/public"
-          );
+        this.tabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/public");
       } else {
         this.browserView.webContents.loadURL(fromURL);
       }
+    });
+
+    this.browserView.webContents.on("dom-ready", (e) => {
+      this.browserView.webContents.insertCSS("button:focus {outline:0 !important}");
     });
 
     this.browserView.webContents.on("new-window", (e, url) => {
@@ -61,10 +62,10 @@ class DraftView {
       if (this.browserView.webContents.getURL().endsWith("/edit")) {
         let toolTitle = document.getElementById("draft-tools-title");
         toolTitle.innerHTML = this.browserView.webContents.getURL();
-        ipcRenderer.send('add_tab',{
+        ipcRenderer.send("add_tab", {
           id: this.tab.id,
-          url: this.browserView.webContents.getURL()
-        })
+          url: this.browserView.webContents.getURL(),
+        });
       }
     });
   }
