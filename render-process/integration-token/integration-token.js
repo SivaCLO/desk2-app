@@ -16,6 +16,7 @@ async function handleAction(event) {
     let userData = await verifyToken(token);
     if (userData) {
       ipcRenderer.send("save_userDetails", { token, userData });
+      ipcRenderer.send("open-import-system-dialog", { token, userData });
     }
   }
 }

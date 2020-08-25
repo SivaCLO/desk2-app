@@ -11,33 +11,34 @@ ipcMain.on("open-import-draft-window", (event) => {
   if (userDetails) {
     showSystemDialog(event, userDetails);
   } else {
-    integrationTokenWin = new BrowserWindow({
-      width: 727,
-      height: 509,
-      show: true,
-      webPreferences: {
-        nodeIntegration: true,
-      },
-    });
-    integrationTokenWin
-      .loadURL(
-        path.join(
-          "file://",
-          __dirname,
-          "../../render-process/integration-token/integration-token.html"
-        )
-      )
-      .then();
-    integrationTokenWin.on("closed", () => {
-      integrationTokenWin = null;
-    });
+    showIntegrationWindow();
   }
 });
 
+function showIntegrationWindow() {
+  integrationTokenWin = new BrowserWindow({
+    width: 727,
+    height: 509,
+    show: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+  integrationTokenWin
+    .loadURL(path.join("file://", __dirname, "../../render-process/integration-token/integration-token.html"))
+    .then();
+  integrationTokenWin.on("closed", () => {
+    integrationTokenWin = null;
+  });
+}
+
 ipcMain.on("save_userDetails", (event, data) => {
   defaultStore.set("userDetails", data);
-  showSystemDialog(event, data);
   integrationTokenWin && integrationTokenWin.close();
+});
+
+ipcMain.on("open-import-system-dialog", (event, data) => {
+  showSystemDialog(event, data);
 });
 
 function showSystemDialog(event, data) {
@@ -78,3 +79,5 @@ function showSystemDialog(event, data) {
       console.log("error in fetching file ", e);
     });
 }
+
+module.exports = { showIntegrationWindow };
