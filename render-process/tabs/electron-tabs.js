@@ -40,7 +40,6 @@ class TabGroup extends EventEmitter {
     let tab = new Tab(this, id, args);
     this.tabs.push(tab);
     // Don't call tab.activate() before a tab is referenced in this.tabs
-    ipcRenderer.send('add_tab',{id})
     if (args.active === true) {
       tab.activate();
     }
@@ -307,7 +306,6 @@ class Tab extends EventEmitter {
 
     // Deactivate previous Tab
     let activeTab = this.tabGroup.getActiveTab();
-     ipcRenderer.send('tab_change',{id: activeTab.id,tab: activeTab.view.browserView.webContents.getURL()})
     if (activeTab) {
       activeTab.tab.classList.remove("active");
       activeTab.emit("inactive", activeTab);

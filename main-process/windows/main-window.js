@@ -51,29 +51,33 @@ function createMainWindow() {
     mainWindow.getBrowserView().webContents.loadURL(url);
   });
 
-  ipcMain.on('add_tab',(e,tab)=>{
-    console.log('inside add tab ',tab)
-    // let tempTabs = defaultStore.get('tabs')
-    // if(tempTabs && tempTabs.length > 0){
-    //   let filteredTabs = tempTabs.filter(t=>t.id!==tabs.id)
-    //   defaultStore.set('tabs',[...filteredTabs,tabs])
-    //   console.log('tabs stored ',defaultStore.get('tabs'))
-    // }else{
-    //   defaultStore.set('tabs',[tabs])
-    // }
+  
+
+  mainWindow.webContents.once('did-finish-load', () => {
+    let tempTabs = defaultStore.get('tabs');
+  if(tempTabs && tempTabs.length > 0){
+    console.log('inside restore tabs ',tempTabs);
+    mainWindow.webContents.send('restore_tabs',tempTabs)
+    defaultStore.set('tabs',[])
+    tempTabs = null;
+  }else{
+    console.log('outside restore tabs');
+  }
   })
 
-  ipcMain.on('tab_change',(e,tab)=>{
-    console.log('inside tab change ',tab)
+  ipcMain.on('add_tab',(e,tab)=>{
+    let tempTabs = defaultStore.get('tabs')
+    if(tempTabs && tempTabs.length > 0){
+      updateTabs(tab);
+    }else{
+      defaultStore.set('tabs',[tab])
+    }
   })
 
   ipcMain.on('remove_tab',(e,tabs)=>{
-    console.log('inside remove tab ',tabs)
-    // console.log('tabs to remove',tabs)
-    // let tempTabs = defaultStore.get('tabs')
-    // let filteredTabs = tempTabs.filter(t=>t.id!==tabs.id)
-    // defaultStore.set('tabs',[filteredTabs])
-    // console.log('tabs stored after removed',defaultStore.get('tabs'))
+    let tempTabs = defaultStore.get('tabs')
+    let filteredTabs = tempTabs.filter(t=>t.id!==tabs.id)
+    defaultStore.set('tabs',filteredTabs)
   })
 }
 
@@ -141,4 +145,10 @@ function showUpdateMessage(message) {
     type: "warning",
     message,
   });
+}
+
+function updateTabs(tab){
+  let tempTabs = defaultStore.get('tabs')
+  let filteredTabs = tempTabs.filter(t=>t.id!==tab.id)
+  defaultStore.set('tabs',[...filteredTabs,tab])
 }

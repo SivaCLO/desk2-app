@@ -34,4 +34,9 @@ ipcRenderer.on("new_tab", (event, url) => {
   newTab(url);
 });
 
+ipcRenderer.on('restore_tabs',(event, tabs) =>{
+  tabs.map(tab=>{
+    newTab(tab.url)
+  })
+})
 module.exports = { newTab, Tabs };
