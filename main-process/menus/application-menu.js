@@ -11,7 +11,7 @@ let template = [
         label: "New Story",
         accelerator: "CmdOrCtrl+N",
         click() {
-          currentWindow && currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/new-story`);
+          currentWindow && currentWindow.webContents.send('new_tab')
         },
       },
       {
