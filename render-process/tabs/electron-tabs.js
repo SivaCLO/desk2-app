@@ -184,6 +184,7 @@ class Tab extends EventEmitter {
     let span = this.tabElements.title;
     if (title !== "") {
       title = title.replace(/ – Medium/, "");
+      title = title.replace(/^Editing /, "");
       if (this.viewType === "draft") {
         span.innerHTML = title;
         span.title = title;
