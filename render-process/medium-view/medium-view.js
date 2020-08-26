@@ -41,6 +41,10 @@ class MediumView {
       }
     });
 
+    this.browserView.webContents.on("dom-ready", (e) => {
+      this.browserView.webContents.insertCSS("button:focus {outline:0 !important}");
+    });
+
     this.browserView.webContents.on("new-window", (e, url) => {
       e.preventDefault();
       Remote.shell.openExternal(url);

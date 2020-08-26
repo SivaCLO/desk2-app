@@ -184,6 +184,7 @@ class Tab extends EventEmitter {
     let span = this.tabElements.title;
     if (title !== "") {
       title = title.replace(/ – Medium/, "");
+      title = title.replace(/^Editing /, "");
       if (this.viewType === "draft") {
         span.innerHTML = title;
         span.title = title;
@@ -387,7 +388,7 @@ class Tab extends EventEmitter {
     this.isClosed = true;
     let tabGroup = this.tabGroup;
     tabGroup.tabContainer.removeChild(this.tab);
-    ipcRenderer.send('remove_tab',{id:this.id})
+    ipcRenderer.send("delete-tab", { id: this.id });
     let activeTab = this.tabGroup.getActiveTab();
     TabGroupPrivate.removeTab.bind(tabGroup)(this, true);
 
