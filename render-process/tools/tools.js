@@ -1,6 +1,6 @@
 const Remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
-const { Tabs } = require("../tabs/tabs");
+const { newTab, Tabs, checkTabExists } = require("../tabs/tabs");
 
 document.body.addEventListener("click", (event) => {
   if (event.target.dataset.action) {
@@ -33,12 +33,15 @@ function handleAction(event) {
   // Medium Tools
   if (action === "home") {
     Remote.getCurrentWindow().getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`);
+    enableDisableButtons(action)
   } else if (action === "refresh") {
     Remote.getCurrentWindow().getBrowserView().webContents.reload();
   } else if (action === "back") {
     Remote.getCurrentWindow().getBrowserView().webContents.goBack();
+    enableDisableButtons(action)
   } else if (action === "forward") {
     Remote.getCurrentWindow().getBrowserView().webContents.goForward();
+    enableDisableButtons(action)
   } else if (action === "import-draft") {
     ipcRenderer.send("open-import-draft-window");
   } else if (action === "open-link") {
@@ -61,3 +64,23 @@ function handleAction(event) {
     document.getElementById("tabs").classList.add("visible");
   }
 }
+
+function enableDisableButtons (action){
+  if(!Remote.getCurrentWindow().getBrowserView().webContents.canGoBack()){
+    document.getElementById("medium-action-goback").disabled=true;
+    document.getElementById("medium-action-home").disabled=true;
+  }else{
+    document.getElementById("medium-action-goback").disabled=false;
+    document.getElementById("medium-action-home").disabled=false;
+  }
+  if(!Remote.getCurrentWindow().getBrowserView().webContents.canGoForward()){
+    document.getElementById("medium-action-goforward").disabled=true;
+  }else{
+    document.getElementById("medium-action-goforward").disabled=false;
+  }
+  if(action === "home"){
+    document.getElementById("medium-action-home").disabled=true;
+  }
+}
+
+module.exports = {enableDisableButtons };

@@ -20,14 +20,16 @@ Tabs.addTab({
 });
 
 function newTab(url, ready) {
-  Tabs.addTab({
-    title: "Loading...",
-    visible: true,
-    active: true,
-    viewType: "draft",
-    url: url,
-    ready: ready,
-  });
+  if(navigator.onLine){
+      Tabs.addTab({
+        title: "Loading...",
+        visible: true,
+        active: true,
+        viewType: "draft",
+        url: url,
+        ready: ready,
+      });
+  }
 }
 
 ipcRenderer.on("new_tab", (event, url) => {
@@ -39,4 +41,19 @@ ipcRenderer.on('restore_tabs',(event, tabs) =>{
     newTab(tab.url)
   })
 })
-module.exports = { newTab, Tabs };
+
+function checkTabExists(url){
+  let tabAvailable = null
+  Tabs.getTabs().map(tempTab=>{
+    if(url.includes(tempTab.view.browserView.webContents.getURL())){
+      tabAvailable = tempTab
+    }
+  })
+  if(tabAvailable){
+    Tabs.getTab(tabAvailable.id).activate();
+    return true;
+  } else{
+    return false;
+  }
+}
+module.exports = { newTab, checkTabExists, Tabs };
