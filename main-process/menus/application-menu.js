@@ -1,6 +1,7 @@
 const { BrowserWindow, Menu, app, shell, dialog } = require("electron");
 const { openEmailSignInWindow } = require("../windows/email-signin-window");
 const { showIntegrationWindow } = require("../windows/import-draft-window");
+const { defaultStore } = require("../electron-store/store");
 let currentWindow = null;
 
 let template = [
@@ -79,13 +80,30 @@ let template = [
     label: "View",
     submenu: [
       {
-        label: "Reload",
+        label: "Reload Tab",
         accelerator: "CmdOrCtrl+R",
         click: (item, focusedWindow) => {
           if (focusedWindow) {
             // on reload, start fresh and close any old
             // open secondary windows
             focusedWindow.getBrowserView().webContents.reload()
+          }
+        },
+      },
+      {
+        label: "Reload Window",
+        accelerator: "CmdOrCtrl+Shift+R",
+        click: (item, focusedWindow) => {
+          if (focusedWindow) {
+            // on reload, start fresh and close any old
+            // open secondary windows
+            if (focusedWindow.id === 1) {
+              BrowserWindow.getAllWindows().forEach((win) => {
+                if (win.id > 1) win.close();
+              });
+            }
+            focusedWindow.reload();
+            defaultStore.set('tabs',[])
           }
         },
       },

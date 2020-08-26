@@ -20,7 +20,24 @@ class MediumView {
         url.startsWith("https://medium.com/new-story") ||
         (url.startsWith("https://medium.com/p") && url.includes("/edit"))
       ) {
-        require("../tabs/tabs").newTab(url, () => this.browserView.webContents.loadURL(fromURL));
+        if (url.startsWith("https://medium.com/new-story")) {
+          require("../tabs/tabs").newTab(url, () => this.browserView.webContents.loadURL(fromURL));
+        } else {
+          if (require("../tabs/tabs").checkAndActivateTab(url)) {
+            this.browserView.webContents.loadURL(fromURL);
+          } else {
+            require("../tabs/tabs").newTab(url, () => this.browserView.webContents.loadURL(fromURL));
+          }
+        }
+      } else {
+        if (url === "https://medium.com/me/stories/drafts") {
+          document.getElementById("medium-action-home").disabled = true;
+          document.getElementById("medium-action-goback").disabled = true;
+          document.getElementById("medium-action-goforward").disabled = false;
+        } else {
+          document.getElementById("medium-action-home").disabled = false;
+          document.getElementById("medium-action-goback").disabled = false;
+        }
       }
     });
 

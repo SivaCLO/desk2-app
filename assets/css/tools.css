@@ -58,6 +58,13 @@
   text-decoration: none;
 }
 
+.medium-action:disabled {
+  color: gray;
+  text-decoration: none;
+  background: none;
+  cursor: default;
+}
+
 .medium-action-warning:hover {
   background-color: darkorange;
   color: white;
