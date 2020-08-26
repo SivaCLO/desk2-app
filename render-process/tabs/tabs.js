@@ -20,15 +20,15 @@ Tabs.addTab({
 });
 
 function newTab(url, ready) {
-  if(navigator.onLine){
-      Tabs.addTab({
-        title: "Loading...",
-        visible: true,
-        active: true,
-        viewType: "draft",
-        url: url,
-        ready: ready,
-      });
+  if (navigator.onLine) {
+    Tabs.addTab({
+      title: "Loading...",
+      visible: true,
+      active: true,
+      viewType: "draft",
+      url: url,
+      ready: ready,
+    });
   }
 }
 
@@ -36,24 +36,24 @@ ipcRenderer.on("new_tab", (event, url) => {
   newTab(url);
 });
 
-ipcRenderer.on('restore_tabs',(event, tabs) =>{
-  tabs.map(tab=>{
-    newTab(tab.url)
-  })
-})
+ipcRenderer.on("restore_tabs", (event, tabs) => {
+  tabs.map((tab) => {
+    newTab(tab.url);
+  });
+});
 
-function checkTabExists(url){
-  let tabAvailable = null
-  Tabs.getTabs().map(tempTab=>{
-    if(url.includes(tempTab.view.browserView.webContents.getURL())){
-      tabAvailable = tempTab
+function checkAndActivateTab(url) {
+  let tabAvailable = null;
+  Tabs.getTabs().map((tempTab) => {
+    if (url.includes(tempTab.view.browserView.webContents.getURL())) {
+      tabAvailable = tempTab;
     }
-  })
-  if(tabAvailable){
+  });
+  if (tabAvailable) {
     Tabs.getTab(tabAvailable.id).activate();
     return true;
-  } else{
+  } else {
     return false;
   }
 }
-module.exports = { newTab, checkTabExists, Tabs };
+module.exports = { newTab, checkAndActivateTab: checkAndActivateTab, Tabs };
