@@ -387,7 +387,7 @@ class Tab extends EventEmitter {
     this.isClosed = true;
     let tabGroup = this.tabGroup;
     tabGroup.tabContainer.removeChild(this.tab);
-    ipcRenderer.send('remove_tab',{id:this.id})
+    ipcRenderer.send("delete-tab", { id: this.id });
     let activeTab = this.tabGroup.getActiveTab();
     TabGroupPrivate.removeTab.bind(tabGroup)(this, true);
 

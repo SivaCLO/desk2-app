@@ -19,7 +19,7 @@ class DraftView {
     this.browserView.webContents.loadURL(url || "https://medium.com/new-story");
 
     if (url) {
-      ipcRenderer.send("add_tab", {
+      ipcRenderer.send("save-tab", {
         id: this.tab.id,
         url,
       });
@@ -62,7 +62,7 @@ class DraftView {
       if (this.browserView.webContents.getURL().endsWith("/edit")) {
         let toolTitle = document.getElementById("draft-tools-title");
         toolTitle.innerHTML = this.browserView.webContents.getURL();
-        ipcRenderer.send("add_tab", {
+        ipcRenderer.send("save-tab", {
           id: this.tab.id,
           url: this.browserView.webContents.getURL(),
         });
