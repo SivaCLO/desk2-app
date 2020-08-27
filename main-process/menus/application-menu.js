@@ -2,6 +2,7 @@ const { BrowserWindow, Menu, app, shell, dialog } = require("electron");
 const { openEmailSignInWindow } = require("../windows/email-signin-window");
 const { showIntegrationWindow } = require("../windows/import-draft-window");
 const { defaultStore } = require("../electron-store/store");
+const { logActivity } = require("../system/activity");
 let currentWindow = null;
 
 let template = [
@@ -12,7 +13,8 @@ let template = [
         label: "New Story",
         accelerator: "CmdOrCtrl+N",
         click() {
-          currentWindow && currentWindow.webContents.send('new_tab')
+          currentWindow && currentWindow.webContents.send("new_tab");
+          logActivity({ userId: "abc", emailId: "test@mediumdesk.com", data: { message: "click/menu/new-story" } });
         },
       },
       {
@@ -20,6 +22,7 @@ let template = [
         accelerator: "CmdOrCtrl+D",
         click() {
           currentWindow && currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`);
+          logActivity({ userId: "abc", emailId: "test@mediumdesk.com", data: { message: "click/menu/draft" } });
         },
       },
       { type: "separator" },
@@ -28,12 +31,18 @@ let template = [
         accelerator: "Alt+Cmd+LOrCtrl+Alt+L",
         click() {
           openEmailSignInWindow();
+          logActivity({ userId: "abc", emailId: "test@mediumdesk.com", data: { message: "click/menu/email-signin" } });
         },
       },
       {
         label: "Change Medium Token",
         click() {
           showIntegrationWindow();
+          logActivity({
+            userId: "abc",
+            emailId: "test@mediumdesk.com",
+            data: { message: "click/menu/change-medium-token" },
+          });
         },
       },
     ],
@@ -86,7 +95,7 @@ let template = [
           if (focusedWindow) {
             // on reload, start fresh and close any old
             // open secondary windows
-            focusedWindow.getBrowserView().webContents.reload()
+            focusedWindow.getBrowserView().webContents.reload();
           }
         },
       },
@@ -103,7 +112,7 @@ let template = [
               });
             }
             focusedWindow.reload();
-            defaultStore.set('tabs',[])
+            defaultStore.set("tabs", []);
           }
         },
       },

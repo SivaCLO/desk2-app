@@ -3,6 +3,7 @@ const { defaultStore } = require("../electron-store/store");
 const path = require("path");
 const Config = require("../../config");
 const { autoUpdater } = require("electron-updater");
+const { logActivity } = require("../system/activity");
 
 let mainWindow = null;
 
@@ -59,9 +60,11 @@ function createMainWindow() {
     if (!mainWindow.fullScreen) {
       defaultStore.set("lastWindowState", mainWindow.getBounds());
     }
+    logActivity({ userId: "abc", emailId: "test@mediumdesk.com", data: { message: "app/close" } });
   });
   mainWindow.on("closed", () => {
     mainWindow = null;
+    logActivity({ userId: "abc", emailId: "test@mediumdesk.com", data: { message: "app/closed" } });
   });
 
   ipcMain.on("load-url-medium-view", (e, url) => {
@@ -91,6 +94,10 @@ function createMainWindow() {
     let filteredTabs = tempTabs.filter((t) => t.id !== tabs.id);
     defaultStore.set("tabs", filteredTabs);
   });
+
+  ipcMain.on("log:activity", (e, data) => {
+    logActivity(data);
+  });
 }
 
 app.on("ready", () => {
@@ -104,6 +111,7 @@ app.on("ready", () => {
   if (!debug) {
     autoUpdater.checkForUpdates();
   }
+  logActivity({ userId: "abc", emailId: "test@mediumdesk.com", data: { message: "app/opened" } });
 });
 
 app.on("activate", () => {
@@ -144,10 +152,16 @@ autoUpdater.on("update-not-available", (info) => {
 
 autoUpdater.on("error", (err) => {
   showUpdateMessage("Error in auto-updater. " + err);
+  logActivity({ userId: "abc", emailId: "test@mediumdesk.com", data: { message: "app/update/error", error: err } });
 });
 
 autoUpdater.on("update-downloaded", (info) => {
   showUpdateMessage("Update downloaded");
+  logActivity({
+    userId: "abc",
+    emailId: "test@mediumdesk.com",
+    data: { message: "app/update/downloaded", info: info },
+  });
 });
 
 function showUpdateMessage(message) {
