@@ -3,7 +3,7 @@ const axios = require("axios");
 function logActivity(data) {
   return new Promise((resolve, reject) => {
     axios
-      .post("http://api.mediumdesk.com:80/api/activity", data)
+      .post("http://api.mediumdesk.com/api/activity", data)
       .then((res) => {
         resolve(res);
       })
