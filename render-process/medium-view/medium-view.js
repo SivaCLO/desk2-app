@@ -18,7 +18,7 @@ class MediumView {
       const fromURL = this.browserView.webContents.getURL();
       const { newTab, checkAndActivateTab } = require("../tabs/tabs");
       if (url.startsWith("https://medium.com/new-story")) {
-        newTab(url, () => this.browserView.webContents.loadURL(fromURL));
+        newTab("", () => this.browserView.webContents.loadURL(fromURL));
       } else if (url.startsWith("https://medium.com/p") && url.includes("/edit")) {
         if (checkAndActivateTab(url)) {
           this.browserView.webContents.loadURL(fromURL);
