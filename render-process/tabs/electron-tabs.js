@@ -105,11 +105,7 @@ const TabGroupPrivate = {
     button.classList.add(`${this.options.tabClass}-button-new`);
     button.innerHTML = this.options.newTabButtonText;
     button.addEventListener("click", this.addTab.bind(this, undefined), false);
-    ipcRenderer.send("log:activity", {
-      userId: "abc",
-      emailId: "test@mediumdesk.com",
-      data: { message: "hard/refresh/draft-view" },
-    });
+    ipcRenderer.send("log", "hard/refresh/draft-view");
   },
 
   initVisibility: function () {
@@ -145,11 +141,7 @@ const TabGroupPrivate = {
     TabGroupPrivate.removeTab.bind(this)(tab);
     this.tabs.unshift(tab);
     this.emit("tab-active", tab, this);
-    ipcRenderer.send("log:activity", {
-      userId: "abc",
-      emailId: "test@mediumdesk.com",
-      data: { message: "click/tab/switch" },
-    });
+    ipcRenderer.send("log", "click/tab/switch");
     return this;
   },
 
@@ -212,11 +204,7 @@ class Tab extends EventEmitter {
         toolTitle.innerHTML = title;
         toolTitle.title = title;
         if (toolTitle.title !== "Your stories") {
-          ipcRenderer.send("log:activity", {
-            userId: "abc",
-            emailId: "test@mediumdesk.com",
-            data: { message: "change/title", info: toolTitle.title },
-          });
+          ipcRenderer.send("log", "change/title", toolTitle.title);
         }
       }
     } else {
@@ -410,11 +398,7 @@ class Tab extends EventEmitter {
     TabGroupPrivate.removeTab.bind(tabGroup)(this, true);
 
     this.emit("close", this);
-    ipcRenderer.send("log:activity", {
-      userId: "abc",
-      emailId: "test@mediumdesk.com",
-      data: { message: "click/tab/close" },
-    });
+    ipcRenderer.send("log", "click/tab/close");
     if (activeTab.id === this.id) {
       TabGroupPrivate.activateRecentTab.bind(tabGroup)();
     }
@@ -452,11 +436,7 @@ const TabPrivate = {
       button.classList.add(`${tabClass}-button-close`);
       button.innerHTML = this.tabGroup.options.closeButtonText;
       button.addEventListener("click", this.close.bind(this, false), false);
-      ipcRenderer.send("log:activity", {
-        userId: "abc",
-        emailId: "test@mediumdesk.com",
-        data: { message: "click/tab/open" },
-      });
+      ipcRenderer.send("log", "click/tab/open");
     } else {
       container.classList.add("hidden");
     }
