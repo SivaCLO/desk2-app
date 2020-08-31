@@ -4,6 +4,7 @@ const path = require("path");
 const Config = require("../../config");
 const { autoUpdater } = require("electron-updater");
 const { showNetworkStatusWindow } = require("../windows/network-status-window");
+const { log } = require("../system/activity");
 
 let mainWindow = null;
 
@@ -60,6 +61,7 @@ function createMainWindow() {
     if (!mainWindow.fullScreen) {
       defaultStore.set("lastWindowState", mainWindow.getBounds());
     }
+    log("app/close");
   });
   mainWindow.on("closed", () => {
     mainWindow = null;
@@ -92,6 +94,10 @@ function createMainWindow() {
     let filteredTabs = tempTabs.filter((t) => t.id !== tabs.id);
     defaultStore.set("tabs", filteredTabs);
   });
+
+  ipcMain.on("log", (e, activityCode, activityData) => {
+    log(activityCode, activityData);
+  });
 }
 
 app.on("ready", () => {
@@ -113,6 +119,7 @@ app.on("ready", () => {
       previousNetworkStatus = data;
     });
   });
+  log("app/open");
 });
 
 app.on("activate", () => {
@@ -153,10 +160,12 @@ autoUpdater.on("update-not-available", (info) => {
 
 autoUpdater.on("error", (err) => {
   showUpdateMessage("Error in auto-updater. " + err);
+  log("app/update/error", err);
 });
 
 autoUpdater.on("update-downloaded", (info) => {
   showUpdateMessage("Update downloaded");
+  log("app/update/downloaded", info);
 });
 
 function showUpdateMessage(message) {
