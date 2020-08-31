@@ -3,6 +3,7 @@ const { defaultStore } = require("../electron-store/store");
 const path = require("path");
 const Config = require("../../config");
 const { autoUpdater } = require("electron-updater");
+const { showNetworkStatusWindow } = require("../windows/network-status-window");
 
 let mainWindow = null;
 
@@ -104,6 +105,14 @@ app.on("ready", () => {
   if (!debug) {
     autoUpdater.checkForUpdates();
   }
+  mainWindow.webContents.once("dom-ready", () => {
+    showNetworkStatusWindow();
+    ipcMain.on("network-status", (event, data) => {
+      var previousNetworkStatus;
+      previousNetworkStatus !== "online" && data === "online" ? null : mainWindow.getBrowserView().webContents.reload();
+      previousNetworkStatus = data;
+    });
+  });
 });
 
 app.on("activate", () => {
