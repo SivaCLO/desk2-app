@@ -1,16 +1,15 @@
 const axios = require("axios");
 
-function logActivity(data) {
-  return new Promise((resolve, reject) => {
-    axios
-      .post("http://api.mediumdesk.com/api/activity", data)
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((err) => {
-        console.log("logActivity -> err", err);
-      });
-  });
+function log(activityCode, activityData) {
+  axios
+    .post(
+      "https://md-functions.azurewebsites.net/api/activity?code=Qv3qRgZB1ZbBLArwzBTrF08HssguuMh7tEMSUCP3Eeakl/sIQOaaIw==",
+      { mediumId: "test", activityCode, activityData, activityTime: Date.now() }
+    )
+    .then((res) => {})
+    .catch((err) => {
+      console.log("log activity -> err", err);
+    });
 }
 
-module.exports = { logActivity };
+module.exports = { log };

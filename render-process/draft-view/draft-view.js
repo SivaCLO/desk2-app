@@ -1,7 +1,7 @@
 const { ipcRenderer } = require("electron");
 const Remote = require("electron").remote;
 const path = require("path");
-const { logActivity } = require("../../main-process/system/activity");
+const { log } = require("../../main-process/system/activity");
 
 class DraftView {
   constructor(url, tab, tabs) {
@@ -63,11 +63,7 @@ class DraftView {
       if (this.browserView.webContents.getURL().endsWith("/edit")) {
         let toolTitle = document.getElementById("draft-tools-title");
         toolTitle.innerHTML = this.browserView.webContents.getURL();
-        logActivity({
-          userId: "abc",
-          emailId: "test@mediumdesk.com",
-          data: { message: "created/new-draft", info: { url: toolTitle.innerHTML } },
-        });
+        log("medium/draft/start", toolTitle.innerHTML);
         ipcRenderer.send("save-tab", {
           id: this.tab.id,
           url: this.browserView.webContents.getURL(),
