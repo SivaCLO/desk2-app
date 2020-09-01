@@ -111,6 +111,7 @@ app.on("ready", () => {
   if (!debug) {
     autoUpdater.checkForUpdates();
   }
+
   mainWindow.webContents.once("dom-ready", () => {
     showNetworkStatusWindow();
     ipcMain.on("network-status", (event, data) => {
