@@ -1,9 +1,10 @@
-const { BrowserWindow, Menu, app, shell, dialog } = require("electron");
+const { BrowserWindow, Menu, app, shell, dialog, ipcMain } = require("electron");
 const { openEmailSignInWindow } = require("../windows/email-signin-window");
 const { showIntegrationWindow } = require("../windows/import-draft-window");
 const { defaultStore } = require("../electron-store/store");
 const { log } = require("../system/activity");
 let currentWindow = null;
+let zenMode= false;
 
 let template = [
   {
@@ -13,7 +14,7 @@ let template = [
         label: "New Story",
         accelerator: "CmdOrCtrl+N",
         click() {
-          currentWindow && currentWindow.webContents.send("new_tab");
+          currentWindow && currentWindow.webContents.send('new_tab');
           log("main-menu/new-story");
         },
       },
@@ -85,6 +86,37 @@ let template = [
     label: "View",
     submenu: [
       {
+        label: "Next Story",
+        accelerator: "Ctrl+Tab",
+        click() {
+          currentWindow && currentWindow.webContents.send('next-tab')
+        },
+      },
+      {
+        label: "Previous Story",
+        accelerator: "Ctrl+Shift+Tab",
+        click() {
+          currentWindow && currentWindow.webContents.send('previous-tab')
+        },
+      },
+      {
+        label: "Close Story",
+        accelerator: "Cmd+W",
+        click() {
+          currentWindow && currentWindow.webContents.send('close-tab')
+        },
+      },
+      {
+        label: "Reopen Last Closed Story",
+        accelerator: "CmdOrCtrl+Shift+T",
+        click() {
+          currentWindow && currentWindow.webContents.send('open-previously-closed-tab')
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
         label: "Reload Tab",
         accelerator: "CmdOrCtrl+R",
         click: (item, focusedWindow) => {
@@ -108,7 +140,7 @@ let template = [
               });
             }
             focusedWindow.reload();
-            defaultStore.set("tabs", []);
+            defaultStore.set('tabs',[])
           }
         },
       },
@@ -150,18 +182,11 @@ let template = [
         type: "separator",
       },
       {
-        label: "App Menu Demo",
-        click: function (item, focusedWindow) {
-          if (focusedWindow) {
-            const options = {
-              type: "info",
-              title: "Application Menu Demo",
-              buttons: ["Ok"],
-              message:
-                "This demo is for the Menu section, showing how to create a clickable menu item in the application menu.",
-            };
-            dialog.showMessageBox(focusedWindow, options, function () {});
-          }
+        label: "Zen Mode",
+        accelerator: "Alt+CmdOrCtrl+Z",
+        enabled: !zenMode,
+        click() {
+          currentWindow && currentWindow.webContents.send('enter-zen-mode')
         },
       },
     ],
@@ -190,6 +215,13 @@ let template = [
         key: "reopenMenuItem",
         click: () => {
           app.emit("activate");
+        },
+      },
+      {
+        label: "Search",
+        accelerator: "CmdOrCtrl+F",
+        click: () => {
+          currentWindow && currentWindow.webContents.send('on-find')
         },
       },
     ],
@@ -330,6 +362,12 @@ if (process.platform === "win32") {
 app.on("ready", () => {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
+  ipcMain.on('zen-mode-on',()=>{
+    zenMode= true;
+  })
+  ipcMain.on('zen-mode-off',()=>{
+    zenMode= false;
+  })
 });
 
 app.on("browser-window-created", (event, win) => {

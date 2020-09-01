@@ -1,6 +1,68 @@
 const Remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
-const { ElectronTabs } = require("../tabs/tabs");
+const { ElectronTabs, checkAndActivateTab, newTab } = require("../tabs/tabs");
+const FindInPage = require('electron-find').FindInPage;
+let zenMode= false;
+
+ipcRenderer.on('on-find', (e, args) => {
+  let findInPage = new FindInPage(Remote.getCurrentWindow().getBrowserView().webContents);
+  findInPage.openFindWindow()
+})
+
+ipcRenderer.on('enter-zen-mode', (e, args) => {
+  if(ElectronTabs.getActiveTab().viewType !== "medium"){
+    enterZenMode();
+  }
+})
+
+ipcRenderer.on('next-tab', (e, args) => {
+  if(ElectronTabs.getNextTab()){
+    ElectronTabs.getNextTab().activate()
+  }
+  if(zenMode){
+    exitZenMode()
+  }
+})
+
+ipcRenderer.on('previous-tab', (e, args) => {
+  if(ElectronTabs.getPreviousTab()){
+    ElectronTabs.getPreviousTab().activate()
+  }
+  if(zenMode){
+    exitZenMode()
+  }
+})
+
+ipcRenderer.on('close-tab', (e, args) => {
+  if(ElectronTabs.getActiveTab().id !== 0){
+    ElectronTabs.getActiveTab().close()
+  }
+  if(zenMode){
+    exitZenMode()
+  }
+})
+
+ipcRenderer.on('open-previously-closed-tab', (e, args) => {
+  let url = ElectronTabs.closedTabs.pop()
+  if(url && !checkAndActivateTab(url)){
+    newTab(url)
+  }
+  if(zenMode){
+    exitZenMode()
+  }
+})
+
+document.addEventListener("keydown", event => {
+  switch (event.key) {
+      case "Escape":
+        if(ElectronTabs.getActiveTab().viewType !== "medium" && zenMode){
+          exitZenMode();
+        }
+          break;
+       }
+});
+
+
 
 document.body.addEventListener("click", (event) => {
   if (event.target.dataset.action) {
@@ -56,16 +118,28 @@ function handleAction(event) {
     ElectronTabs.getTab(0).activate();
     ElectronTabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/drafts");
   } else if (action === "zen-mode") {
-    Remote.getCurrentWindow().setFullScreen(true);
-    document.getElementById("tabs").classList.remove("visible");
-    document.getElementById("draft-tools").classList.remove("active");
-    document.getElementById("zen-tools").classList.add("active");
-    ipcRenderer.send("log", "click/toolbar/zen-mode");
+    enterZenMode();
   } else if (action === "exit-zen-mode") {
-    Remote.getCurrentWindow().setFullScreen(false);
-    document.getElementById("zen-tools").classList.remove("active");
-    document.getElementById("draft-tools").classList.add("active");
-    document.getElementById("tabs").classList.add("visible");
-    ipcRenderer.send("log", "click/toolbar/exit-zen-mode");
+    exitZenMode();
   }
+}
+
+function enterZenMode(){
+  Remote.getCurrentWindow().setFullScreen(true);
+  document.getElementById("tabs").classList.remove("visible");
+  document.getElementById("draft-tools").classList.remove("active");
+  document.getElementById("zen-tools").classList.add("active");
+  ipcRenderer.send("log", "click/toolbar/zen-mode");
+  ipcRenderer.send("zen-mode-on")
+  zenMode= true;
+}
+
+function exitZenMode(){
+  Remote.getCurrentWindow().setFullScreen(false);
+  document.getElementById("zen-tools").classList.remove("active");
+  document.getElementById("draft-tools").classList.add("active");
+  document.getElementById("tabs").classList.add("visible");
+  ipcRenderer.send("log", "click/toolbar/exit-zen-mode");
+  ipcRenderer.send("zen-mode-off")
+  zenMode= false
 }
