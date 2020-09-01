@@ -182,11 +182,17 @@ let template = [
         type: "separator",
       },
       {
-        label: "Zen Mode",
+        label: "Enter Zen Mode",
         accelerator: "Alt+CmdOrCtrl+Z",
-        enabled: !zenMode,
         click() {
           currentWindow && currentWindow.webContents.send("enter-zen-mode");
+        },
+      },
+      {
+        label: "Exit Zen Mode",
+        accelerator: "Esc",
+        click() {
+          currentWindow && currentWindow.webContents.send("exit-zen-mode");
         },
       },
     ],
