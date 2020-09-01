@@ -44,7 +44,7 @@ function handleAction(event) {
     Remote.getCurrentWindow().getBrowserView().webContents.goForward();
     ipcRenderer.send("log", "click/toolbar/forward");
   } else if (action === "import-draft") {
-    ipcRenderer.send("open-import-draft-window");
+    ipcRenderer.send("open-import-draft-dialog");
     ipcRenderer.send("log", "click/toolbar/import-draft");
   } else if (action === "open-link") {
     Remote.shell.openExternal(Remote.getCurrentWindow().getBrowserView().webContents.getURL());

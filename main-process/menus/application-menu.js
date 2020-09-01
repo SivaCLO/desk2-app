@@ -1,7 +1,7 @@
 const { BrowserWindow, Menu, app, shell, dialog } = require("electron");
 const { openEmailSignInWindow } = require("../windows/email-signin-window");
-const { showIntegrationWindow } = require("../windows/import-draft-window");
-const { defaultStore } = require("../electron-store/store");
+const { showLoginWindow, logout } = require("../windows/login-window");
+const { defaultStore } = require("../../common/electron-store/store");
 const { log } = require("../system/activity");
 let currentWindow = null;
 
@@ -37,8 +37,14 @@ let template = [
       {
         label: "Change Medium Token",
         click() {
-          showIntegrationWindow();
           log("main-menu/change-medium-token");
+          showLoginWindow();
+        },
+      },
+      {
+        label: "Log Out",
+        click() {
+          logout();
         },
       },
     ],
