@@ -28,8 +28,7 @@ let template = [
       },
       { type: "separator" },
       {
-        label: "Email SignIn",
-        accelerator: "Alt+Cmd+LOrCtrl+Alt+L",
+        label: "Log In via Email",
         click() {
           openEmailSignInWindow();
           log("main-menu/email-signin");
@@ -85,6 +84,16 @@ let template = [
         label: "Select All",
         accelerator: "CmdOrCtrl+A",
         role: "selectall",
+      },
+      {
+        type: "separator",
+      },
+      {
+        label: "Find in Page",
+        accelerator: "CmdOrCtrl+F",
+        click: () => {
+          currentWindow && currentWindow.webContents.send("on-find");
+        },
       },
     ],
   },
@@ -212,30 +221,6 @@ let template = [
         accelerator: "CmdOrCtrl+M",
         role: "minimize",
       },
-      {
-        label: "Close",
-        accelerator: "CmdOrCtrl+W",
-        role: "close",
-      },
-      {
-        type: "separator",
-      },
-      {
-        label: "Reopen Window",
-        accelerator: "CmdOrCtrl+Shift+T",
-        enabled: false,
-        key: "reopenMenuItem",
-        click: () => {
-          app.emit("activate");
-        },
-      },
-      {
-        label: "Find in Page",
-        accelerator: "CmdOrCtrl+F",
-        click: () => {
-          currentWindow && currentWindow.webContents.send("on-find");
-        },
-      },
     ],
   },
   {
@@ -243,9 +228,15 @@ let template = [
     role: "help",
     submenu: [
       {
-        label: "Learn More",
+        label: "Contact Support",
         click: () => {
-          shell.openExternal("http://electron.atom.io");
+          shell.openExternal("mailto:yourfriends@mediumdesk.com");
+        },
+      },
+      {
+        label: "Open Mediumdesk Website",
+        click: () => {
+          shell.openExternal("http://mediumdesk.com");
         },
       },
     ],
