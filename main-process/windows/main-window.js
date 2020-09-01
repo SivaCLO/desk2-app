@@ -1,5 +1,5 @@
-const { app, session, BrowserWindow, ipcMain, dialog } = require("electron");
-const { defaultStore } = require("../electron-store/store");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+const { defaultStore } = require("../../common/electron-store/store");
 const path = require("path");
 const Config = require("../../config");
 const { autoUpdater } = require("electron-updater");
@@ -9,8 +9,12 @@ let mainWindow = null;
 
 const debug = /--debug/.test(process.argv[2]);
 
-function createMainWindow() {
-  // Create Main Window
+function showMainWindow() {
+  const mediumdeskUser = defaultStore.get("mediumdesk-user");
+  if (!mediumdeskUser) return;
+
+  log("main-window/show");
+
   const lastWindowState = defaultStore.get("lastWindowState") || Config.WINDOW_SIZE;
   const windowOptions = {
     x: lastWindowState.x,
@@ -100,22 +104,15 @@ function createMainWindow() {
 }
 
 app.on("ready", () => {
-  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-    details.requestHeaders["User-Agent"] = session.defaultSession
-      .getUserAgent()
-      .replace("Electron/" + process.versions.electron, "");
-    callback({ cancel: false, requestHeaders: details.requestHeaders });
-  });
-  createMainWindow();
+  showMainWindow();
   if (!debug) {
     autoUpdater.checkForUpdates();
   }
-  log("app/open");
 });
 
 app.on("activate", () => {
   if (mainWindow === null) {
-    createMainWindow();
+    showMainWindow();
   }
 });
 
