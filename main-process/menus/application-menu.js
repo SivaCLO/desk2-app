@@ -4,7 +4,7 @@ const { showIntegrationWindow } = require("../windows/import-draft-window");
 const { defaultStore } = require("../electron-store/store");
 const { log } = require("../system/activity");
 let currentWindow = null;
-let zenMode= false;
+let zenMode = false;
 
 let template = [
   {
@@ -14,7 +14,7 @@ let template = [
         label: "New Story",
         accelerator: "CmdOrCtrl+N",
         click() {
-          currentWindow && currentWindow.webContents.send('new_tab');
+          currentWindow && currentWindow.webContents.send("new_tab");
           log("main-menu/new-story");
         },
       },
@@ -89,28 +89,28 @@ let template = [
         label: "Next Story",
         accelerator: "Ctrl+Tab",
         click() {
-          currentWindow && currentWindow.webContents.send('next-tab')
+          currentWindow && currentWindow.webContents.send("next-tab");
         },
       },
       {
         label: "Previous Story",
         accelerator: "Ctrl+Shift+Tab",
         click() {
-          currentWindow && currentWindow.webContents.send('previous-tab')
+          currentWindow && currentWindow.webContents.send("previous-tab");
         },
       },
       {
         label: "Close Story",
         accelerator: "Cmd+W",
         click() {
-          currentWindow && currentWindow.webContents.send('close-tab')
+          currentWindow && currentWindow.webContents.send("close-tab");
         },
       },
       {
         label: "Reopen Last Closed Story",
         accelerator: "CmdOrCtrl+Shift+T",
         click() {
-          currentWindow && currentWindow.webContents.send('open-previously-closed-tab')
+          currentWindow && currentWindow.webContents.send("open-previously-closed-tab");
         },
       },
       {
@@ -140,7 +140,7 @@ let template = [
               });
             }
             focusedWindow.reload();
-            defaultStore.set('tabs',[])
+            defaultStore.set("tabs", []);
           }
         },
       },
@@ -186,7 +186,7 @@ let template = [
         accelerator: "Alt+CmdOrCtrl+Z",
         enabled: !zenMode,
         click() {
-          currentWindow && currentWindow.webContents.send('enter-zen-mode')
+          currentWindow && currentWindow.webContents.send("enter-zen-mode");
         },
       },
     ],
@@ -218,10 +218,10 @@ let template = [
         },
       },
       {
-        label: "Search",
+        label: "Find in Page",
         accelerator: "CmdOrCtrl+F",
         click: () => {
-          currentWindow && currentWindow.webContents.send('on-find')
+          currentWindow && currentWindow.webContents.send("on-find");
         },
       },
     ],
@@ -362,12 +362,12 @@ if (process.platform === "win32") {
 app.on("ready", () => {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
-  ipcMain.on('zen-mode-on',()=>{
-    zenMode= true;
-  })
-  ipcMain.on('zen-mode-off',()=>{
-    zenMode= false;
-  })
+  ipcMain.on("zen-mode-on", () => {
+    zenMode = true;
+  });
+  ipcMain.on("zen-mode-off", () => {
+    zenMode = false;
+  });
 });
 
 app.on("browser-window-created", (event, win) => {
