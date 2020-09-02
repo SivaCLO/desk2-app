@@ -26,7 +26,7 @@ function showMainWindow() {
     };
 
     mainWindow = new BrowserWindow(windowOptions);
-    mainWindow.loadURL(path.join("file://", __dirname, "../../index.html"));
+    mainWindow.loadURL(path.join("file://", __dirname, "../../render-process/index.html"));
     mainWindow.on("resize", () => {
       resizeWindow();
     });
