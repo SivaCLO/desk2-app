@@ -23,6 +23,7 @@ class TabGroup extends EventEmitter {
     });
     this.tabContainer = document.querySelector(options.tabContainerSelector);
     this.tabs = [];
+    this.closedTabs = [];
     this.newTabId = 0;
     TabGroupPrivate.initNewTabButton.bind(this)();
     TabGroupPrivate.initVisibility.bind(this)();
@@ -69,7 +70,9 @@ class TabGroup extends EventEmitter {
   getTabByRelPosition(position) {
     position = this.getActiveTab().getPosition() + position;
     if (position <= 0) {
-      return null;
+      position = this.tabs.length;
+    } else if (position > this.tabs.length) {
+      position = 1;
     }
     return this.getTabByPosition(position);
   }
@@ -393,6 +396,7 @@ class Tab extends EventEmitter {
     this.isClosed = true;
     let tabGroup = this.tabGroup;
     tabGroup.tabContainer.removeChild(this.tab);
+    this.tabGroup.closedTabs.push(this.url);
     ipcRenderer.send("delete-tab", { id: this.id });
     let activeTab = this.tabGroup.getActiveTab();
     TabGroupPrivate.removeTab.bind(tabGroup)(this, true);

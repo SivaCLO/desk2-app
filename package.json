@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "electron-find": "^1.0.6",
     "electron-log": "^4.2.2",
     "electron-settings": "^4.0.2",
     "electron-shortcut-normalizer": "^1.0.0",

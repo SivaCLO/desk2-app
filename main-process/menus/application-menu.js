@@ -1,9 +1,10 @@
-const { BrowserWindow, Menu, app, shell, dialog } = require("electron");
+const { BrowserWindow, Menu, app, shell, dialog, ipcMain } = require("electron");
 const { openEmailSignInWindow } = require("../windows/email-signin-window");
-const { showIntegrationWindow } = require("../windows/import-draft-window");
-const { defaultStore } = require("../electron-store/store");
+const { showLoginWindow, logout } = require("../windows/login-window");
+const { defaultStore } = require("../../common/electron-store/store");
 const { log } = require("../system/activity");
 let currentWindow = null;
+let zenMode = false;
 
 let template = [
   {
@@ -27,8 +28,7 @@ let template = [
       },
       { type: "separator" },
       {
-        label: "Email SignIn",
-        accelerator: "Alt+Cmd+LOrCtrl+Alt+L",
+        label: "Log In via Email",
         click() {
           openEmailSignInWindow();
           log("main-menu/email-signin");
@@ -37,8 +37,14 @@ let template = [
       {
         label: "Change Medium Token",
         click() {
-          showIntegrationWindow();
           log("main-menu/change-medium-token");
+          showLoginWindow();
+        },
+      },
+      {
+        label: "Log Out",
+        click() {
+          logout();
         },
       },
     ],
@@ -79,11 +85,52 @@ let template = [
         accelerator: "CmdOrCtrl+A",
         role: "selectall",
       },
+      {
+        type: "separator",
+      },
+      {
+        label: "Find in Page",
+        accelerator: "CmdOrCtrl+F",
+        click: () => {
+          currentWindow && currentWindow.webContents.send("on-find");
+        },
+      },
     ],
   },
   {
     label: "View",
     submenu: [
+      {
+        label: "Next Story",
+        accelerator: "Ctrl+Tab",
+        click() {
+          currentWindow && currentWindow.webContents.send("next-tab");
+        },
+      },
+      {
+        label: "Previous Story",
+        accelerator: "Ctrl+Shift+Tab",
+        click() {
+          currentWindow && currentWindow.webContents.send("previous-tab");
+        },
+      },
+      {
+        label: "Close Story",
+        accelerator: "Cmd+W",
+        click() {
+          currentWindow && currentWindow.webContents.send("close-tab");
+        },
+      },
+      {
+        label: "Reopen Last Closed Story",
+        accelerator: "CmdOrCtrl+Shift+T",
+        click() {
+          currentWindow && currentWindow.webContents.send("open-previously-closed-tab");
+        },
+      },
+      {
+        type: "separator",
+      },
       {
         label: "Reload Tab",
         accelerator: "CmdOrCtrl+R",
@@ -150,18 +197,17 @@ let template = [
         type: "separator",
       },
       {
-        label: "App Menu Demo",
-        click: function (item, focusedWindow) {
-          if (focusedWindow) {
-            const options = {
-              type: "info",
-              title: "Application Menu Demo",
-              buttons: ["Ok"],
-              message:
-                "This demo is for the Menu section, showing how to create a clickable menu item in the application menu.",
-            };
-            dialog.showMessageBox(focusedWindow, options, function () {});
-          }
+        label: "Enter Zen Mode",
+        accelerator: "Alt+CmdOrCtrl+Z",
+        click() {
+          currentWindow && currentWindow.webContents.send("enter-zen-mode");
+        },
+      },
+      {
+        label: "Exit Zen Mode",
+        accelerator: "Esc",
+        click() {
+          currentWindow && currentWindow.webContents.send("exit-zen-mode");
         },
       },
     ],
@@ -175,23 +221,6 @@ let template = [
         accelerator: "CmdOrCtrl+M",
         role: "minimize",
       },
-      {
-        label: "Close",
-        accelerator: "CmdOrCtrl+W",
-        role: "close",
-      },
-      {
-        type: "separator",
-      },
-      {
-        label: "Reopen Window",
-        accelerator: "CmdOrCtrl+Shift+T",
-        enabled: false,
-        key: "reopenMenuItem",
-        click: () => {
-          app.emit("activate");
-        },
-      },
     ],
   },
   {
@@ -199,9 +228,15 @@ let template = [
     role: "help",
     submenu: [
       {
-        label: "Learn More",
+        label: "Contact Support",
         click: () => {
-          shell.openExternal("http://electron.atom.io");
+          shell.openExternal("mailto:yourfriends@mediumdesk.com");
+        },
+      },
+      {
+        label: "Open Mediumdesk Website",
+        click: () => {
+          shell.openExternal("http://mediumdesk.com");
         },
       },
     ],
@@ -330,6 +365,12 @@ if (process.platform === "win32") {
 app.on("ready", () => {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
+  ipcMain.on("zen-mode-on", () => {
+    zenMode = true;
+  });
+  ipcMain.on("zen-mode-off", () => {
+    zenMode = false;
+  });
 });
 
 app.on("browser-window-created", (event, win) => {

@@ -1,6 +1,6 @@
 const Remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
-const { ElectronTabs } = require("../tabs/tabs");
+const { ElectronTabs, enterZenMode, exitZenMode } = require("../tabs/tabs");
 
 document.body.addEventListener("click", (event) => {
   if (event.target.dataset.action) {
@@ -8,7 +8,7 @@ document.body.addEventListener("click", (event) => {
   }
 });
 
-var previousTitle;
+let previousTitle;
 
 document.body.addEventListener("mouseover", (event) => {
   if (event.target.dataset.tooltip) {
@@ -44,7 +44,7 @@ function handleAction(event) {
     Remote.getCurrentWindow().getBrowserView().webContents.goForward();
     ipcRenderer.send("log", "click/toolbar/forward");
   } else if (action === "import-draft") {
-    ipcRenderer.send("open-import-draft-window");
+    ipcRenderer.send("open-import-draft-dialog");
     ipcRenderer.send("log", "click/toolbar/import-draft");
   } else if (action === "open-link") {
     Remote.shell.openExternal(Remote.getCurrentWindow().getBrowserView().webContents.getURL());
@@ -56,16 +56,8 @@ function handleAction(event) {
     ElectronTabs.getTab(0).activate();
     ElectronTabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/drafts");
   } else if (action === "zen-mode") {
-    Remote.getCurrentWindow().setFullScreen(true);
-    document.getElementById("tabs").classList.remove("visible");
-    document.getElementById("draft-tools").classList.remove("active");
-    document.getElementById("zen-tools").classList.add("active");
-    ipcRenderer.send("log", "click/toolbar/zen-mode");
+    enterZenMode();
   } else if (action === "exit-zen-mode") {
-    Remote.getCurrentWindow().setFullScreen(false);
-    document.getElementById("zen-tools").classList.remove("active");
-    document.getElementById("draft-tools").classList.add("active");
-    document.getElementById("tabs").classList.add("visible");
-    ipcRenderer.send("log", "click/toolbar/exit-zen-mode");
+    exitZenMode();
   }
 }
