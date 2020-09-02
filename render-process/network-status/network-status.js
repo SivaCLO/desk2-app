@@ -1,8 +1,6 @@
 const { ipcRenderer } = require("electron");
-
-var status = "";
+let currentNetworkStatus = "";
 setInterval(() => {
-  status = navigator.onLine ? "online" : "Offline";
-  document.getElementById("network-status").innerText = status;
-  status ? ipcRenderer.send("network-status", status) : null;
-}, 1000);
+  currentNetworkStatus = navigator.onLine ? "online" : "offline";
+  ipcRenderer.send("network-status", currentNetworkStatus);
+}, 5000);
