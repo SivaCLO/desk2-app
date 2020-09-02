@@ -1,5 +1,4 @@
 const { ipcRenderer } = require("electron");
-const axios = require("axios");
 
 document.body.addEventListener("click", (event) => {
   if (event.target.dataset.action) {
@@ -13,29 +12,14 @@ async function handleAction(event) {
   if (action === "submit") {
     document.getElementById("error_msg").innerHTML = "";
     let token = document.getElementById("token").value;
-    let mediumUser = await getMediumUser(token);
-    if (mediumUser) {
-      ipcRenderer.send("save-user", token, mediumUser, mediumUser);
-    }
+    ipcRenderer.send("login", token);
   }
 }
 
-function getMediumUser(token) {
-  return new Promise((resolve, reject) => {
-    axios({
-      method: "get",
-      url: "https://api.medium.com/v1/me",
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(function (response) {
-        resolve(response.data.data);
-      })
-      .catch((e) => {
-        console.log("Reading Medium User", e);
-        document.getElementById("error_msg").innerHTML = "User not found!";
-      });
-  });
-}
+ipcRenderer.on("login-error", (event, error_message) => {
+  document.getElementById("error_msg").innerHTML = error_message;
+});
+
+ipcRenderer.on("login-token", (event, token) => {
+  document.getElementById("token").value = token;
+});
