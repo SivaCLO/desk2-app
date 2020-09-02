@@ -12,13 +12,7 @@ function openEmailSignInWindow() {
       nodeIntegration: true,
     },
   });
-  emailSignInWindow.loadURL(
-    url.format({
-      pathname: path.join("file://", __dirname, "../../render-process/email-signin/email-signin.html"),
-      protocol: "file",
-      slashes: true,
-    })
-  );
+  emailSignInWindow.loadURL(path.join("file://", __dirname, "../../render-process/email-signin/email-signin.html"));
 }
 
 ipcMain.on("close-email-signin-window", (e, url) => {

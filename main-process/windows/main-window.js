@@ -6,6 +6,10 @@ const { log } = require("../../common/activity");
 
 let mainWindow = null;
 
+function getMainWindow() {
+  return mainWindow;
+}
+
 function showMainWindow() {
   if (!mainWindow) {
     if (!defaultStore.get("mediumdesk-user")) return;
@@ -131,4 +135,4 @@ function updateTabs(tab) {
   defaultStore.set("tabs", [...filteredTabs, tab]);
 }
 
-module.exports = { showMainWindow, mainWindow };
+module.exports = { showMainWindow, getMainWindow };

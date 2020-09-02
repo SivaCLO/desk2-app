@@ -2,7 +2,7 @@ const { app, session, ipcMain } = require("electron");
 const os = require("os");
 const { log } = require("../common/activity");
 const { checkForUpdates } = require("./system/updater");
-const { showMainWindow, mainWindow } = require("./windows/main-window");
+const { showMainWindow, getMainWindow } = require("./windows/main-window");
 const { showLoginWindow, login } = require("./windows/login-window");
 const { defaultStore } = require("../common/store");
 const debug = /--debug/.test(process.argv[2]);
@@ -41,9 +41,9 @@ app.on("activate", () => {
 if (!process.mas) {
   app.requestSingleInstanceLock();
   app.on("second-instance", () => {
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore();
-      mainWindow.focus();
+    if (getMainWindow()) {
+      if (getMainWindow().isMinimized()) getMainWindow().restore();
+      getMainWindow().focus();
     }
   });
 }

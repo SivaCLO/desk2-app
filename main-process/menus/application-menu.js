@@ -1,7 +1,7 @@
-const { BrowserWindow, Menu, app, shell, dialog, ipcMain } = require("electron");
+const { BrowserWindow, Menu, app, shell, ipcMain } = require("electron");
 const { openEmailSignInWindow } = require("../windows/email-window");
 const { showLoginWindow, logout } = require("../windows/login-window");
-const { mainWindow } = require("../windows/main-window");
+const { getMainWindow } = require("../windows/main-window");
 const { defaultStore } = require("../../common/store");
 const { log } = require("../../common/activity");
 let zenMode = false;
@@ -14,8 +14,8 @@ let template = [
         label: "New Story",
         accelerator: "CmdOrCtrl+N",
         click() {
-          console.log(mainWindow);
-          mainWindow && mainWindow.webContents.send("new_tab");
+          console.log(getMainWindow());
+          getMainWindow() && getMainWindow().webContents.send("new_tab");
           log("main-menu/new-story");
         },
       },
@@ -23,7 +23,8 @@ let template = [
         label: "Drafts",
         accelerator: "CmdOrCtrl+D",
         click() {
-          mainWindow && mainWindow.getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`);
+          getMainWindow() &&
+            getMainWindow().getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`);
           log("main-menu/draft");
         },
       },
@@ -93,7 +94,7 @@ let template = [
         label: "Find in Page",
         accelerator: "CmdOrCtrl+F",
         click: () => {
-          mainWindow && mainWindow.webContents.send("on-find");
+          getMainWindow() && getMainWindow().webContents.send("on-find");
         },
       },
     ],
@@ -105,28 +106,28 @@ let template = [
         label: "Next Story",
         accelerator: "Ctrl+Tab",
         click() {
-          mainWindow && mainWindow.webContents.send("next-tab");
+          getMainWindow() && getMainWindow().webContents.send("next-tab");
         },
       },
       {
         label: "Previous Story",
         accelerator: "Ctrl+Shift+Tab",
         click() {
-          mainWindow && mainWindow.webContents.send("previous-tab");
+          getMainWindow() && getMainWindow().webContents.send("previous-tab");
         },
       },
       {
         label: "Close Story",
         accelerator: "Cmd+W",
         click() {
-          mainWindow && mainWindow.webContents.send("close-tab");
+          getMainWindow() && getMainWindow().webContents.send("close-tab");
         },
       },
       {
         label: "Reopen Last Closed Story",
         accelerator: "CmdOrCtrl+Shift+T",
         click() {
-          mainWindow && mainWindow.webContents.send("open-previously-closed-tab");
+          getMainWindow() && getMainWindow().webContents.send("open-previously-closed-tab");
         },
       },
       {
@@ -201,14 +202,14 @@ let template = [
         label: "Enter Zen Mode",
         accelerator: "Alt+CmdOrCtrl+Z",
         click() {
-          mainWindow && mainWindow.webContents.send("enter-zen-mode");
+          getMainWindow() && getMainWindow().webContents.send("enter-zen-mode");
         },
       },
       {
         label: "Exit Zen Mode",
         accelerator: "Esc",
         click() {
-          mainWindow && mainWindow.webContents.send("exit-zen-mode");
+          getMainWindow() && getMainWindow().webContents.send("exit-zen-mode");
         },
       },
     ],
