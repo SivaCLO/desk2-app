@@ -2,7 +2,7 @@ const { BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const url = require("url");
 
-let emailSignInWindow;
+let emailSignInWindow = null;
 
 function openEmailSignInWindow() {
   emailSignInWindow = new BrowserWindow({
@@ -14,10 +14,7 @@ function openEmailSignInWindow() {
   });
   emailSignInWindow.loadURL(
     url.format({
-      pathname: path.join(
-        __dirname,
-        "../../render-process/email-signin/email-signin.html"
-      ),
+      pathname: path.join(__dirname, "../../render-process/email-signin/email-signin.html"),
       protocol: "file",
       slashes: true,
     })

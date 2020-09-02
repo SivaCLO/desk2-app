@@ -1,0 +1,59 @@
+const { app, session, ipcMain } = require("electron");
+const os = require("os");
+const { log } = require("../common/activity");
+const { checkForUpdates } = require("./system/updater");
+const { showMainWindow, mainWindow } = require("./windows/main-window");
+const { showLoginWindow, login } = require("./windows/login-window");
+const { defaultStore } = require("../common/store");
+const debug = /--debug/.test(process.argv[2]);
+
+if (process.mas) app.setName("MediumDesk");
+
+app.on("ready", () => {
+  log("app/open", { "app-version": app.getVersion(), os: os.platform() });
+
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    details.requestHeaders["User-Agent"] = session.defaultSession
+      .getUserAgent()
+      .replace("Electron/" + process.versions.electron, "");
+    callback({ cancel: false, requestHeaders: details.requestHeaders });
+  });
+
+  const mediumToken = defaultStore.get("medium-token");
+  if (!mediumToken) {
+    showLoginWindow();
+  } else {
+    login().then(() => {
+      showMainWindow();
+      if (!debug) {
+        checkForUpdates();
+      }
+    });
+  }
+});
+
+app.on("activate", () => {
+  login().then(() => {
+    showMainWindow();
+  });
+});
+
+if (!process.mas) {
+  app.requestSingleInstanceLock();
+  app.on("second-instance", () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+}
+
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
+
+ipcMain.on("log", (e, activityCode, activityData) => {
+  log(activityCode, activityData);
+});

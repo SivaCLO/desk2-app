@@ -1,11 +1,11 @@
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
-const { defaultStore } = require("../../common/electron-store/store");
-const { log } = require("../system/activity");
+const { defaultStore } = require("../../common/store");
+const { log } = require("../../common/activity");
 const axios = require("axios");
 const { showMainWindow } = require("./main-window");
 
-let loginWindow;
+let loginWindow = null;
 
 function showLoginWindow(errorMessage) {
   log("login-window/show");

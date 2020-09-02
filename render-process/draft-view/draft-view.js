@@ -1,7 +1,7 @@
 const { ipcRenderer } = require("electron");
 const Remote = require("electron").remote;
 const path = require("path");
-const { log } = require("../../main-process/system/activity");
+const { log } = require("../../common/activity");
 
 class DraftView {
   constructor(url, tab, tabs) {

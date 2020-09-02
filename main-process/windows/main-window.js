@@ -1,15 +1,14 @@
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
-const { defaultStore } = require("../../common/electron-store/store");
+const { defaultStore } = require("../../common/store");
 const path = require("path");
 const Config = require("../../config");
-const { log } = require("../system/activity");
+const { log } = require("../../common/activity");
 
 let mainWindow = null;
 
 function showMainWindow() {
-  const mediumdeskUser = defaultStore.get("mediumdesk-user");
-  if (!mediumdeskUser) return;
   if (!mainWindow) {
+    if (!defaultStore.get("mediumdesk-user")) return;
     log("main-window/show");
     const lastWindowState = defaultStore.get("lastWindowState") || Config.WINDOW_SIZE;
     const windowOptions = {
@@ -68,10 +67,6 @@ function showMainWindow() {
       mainWindow = null;
     });
 
-    ipcMain.on("load-url-medium-view", (e, url) => {
-      mainWindow.getBrowserView().webContents.loadURL(url);
-    });
-
     mainWindow.webContents.once("did-finish-load", () => {
       let tempTabs = defaultStore.get("tabs");
       if (tempTabs && tempTabs.length > 0) {
@@ -108,6 +103,10 @@ function showMainWindow() {
         }
       });
     });
+
+    ipcMain.on("load-url-medium-view", (e, url) => {
+      mainWindow.getBrowserView().webContents.loadURL(url).then();
+    });
   }
 }
 
@@ -124,10 +123,6 @@ ipcMain.on("delete-tab", (e, tabs) => {
   let tempTabs = defaultStore.get("tabs");
   let filteredTabs = tempTabs.filter((t) => t.id !== tabs.id);
   defaultStore.set("tabs", filteredTabs);
-});
-
-ipcMain.on("log", (e, activityCode, activityData) => {
-  log(activityCode, activityData);
 });
 
 function updateTabs(tab) {

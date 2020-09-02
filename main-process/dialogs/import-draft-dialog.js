@@ -1,7 +1,7 @@
 const { dialog, ipcMain } = require("electron");
 const fs = require("fs");
 const axios = require("axios");
-const { defaultStore } = require("../../common/electron-store/store");
+const { defaultStore } = require("../../common/store");
 
 ipcMain.on("open-import-draft-dialog", (event) => {
   showImportDraftDialog(event);

@@ -1,9 +1,9 @@
 const { BrowserWindow, Menu, app, shell, dialog, ipcMain } = require("electron");
-const { openEmailSignInWindow } = require("../windows/email-signin-window");
+const { openEmailSignInWindow } = require("../windows/email-window");
 const { showLoginWindow, logout } = require("../windows/login-window");
-const { defaultStore } = require("../../common/electron-store/store");
-const { log } = require("../system/activity");
-let currentWindow = null;
+const { mainWindow } = require("../windows/main-window");
+const { defaultStore } = require("../../common/store");
+const { log } = require("../../common/activity");
 let zenMode = false;
 
 let template = [
@@ -14,7 +14,8 @@ let template = [
         label: "New Story",
         accelerator: "CmdOrCtrl+N",
         click() {
-          currentWindow && currentWindow.webContents.send("new_tab");
+          console.log(mainWindow);
+          mainWindow && mainWindow.webContents.send("new_tab");
           log("main-menu/new-story");
         },
       },
@@ -22,7 +23,7 @@ let template = [
         label: "Drafts",
         accelerator: "CmdOrCtrl+D",
         click() {
-          currentWindow && currentWindow.getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`);
+          mainWindow && mainWindow.getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`);
           log("main-menu/draft");
         },
       },
@@ -92,7 +93,7 @@ let template = [
         label: "Find in Page",
         accelerator: "CmdOrCtrl+F",
         click: () => {
-          currentWindow && currentWindow.webContents.send("on-find");
+          mainWindow && mainWindow.webContents.send("on-find");
         },
       },
     ],
@@ -104,28 +105,28 @@ let template = [
         label: "Next Story",
         accelerator: "Ctrl+Tab",
         click() {
-          currentWindow && currentWindow.webContents.send("next-tab");
+          mainWindow && mainWindow.webContents.send("next-tab");
         },
       },
       {
         label: "Previous Story",
         accelerator: "Ctrl+Shift+Tab",
         click() {
-          currentWindow && currentWindow.webContents.send("previous-tab");
+          mainWindow && mainWindow.webContents.send("previous-tab");
         },
       },
       {
         label: "Close Story",
         accelerator: "Cmd+W",
         click() {
-          currentWindow && currentWindow.webContents.send("close-tab");
+          mainWindow && mainWindow.webContents.send("close-tab");
         },
       },
       {
         label: "Reopen Last Closed Story",
         accelerator: "CmdOrCtrl+Shift+T",
         click() {
-          currentWindow && currentWindow.webContents.send("open-previously-closed-tab");
+          mainWindow && mainWindow.webContents.send("open-previously-closed-tab");
         },
       },
       {
@@ -200,14 +201,14 @@ let template = [
         label: "Enter Zen Mode",
         accelerator: "Alt+CmdOrCtrl+Z",
         click() {
-          currentWindow && currentWindow.webContents.send("enter-zen-mode");
+          mainWindow && mainWindow.webContents.send("enter-zen-mode");
         },
       },
       {
         label: "Exit Zen Mode",
         accelerator: "Esc",
         click() {
-          currentWindow && currentWindow.webContents.send("exit-zen-mode");
+          mainWindow && mainWindow.webContents.send("exit-zen-mode");
         },
       },
     ],
@@ -277,23 +278,6 @@ function addUpdateMenuItems(items, position) {
   ];
 
   items.splice.apply(items, [position, 0].concat(updateItems));
-}
-
-function findReopenMenuItem() {
-  const menu = Menu.getApplicationMenu();
-  if (!menu) return;
-
-  let reopenMenuItem;
-  menu.items.forEach((item) => {
-    if (item.submenu) {
-      item.submenu.items.forEach((item) => {
-        if (item.key === "reopenMenuItem") {
-          reopenMenuItem = item;
-        }
-      });
-    }
-  });
-  return reopenMenuItem;
 }
 
 if (process.platform === "darwin") {
@@ -371,15 +355,4 @@ app.on("ready", () => {
   ipcMain.on("zen-mode-off", () => {
     zenMode = false;
   });
-});
-
-app.on("browser-window-created", (event, win) => {
-  let reopenMenuItem = findReopenMenuItem();
-  if (reopenMenuItem) reopenMenuItem.enabled = false;
-  currentWindow = win;
-});
-
-app.on("window-all-closed", () => {
-  let reopenMenuItem = findReopenMenuItem();
-  if (reopenMenuItem) reopenMenuItem.enabled = true;
 });
