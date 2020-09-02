@@ -108,6 +108,37 @@ app.on("ready", () => {
   if (!debug) {
     autoUpdater.checkForUpdates();
   }
+
+  mainWindow.webContents.once("dom-ready", () => {
+    ipcMain.on("network-status", (event, data) => {
+      if (data === "offline") {
+        const options = {
+          type: "question",
+          buttons: ["Cancel", "Refresh", "Quit"],
+          defaultId: 2,
+          title: "Question",
+          message: "Please check your internet connection",
+          detail: "Your network status is offline",
+        };
+
+        dialog
+          .showMessageBox(null, options)
+          .then((response) => {
+            console.log("response", response);
+            if (response.response === 2) {
+              app.quit();
+            }
+            if (response.response === 1) {
+              mainWindow.getBrowserView().webContents.reload();
+            }
+          })
+          .catch((err) => {
+            console.log("err", err);
+          });
+      }
+    });
+  });
+  log("app/open");
 });
 
 app.on("activate", () => {
