@@ -15,7 +15,7 @@ const ElectronTabs = new TabGroup({
 
 ElectronTabs.addTab({
   title: "",
-  iconURL: "../assets/app-icon/png/512.png",
+  iconURL: "../assets/img/medium.svg",
   visible: true,
   active: true,
   viewType: "medium",
