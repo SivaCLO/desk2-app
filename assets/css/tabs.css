@@ -8,11 +8,11 @@
   -webkit-user-select: none;
   user-select: none;
   display: none;
-  padding: 0px;
+  padding: 0;
 }
 
 .etabs-padding {
-  padding-left: 70px;
+  padding-left: 78px;
 }
 
 .etabs-tabgroup.visible {
