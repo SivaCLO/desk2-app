@@ -80,9 +80,11 @@ function showMainWindow() {
       mainWindow = null;
     });
 
-    mainWindow.webContents.once("did-finish-load", () => {
+    mainWindow.webContents.on("did-finish-load", () => {
       resetTabPadding();
+    });
 
+    mainWindow.webContents.once("did-finish-load", () => {
       let tempTabs = defaultStore.get("tabs");
       if (tempTabs && tempTabs.length > 0) {
         mainWindow.webContents.send("restore_tabs", tempTabs);
