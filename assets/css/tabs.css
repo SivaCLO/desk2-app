@@ -8,13 +8,10 @@
   -webkit-user-select: none;
   user-select: none;
   display: none;
-}
-
-.etab-padding-none {
   padding: 0px;
 }
 
-.etab-padding {
+.etabs-padding {
   padding-left: 70px;
 }
 

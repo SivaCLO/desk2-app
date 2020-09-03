@@ -6,11 +6,6 @@ const { log } = require("../../common/activity");
 
 let mainWindow = null;
 
-var isWin = process.platform === "win32";
-var isMac = process.platform === "darwin";
-var isLinux = process.platform === "linux";
-let platform = isWin === true ? "isWin" : isMac === true ? "isMac" : isLinux === true ? "isLinux" : null;
-
 function getMainWindow() {
   return mainWindow;
 }
@@ -36,23 +31,28 @@ function showMainWindow() {
 
     mainWindow = new BrowserWindow(windowOptions);
     mainWindow.loadURL(path.join("file://", __dirname, "../../render-process/index.html"));
-    // mainWindow.on("resize", () => {
-    //   resizeWindow();
-    // });
+    mainWindow.on("resize", () => {
+      resizeWindow();
+    });
     mainWindow.on("maximize", () => {
       resizeWindow();
+      resetTabPadding();
     });
     mainWindow.on("minimize", () => {
       resizeWindow();
+      resetTabPadding();
     });
     mainWindow.on("enter-full-screen", () => {
       resizeWindow();
+      resetTabPadding();
     });
     mainWindow.on("leave-full-screen", () => {
       resizeWindow();
+      resetTabPadding();
     });
     mainWindow.on("unmaximize", () => {
       resizeWindow();
+      resetTabPadding();
     });
 
     function resizeWindow() {
@@ -63,9 +63,10 @@ function showMainWindow() {
           width: mainWindow.getContentBounds().width,
           height: mainWindow.getContentBounds().height - 80,
         });
-      let windowStatus = mainWindow.isFullScreen();
-      let data = { windowStatus, platform };
-      mainWindow.webContents.send("window-styling", data);
+    }
+
+    function resetTabPadding() {
+      mainWindow.webContents.send("tab-padding", process.platform === "darwin" && !mainWindow.isFullScreen());
     }
 
     mainWindow.on("close", () => {
@@ -80,6 +81,8 @@ function showMainWindow() {
     });
 
     mainWindow.webContents.once("did-finish-load", () => {
+      resetTabPadding();
+
       let tempTabs = defaultStore.get("tabs");
       if (tempTabs && tempTabs.length > 0) {
         mainWindow.webContents.send("restore_tabs", tempTabs);
