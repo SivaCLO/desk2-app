@@ -1,5 +1,6 @@
 const { autoUpdater } = require("electron-updater");
 const { dialog } = require("electron");
+const { log } = require("../../common/activity");
 
 function checkForUpdates() {
   autoUpdater.checkForUpdates().then();
@@ -31,7 +32,7 @@ autoUpdater.on("update-downloaded", (info) => {
 
 function showUpdateMessage(message) {
   dialog
-    .showMessageBox(mainWindow, {
+    .showMessageBox(null, {
       title: "Update  status",
       buttons: ["OK"],
       type: "warning",
