@@ -59,7 +59,7 @@ function showMainWindow() {
       mainWindow.getBrowserView() &&
         mainWindow.getBrowserView().setBounds({
           x: 0,
-          y: 80,
+          y: 82,
           width: mainWindow.getContentBounds().width,
           height: mainWindow.getContentBounds().height - 80,
         });
