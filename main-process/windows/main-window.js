@@ -93,7 +93,6 @@ function showMainWindow() {
           dialog
             .showMessageBox(null, options)
             .then((response) => {
-              console.log("response", response);
               if (response.response === 2) {
                 app.quit();
               }
@@ -102,7 +101,7 @@ function showMainWindow() {
               }
             })
             .catch((err) => {
-              console.log("err", err);
+              console.error(err);
             });
         }
       });

@@ -63,7 +63,7 @@ function getMediumUser(mediumToken) {
         resolve(response.data.data);
       })
       .catch((e) => {
-        console.log("Reading Medium User", e);
+        console.error("error in reading Medium User", e);
         showLoginWindow("Your Medium token is invalid. We couldn't find your account.");
       });
   });
@@ -87,7 +87,7 @@ function getMediumdeskUser(mediumToken, mediumUserId) {
         resolve(response.data);
       })
       .catch((e) => {
-        console.log("Reading Mediumdesk User", e);
+        console.error("error in reading Mediumdesk User", e);
         showLoginWindow(
           "Something went wrong. Please reach out to <a href='yourfriends@mediumdesk.com'>yourfriends@mediumdesk.com</a>"
         );
