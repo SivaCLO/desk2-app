@@ -45,7 +45,32 @@ class TabGroup extends EventEmitter {
       tab.activate();
     }
     this.emit("tab-added", tab, this);
+    this.tabResize()
     return tab;
+  }
+
+  tabResize(){
+    let windowWidth= Remote.getCurrentWindow().getBounds().width;
+    let numberOfTabs = this.tabs.length - 1;
+    // //103px closewindow+mediumview width + 38 add button width
+    if(numberOfTabs > 0){
+      let maxWidth = ((windowWidth - 141)/numberOfTabs)-5;
+      console.log('maxWidth ',maxWidth)
+      if(maxWidth < 120){
+       this.setTabWidth(maxWidth)
+      }else{
+        this.setTabWidth(120)
+      }
+    }
+  }
+
+  setTabWidth(width){
+    var all = document.getElementsByClassName('etabs-tab');
+    for (var i = 0; i < all.length; i++) {
+      if(i>0){
+        all[i].style.maxWidth = width+ "px";
+      }
+    }
   }
 
   getTab(id) {
@@ -403,6 +428,7 @@ class Tab extends EventEmitter {
 
     this.emit("close", this);
     ipcRenderer.send("log", "click/tab/close");
+    this.tabGroup.tabResize()
     if (activeTab.id === this.id) {
       TabGroupPrivate.activateRecentTab.bind(tabGroup)();
     }
