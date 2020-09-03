@@ -1,6 +1,7 @@
 /* Custom Properties */
 
 :root {
+  --color-0: hsl(0, 0%, 0%);
   --color-11: hsl(0, 0%, 11%);
   --color-13: hsl(0, 0%, 13%);
   --color-16: hsl(0, 0%, 16%);
@@ -11,6 +12,7 @@
   --color-77: hsl(0, 0%, 77%);
   --color-88: hsl(0, 0%, 88%);
   --color-96: hsl(0, 0%, 96%);
+  --color-100: hsl(0, 0%, 100%);
 
   --color-accent: hsl(164, 98%, 31%);
   --color-accent-light: hsl(164, 98%, 36%);
