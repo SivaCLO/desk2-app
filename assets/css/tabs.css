@@ -1,7 +1,6 @@
 .etabs-tabgroup {
   position: absolute;
   width: 100%;
-  padding-left: 70px;
   height: 35px;
   background-color: var(--color-border);
   cursor: default;
@@ -9,6 +8,14 @@
   -webkit-user-select: none;
   user-select: none;
   display: none;
+}
+
+.etab-padding-none {
+  padding: 0px;
+}
+
+.etab-padding {
+  padding-left: 70px;
 }
 
 .etabs-tabgroup.visible {
@@ -51,11 +58,7 @@
 }
 
 .etabs-tab.flash {
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 243, 170, 1) 0%,
-    rgba(255, 227, 37, 1) 100%
-  );
+  background: linear-gradient(to bottom, rgba(255, 243, 170, 1) 0%, rgba(255, 227, 37, 1) 100%);
 }
 
 .etabs-buttons {
