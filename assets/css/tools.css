@@ -1,9 +1,10 @@
 .toolbar {
   height: 45px;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-11);
   margin-top: 37px;
   width: 100%;
-  background-color: var(--color-bg);
+  background-color: var(--color-22);
+  color: var(--color-96);
   display: none;
 }
 
@@ -21,7 +22,6 @@
 }
 
 .tools-title {
-  color: var(--color-subtle);
   padding: 9px 8px;
   font-size: 12px;
   max-width: 300px;
@@ -31,7 +31,7 @@
 }
 
 .medium-action {
-  color: var(--color-accent);
+  color: var(--color-77);
   background: none;
   cursor: pointer;
   margin: 2px 4px;
@@ -41,8 +41,12 @@
   padding: 4px 8px;
 }
 
+.medium-action-link {
+  color: var(--color-66);
+}
+
 .medium-action-link:hover {
-  color: var(--color-subtle);
+  color: var(--color-88);
 }
 
 .medium-action-warning {
@@ -90,7 +94,7 @@
 }
 
 .zen-medium-action {
-  color: var(--color-border);
+  color: var(--color-88);
   background: none;
   cursor: pointer;
   margin: 2px 4px;
@@ -100,6 +104,6 @@
 }
 
 .zen-medium-action:hover {
-  color: var(--color-subtle);
+  color: var(--color-44);
   text-decoration: none;
 }

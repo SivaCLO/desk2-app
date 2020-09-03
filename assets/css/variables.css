@@ -1,15 +1,17 @@
-
 /* Custom Properties */
 
 :root {
-  --color:          hsl(0,0%,22%);
-  --color-subtle:   hsl(0,0%,44%);
-  --color-strong:   hsl(0,0%,11%);
-  --color-link:     hsl(0,0%,22%);
+  --color-11: hsl(0, 0%, 11%);
+  --color-16: hsl(0, 0%, 16%);
+  --color-22: hsl(0, 0%, 22%);
+  --color-33: hsl(0, 0%, 33%);
+  --color-44: hsl(0, 0%, 44%);
+  --color-66: hsl(0, 0%, 66%);
+  --color-77: hsl(0, 0%, 77%);
+  --color-88: hsl(0, 0%, 88%);
+  --color-96: hsl(0, 0%, 96%);
 
-  --color-border:   hsl(0,0%,88%);
-  --color-bg:       hsl(0,0%,96%);
-
-  --color-accent: #029E74;
-  --color-accent-light: #DCFDE8;
+  --color-accent: hsl(164, 98%, 31%);
+  --color-accent-light: hsl(164, 98%, 36%);
+  --color-accent-dark: hsl(164, 98%, 26%);
 }

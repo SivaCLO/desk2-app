@@ -2,7 +2,7 @@
   position: absolute;
   width: 100%;
   height: 37px;
-  background-color: var(--color-border);
+  background-color: var(--color-11);
   cursor: default;
   font-size: 12px;
   -webkit-user-select: none;
@@ -27,12 +27,11 @@
   position: relative;
   height: 37px;
   padding: 6px 8px 4px;
-  border-left: 1px solid var(--color-bg);
   border-bottom: none;
   font-size: 12px;
   cursor: default;
-  background-color: var(--color-border);
-  color: var(--color-subtle);
+  background-color: var(--color-11);
+  color: var(--color-44);
 }
 
 /* Dragula */
@@ -44,14 +43,18 @@
   border-left: none;
 }
 
+.etabs-tab:hover {
+  background-color: var(--color-16);
+}
+
 .etabs-tab.visible {
   display: inline-block;
   float: left;
 }
 
 .etabs-tab.active {
-  background-color: var(--color-bg);
-  color: var(--color-strong);
+  background-color: var(--color-22);
+  color: var(--color-96);
 }
 
 .etabs-tab.flash {
@@ -64,19 +67,21 @@
 
 .etabs-buttons button {
   float: left;
-  border: 1px solid var(--color-accent);
+  background: var(--color-accent);
+  border: none;
   font-size: 12px;
+  font-weight: bold;
   border-radius: 2px;
-  margin: 8px 7px;
+  margin: 7px 6px;
   width: 24px;
+  height: 24px;
   text-align: center;
   padding: 0;
-  color: var(--color-accent);
+  color: var(--color-88);
 }
 
 .etabs-buttons button:hover {
-  background-color: var(--color-accent);
-  color: white;
+  background: var(--color-accent-dark);
 }
 
 .etabs-tab-badge {
@@ -124,7 +129,7 @@
 
 .etabs-tab-buttons button {
   display: inline-block;
-  color: #333;
+  color: var(--color-33);
   background: none;
   border: none;
   width: 16px;
@@ -134,8 +139,15 @@
 }
 
 .etabs-tab-buttons button:hover {
-  color: #eee;
-  background-color: #aaa;
+  color: var(--color-88);
+}
+
+.etabs-tab.active .etabs-tab-buttons button {
+  color: var(--color-66);
+}
+
+.etabs-tab.active .etabs-tab-buttons button:hover {
+  color: var(--color-96);
 }
 
 .etabs-views {
