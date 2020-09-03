@@ -9,28 +9,31 @@ let loginWindow = null;
 
 function showLoginWindow(errorMessage) {
   log("login-window/show");
-  loginWindow = new BrowserWindow({
-    width: 600,
-    height: 400,
-    show: true,
-    frame: false,
-    resizable: false,
-    webPreferences: {
-      nodeIntegration: true,
-    },
-  });
-  loginWindow.loadURL(path.join("file://", __dirname, "../../render-process/login/login.html")).then(() => {
-    let mediumToken = defaultStore.get("medium-token");
-    if (mediumToken) {
-      loginWindow.webContents.send("login-token", mediumToken);
-    }
-    if (errorMessage) {
-      loginWindow.webContents.send("login-error", errorMessage);
-    }
-  });
-  loginWindow.on("closed", () => {
-    loginWindow = null;
-  });
+  if (!loginWindow) {
+    loginWindow = new BrowserWindow({
+      width: 600,
+      height: 300,
+      show: true,
+      frame: false,
+      resizable: false,
+      webPreferences: {
+        nodeIntegration: true,
+        spellcheck: false,
+      },
+    });
+    loginWindow.loadURL(path.join("file://", __dirname, "../../render-process/login/login.html")).then(() => {
+      let mediumToken = defaultStore.get("medium-token");
+      if (mediumToken) {
+        loginWindow.webContents.send("login-token", mediumToken);
+      }
+      if (errorMessage) {
+        loginWindow.webContents.send("login-error", errorMessage);
+      }
+    });
+    loginWindow.on("closed", () => {
+      loginWindow = null;
+    });
+  }
 }
 
 ipcMain.on("login", (e, mediumToken) => {
