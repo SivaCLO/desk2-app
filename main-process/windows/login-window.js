@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { defaultStore } = require("../../common/store");
 const { log } = require("../../common/activity");
@@ -10,9 +10,11 @@ let loginWindow = null;
 function showLoginWindow(errorMessage) {
   log("login-window/show");
   loginWindow = new BrowserWindow({
-    width: 727,
-    height: 509,
+    width: 600,
+    height: 400,
     show: true,
+    frame: false,
+    resizable: false,
     webPreferences: {
       nodeIntegration: true,
     },
@@ -34,10 +36,12 @@ function showLoginWindow(errorMessage) {
 ipcMain.on("login", (e, mediumToken) => {
   loginWindow.close();
   loginWindow = null;
-  defaultStore.set("medium-token", mediumToken);
-  login().then(() => {
-    showMainWindow();
-  });
+  if (mediumToken) {
+    defaultStore.set("medium-token", mediumToken);
+    login().then(() => {
+      showMainWindow();
+    });
+  }
 });
 
 async function login() {

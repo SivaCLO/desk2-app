@@ -12,7 +12,13 @@ async function handleAction(event) {
   if (action === "submit") {
     document.getElementById("error_msg").innerHTML = "";
     let token = document.getElementById("token").value;
-    ipcRenderer.send("login", token);
+    if (token) {
+      ipcRenderer.send("login", token);
+    } else {
+      document.getElementById("error_msg").innerHTML = "Please enter a valid medium token";
+    }
+  } else if (action === "cancel") {
+    ipcRenderer.send("login");
   }
 }
 

@@ -26,36 +26,36 @@
       crossorigin="anonymous"
     ></script>
   </head>
-  <body>
-    <div
-      class="container"
-      style="align-items: center; display: flex; justify-content: center;"
-    >
-      <div class="row jumbotron" style="display: block;">
-        <div class="col-xs-12" style="justify-content: center; display: flex;">
-          <h1 class="nav-title"><strong>Medium</strong>Desk</h1>
-        </div>
+  <body style="-webkit-app-region: drag;">
+    <div class="container">
+      <div class="row">
         <div class="col-xs-12" style="margin-top: 20px;">
+          <p class="lead" style="font-weight: 600;">
+            Sign in to use your Medium account.
+          </p>
           <p class="lead" style="color: hsl(0, 0%, 50%); font-weight: 500;">
-            You can get your integration token at the bottom of the settings
-            page of your Medium account
+            You can get an integration token at the bottom of your medium.com settings
+            page.
           </p>
         </div>
-        <div class="col-xs-12" style="justify-content: center; display: flex;">
+        <div class="col-xs-12" style="display: flex;">
           <div class="form-group">
-            <label for="token">Integration Token</label>
+            <label for="token">Integration Token:</label>
             <input
               type="text"
               id="token"
               class="form-control"
-              style="width: 25em;"
+              style="-webkit-app-region: none;"
             />
             <p style="color: red;" id="error_msg"></p>
           </div>
         </div>
-        <div class="col-xs-12" style="justify-content: center; display: flex;">
+        <div class="col-xs-12" style="display: flex;">
           <button class="btn btn-primary" data-action="submit">
             Submit
+          </button>
+          <button class="btn btn-primary" data-action="cancel">
+            Cancel
           </button>
         </div>
       </div>
