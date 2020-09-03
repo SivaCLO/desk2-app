@@ -6,6 +6,11 @@ const { log } = require("../../common/activity");
 
 let mainWindow = null;
 
+var isWin = process.platform === "win32";
+var isMac = process.platform === "darwin";
+var isLinux = process.platform === "linux";
+let platform = isWin === true ? "isWin" : isMac === true ? "isMac" : isLinux === true ? "isLinux" : null;
+
 function getMainWindow() {
   return mainWindow;
 }
@@ -31,9 +36,9 @@ function showMainWindow() {
 
     mainWindow = new BrowserWindow(windowOptions);
     mainWindow.loadURL(path.join("file://", __dirname, "../../render-process/index.html"));
-    mainWindow.on("resize", () => {
-      resizeWindow();
-    });
+    // mainWindow.on("resize", () => {
+    //   resizeWindow();
+    // });
     mainWindow.on("maximize", () => {
       resizeWindow();
     });
@@ -58,6 +63,9 @@ function showMainWindow() {
           width: mainWindow.getContentBounds().width,
           height: mainWindow.getContentBounds().height - 80,
         });
+      let windowStatus = mainWindow.isFullScreen();
+      let data = { windowStatus, platform };
+      mainWindow.webContents.send("window-styling", data);
     }
 
     mainWindow.on("close", () => {
