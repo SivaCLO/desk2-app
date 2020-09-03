@@ -54,8 +54,7 @@ class TabGroup extends EventEmitter {
     let numberOfTabs = this.tabs.length - 1;
     // //103px closewindow+mediumview width + 38 add button width
     if(numberOfTabs > 0){
-      let maxWidth = ((windowWidth - 141)/numberOfTabs)-5;
-      console.log('maxWidth ',maxWidth)
+      let maxWidth = ((windowWidth - 150)/numberOfTabs)-5;
       if(maxWidth < 120){
        this.setTabWidth(maxWidth)
       }else{

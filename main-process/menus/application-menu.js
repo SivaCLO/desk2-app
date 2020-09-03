@@ -14,7 +14,6 @@ let template = [
         label: "New Story",
         accelerator: "CmdOrCtrl+N",
         click() {
-          console.log(getMainWindow());
           getMainWindow() && getMainWindow().webContents.send("new_tab");
           log("main-menu/new-story");
         },
