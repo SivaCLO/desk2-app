@@ -97,6 +97,12 @@ ipcRenderer.on("on-find", (e, args) => {
   findInPage.openFindWindow();
 });
 
+ipcRenderer.on("window-styling", (event, data) => {
+  if (data.windowStatus || data.platfrom === "isWin")
+    document.getElementById("tabs").classList.replace("etab-padding", "etab-padding-none");
+  else document.getElementById("tabs").classList.replace("etab-padding-none", "etab-padding");
+});
+
 function enterZenMode() {
   if (ElectronTabs.getActiveTab().viewType !== "medium" && !zenMode) {
     Remote.getCurrentWindow().setFullScreen(true);
