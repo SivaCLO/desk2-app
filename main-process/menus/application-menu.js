@@ -221,7 +221,7 @@ let template = [
         role: "minimize",
       },
       {
-        label: "Shortcuts list",
+        label: "Keyboard Shortcuts",
         accelerator: "CmdOrCtrl+/",
         click:() => {
           openShortcutWindow();
