@@ -108,6 +108,15 @@
 .etabs-tab-icon img {
   max-width: 25px;
   max-height: 25px;
+  opacity: 0.4;
+}
+
+.etabs-tab:hover .etabs-tab-icon img {
+  opacity: 1;
+}
+
+.etabs-tab.active .etabs-tab-icon img {
+  opacity: 1;
 }
 
 .etabs-tab-title {
