@@ -27,7 +27,6 @@
   position: relative;
   height: 37px;
   padding: 6px 8px 4px;
-  border-bottom: none;
   font-size: 12px;
   cursor: default;
   background-color: var(--color-11);
@@ -148,7 +147,7 @@
 
 .etabs-tab-buttons button {
   display: inline-block;
-  color: var(--color-33);
+  color: var(--color-22);
   background: none;
   border: none;
   width: 16px;
@@ -157,7 +156,11 @@
   border-radius: 2px;
 }
 
-.etabs-tab-buttons button:hover {
+.etabs-tab:hover .etabs-tab-buttons button {
+  color: var(--color-33);
+}
+
+.etabs-tab:hover .etabs-tab-buttons button:hover {
   color: var(--color-88);
 }
 
@@ -166,7 +169,7 @@
 }
 
 .etabs-tab.active .etabs-tab-buttons button:hover {
-  color: var(--color-96);
+  color: var(--color-100);
 }
 
 .etabs-views {
@@ -177,4 +180,12 @@
 
 .etab-view {
   position: relative;
+}
+
+.network-status {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 7px 10px;
+  color: var(--color-accent-dark);
 }

@@ -13,7 +13,6 @@ function showLoginWindow(errorMessage) {
     loginWindow = new BrowserWindow({
       width: 600,
       height: 300,
-      show: true,
       frame: false,
       resizable: false,
       webPreferences: {
@@ -36,15 +35,16 @@ function showLoginWindow(errorMessage) {
   }
 }
 
-ipcMain.on("login", (e, mediumToken) => {
+ipcMain.on("login-submit", (e, mediumToken) => {
+  defaultStore.set("medium-token", mediumToken);
+  login().then(() => {
+    showMainWindow();
+  });
+});
+
+ipcMain.on("login-close", (e, mediumToken) => {
   loginWindow.close();
   loginWindow = null;
-  if (mediumToken) {
-    defaultStore.set("medium-token", mediumToken);
-    login().then(() => {
-      showMainWindow();
-    });
-  }
 });
 
 async function login() {

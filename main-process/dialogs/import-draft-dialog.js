@@ -4,10 +4,6 @@ const axios = require("axios");
 const { defaultStore } = require("../../common/store");
 
 ipcMain.on("open-import-draft-dialog", (event) => {
-  showImportDraftDialog(event);
-});
-
-function showImportDraftDialog(event) {
   dialog
     .showOpenDialog({
       properties: ["openFile", "openDirectory"],
@@ -48,6 +44,4 @@ function showImportDraftDialog(event) {
     .catch((e) => {
       console.error("error in fetching file ", e);
     });
-}
-
-module.exports = { showImportDraftDialog };
+});
