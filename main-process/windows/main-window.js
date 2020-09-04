@@ -24,6 +24,7 @@ function showMainWindow() {
       minHeight: 500,
       title: app.name,
       titleBarStyle: "hiddenInset",
+      autoHideMenuBar: true,
       webPreferences: {
         nodeIntegration: true,
       },
