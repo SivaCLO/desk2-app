@@ -25,12 +25,12 @@ class DraftView {
       });
     }
 
-    this.browserView.webContents.on("did-finish-load", () => {
-      mediumLogoAndAvatarHider(this.browserView);
+    this.browserView.webContents.on("did-start-loading", () => {
+      hideMediumLogoAndAvatar(this.browserView);
     });
 
-    this.browserView.webContents.on("did-start-loading", () => {
-      mediumLogoAndAvatarHider(this.browserView);
+    this.browserView.webContents.on("did-finish-load", () => {
+      hideMediumLogoAndAvatar(this.browserView);
     });
 
     this.browserView.webContents.on("will-navigate", (e, url) => {
@@ -72,13 +72,14 @@ class DraftView {
   }
 }
 
-function mediumLogoAndAvatarHider(browserView) {
-  console.log("did-finish-load");
-  browserView.webContents.executeJavaScript(
-    'if(document.getElementsByClassName("js-metabarLogoLeft").length > 0) document.getElementsByClassName("js-metabarLogoLeft").item(0).style.display="none";' +
-      'if(document.getElementsByClassName("buttonSet buttonSet--wide").length > 0) document.getElementsByClassName("buttonSet buttonSet--wide").item(0).style.display="none";' +
-      'if(document.getElementsByClassName("js-doneButton").length > 0) document.getElementsByClassName("js-doneButton").item(0).style.display="none";'
-  );
+function hideMediumLogoAndAvatar(browserView) {
+  browserView.webContents
+    .executeJavaScript(
+      'if(document.getElementsByClassName("js-metabarLogoLeft").length > 0) document.getElementsByClassName("js-metabarLogoLeft").item(0).style.display="none";' +
+        'if(document.getElementsByClassName("buttonSet buttonSet--wide").length > 0) document.getElementsByClassName("buttonSet buttonSet--wide").item(0).style.display="none";' +
+        'if(document.getElementsByClassName("js-doneButton").length > 0) document.getElementsByClassName("js-doneButton").item(0).style.display="none";'
+    )
+    .then();
 }
 
 module.exports = DraftView;
