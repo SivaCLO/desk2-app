@@ -1,29 +1,22 @@
 const { ipcRenderer } = require("electron");
 
-document.body.addEventListener("click", (event) => {
-  if (event.target.dataset.action) {
-    handleAction(event).then();
+document.getElementById("submit").addEventListener("click", function () {
+  document.getElementById("error-msg").innerHTML = "";
+  let token = document.getElementById("token").value;
+  if (token) {
+    ipcRenderer.send("login-submit", token);
+    ipcRenderer.send("login-close");
+  } else {
+    document.getElementById("error-msg").innerHTML = "Please enter a valid medium token";
   }
 });
 
-async function handleAction(event) {
-  // Update BrowserView to point to the right action
-  let action = event.target.dataset.action;
-  if (action === "submit") {
-    document.getElementById("error_msg").innerHTML = "";
-    let token = document.getElementById("token").value;
-    if (token) {
-      ipcRenderer.send("login", token);
-    } else {
-      document.getElementById("error_msg").innerHTML = "Please enter a valid medium token";
-    }
-  } else if (action === "cancel") {
-    ipcRenderer.send("login");
-  }
-}
+document.getElementById("cancel").addEventListener("click", function () {
+  ipcRenderer.send("login-close");
+});
 
 ipcRenderer.on("login-error", (event, error_message) => {
-  document.getElementById("error_msg").innerHTML = error_message;
+  document.getElementById("error-msg").innerHTML = error_message;
 });
 
 ipcRenderer.on("login-token", (event, token) => {

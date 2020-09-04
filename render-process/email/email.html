@@ -34,14 +34,14 @@
         </div>
         <div class="col-10">
           <p class="lead font-weight-bold">
-            Sign in to use your Medium account
+            Sign in using Medium magic link
           </p>
           <p>
-            You can get an integration token at the bottom of your medium.com settings page.
+            You can get a magic link from medium.com sign in page.
           </p>
           <div class="form-group">
-            <label for="token">Integration Token:</label>
-            <input type="text" id="token" class="form-control" style="-webkit-app-region: none;" />
+            <label for="magic-link">Magic Link:</label>
+            <input type="text" id="magic-link" class="form-control" style="-webkit-app-region: none;" />
           </div>
           <button class="btn btn-success" id="submit">
             Submit
@@ -53,8 +53,9 @@
         </div>
       </div>
     </div>
+
     <script>
-      require("./login");
+      require("./email");
     </script>
   </body>
 </html>

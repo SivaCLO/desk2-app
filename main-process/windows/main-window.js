@@ -119,10 +119,6 @@ function showMainWindow() {
         }
       });
     });
-
-    ipcMain.on("load-url-medium-view", (e, url) => {
-      mainWindow.getBrowserView().webContents.loadURL(url).then();
-    });
   }
 }
 

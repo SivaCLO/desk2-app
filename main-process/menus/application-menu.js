@@ -1,6 +1,6 @@
 const { BrowserWindow, Menu, app, shell, ipcMain } = require("electron");
-const { openEmailSignInWindow } = require("../windows/email-window");
-const { showLoginWindow, logout } = require("../windows/login-window");
+const { showEmailWindow } = require("../windows/email-window");
+const { logout } = require("../windows/login-window");
 const { getMainWindow } = require("../windows/main-window");
 const { defaultStore } = require("../../common/store");
 const { log } = require("../../common/activity");
@@ -31,7 +31,7 @@ let template = [
       {
         label: "Sign In via Email",
         click() {
-          openEmailSignInWindow();
+          showEmailWindow();
           log("main-menu/email-signin");
         },
       },

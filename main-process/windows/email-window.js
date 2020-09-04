@@ -1,22 +1,39 @@
 const { BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
-const url = require("url");
+const { log } = require("../../common/activity");
+const { getMainWindow } = require("./main-window");
 
-let emailSignInWindow = null;
+let emailWindow = null;
 
-function openEmailSignInWindow() {
-  emailSignInWindow = new BrowserWindow({
-    width: 400,
-    height: 300,
-    webPreferences: {
-      nodeIntegration: true,
-    },
-  });
-  emailSignInWindow.loadURL(path.join("file://", __dirname, "../../render-process/email-signin/email-signin.html"));
+function showEmailWindow() {
+  log("email-window/show");
+  if (!emailWindow) {
+    emailWindow = new BrowserWindow({
+      width: 600,
+      height: 300,
+      frame: false,
+      resizable: false,
+      webPreferences: {
+        nodeIntegration: true,
+        spellcheck: false,
+      },
+    });
+    emailWindow.loadURL(path.join("file://", __dirname, "../../render-process/email/email.html")).then();
+    emailWindow.on("closed", () => {
+      emailWindow = null;
+    });
+  }
 }
 
-ipcMain.on("close-email-signin-window", (e, url) => {
-  emailSignInWindow.close();
+ipcMain.on("email-submit", (e, url) => {
+  if (getMainWindow()) {
+    getMainWindow().getBrowserView().webContents.loadURL(url).then();
+  }
 });
 
-module.exports = { openEmailSignInWindow };
+ipcMain.on("email-close", (e, url) => {
+  log("email-window/close");
+  emailWindow.close();
+});
+
+module.exports = { showEmailWindow };
