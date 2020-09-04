@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const { defaultStore } = require("../../common/store");
 const path = require("path");
 const Config = require("../../config");
@@ -92,33 +92,6 @@ function showMainWindow() {
         defaultStore.set("tabs", []);
         tempTabs = null;
       }
-
-      ipcMain.on("network-status", (event, data) => {
-        if (data === "offline") {
-          const options = {
-            type: "question",
-            buttons: ["Cancel", "Refresh", "Quit"],
-            defaultId: 2,
-            title: "Question",
-            message: "Please check your internet connection",
-            detail: "Your network status is offline",
-          };
-
-          dialog
-            .showMessageBox(null, options)
-            .then((response) => {
-              if (response.response === 2) {
-                app.quit();
-              }
-              if (response.response === 1) {
-                mainWindow.getBrowserView().webContents.reload();
-              }
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-        }
-      });
     });
   }
 }
