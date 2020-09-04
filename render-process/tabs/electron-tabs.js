@@ -30,6 +30,10 @@ class TabGroup extends EventEmitter {
     if (typeof this.options.ready === "function") {
       this.options.ready(this);
     }
+
+    ipcRenderer.on('resize-tabs',()=>{
+      this.tabResize();
+    })
   }
 
   addTab(args = this.options.newTab) {
