@@ -1,0 +1,20 @@
+.key{
+    border: 1px solid rgba(0,0,0,.15);
+    padding: 3px 6px;
+    min-width: 15px;
+    border-radius: 3px;
+    background: #fff;
+    display: inline-block;
+}
+
+table {border: none;}
+
+tr td{
+    border: 0;
+    text-align: left;
+}
+
+.description{
+    padding: 2px 6px;
+    text-align: left;
+}

@@ -54,7 +54,8 @@ ipcRenderer.on("new_tab", (event, url) => {
 });
 
 ipcRenderer.on("restore_tabs", (event, tabs) => {
-  tabs.map((tab) => {
+  let tempTabs = tabs.sort((a, b) => parseInt(a.id) - parseInt(b.id))
+  tempTabs.map((tab) => {
     newTab(tab.url);
   });
 });

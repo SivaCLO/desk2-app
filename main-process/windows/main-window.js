@@ -64,6 +64,7 @@ function showMainWindow() {
           width: mainWindow.getContentBounds().width,
           height: mainWindow.getContentBounds().height - 80,
         });
+      mainWindow.webContents.send('resize-tabs')  
     }
 
     function resetTabPadding() {

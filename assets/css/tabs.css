@@ -31,11 +31,19 @@
   cursor: default;
   background-color: var(--color-11);
   color: var(--color-44);
+  max-width: 120px;
 }
 
 /* Dragula */
 .etabs-tab.gu-mirror {
   padding-bottom: 0;
+}
+
+.etabs-tab:first-child {
+  border-left: none;
+}
+.etabs-tab.visible:first-child{
+  display: inline-block;
 }
 
 .etabs-tab:hover {
@@ -44,8 +52,9 @@
 }
 
 .etabs-tab.visible {
-  display: inline-block;
+  display: flex;
   float: left;
+  align-items: center;
 }
 
 .etabs-tab.active {
@@ -117,6 +126,10 @@
 .etabs-tab-title {
   display: inline-block;
   margin-left: 10px;
+  max-width: 80px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .etabs-tab-title.hidden {
