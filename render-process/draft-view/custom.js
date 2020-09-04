@@ -1,1 +1,0 @@
-console.log('Executing custom JS on draft-view')

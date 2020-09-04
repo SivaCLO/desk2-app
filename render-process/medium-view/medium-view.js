@@ -9,7 +9,6 @@ class MediumView {
     this.browserView = new Remote.BrowserView({
       webPreferences: {
         allowRunningInsecureContent: true,
-        preload: path.join(__dirname, "./custom.js"),
       },
     });
     this.browserView.webContents.loadURL("https://medium.com/me/stories/drafts");

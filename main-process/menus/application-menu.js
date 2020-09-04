@@ -29,21 +29,14 @@ let template = [
       },
       { type: "separator" },
       {
-        label: "Log In via Email",
+        label: "Sign In via Email",
         click() {
           openEmailSignInWindow();
           log("main-menu/email-signin");
         },
       },
       {
-        label: "Change Medium Token",
-        click() {
-          log("main-menu/change-medium-token");
-          showLoginWindow();
-        },
-      },
-      {
-        label: "Log Out",
+        label: "Sign Out",
         click() {
           logout();
         },
@@ -139,7 +132,11 @@ let template = [
           if (focusedWindow) {
             // on reload, start fresh and close any old
             // open secondary windows
-            focusedWindow.getBrowserView().webContents.reload();
+            if (focusedWindow.getBrowserView()) {
+              focusedWindow.getBrowserView().webContents.reload();
+            } else {
+              focusedWindow.webContents.reload();
+            }
           }
         },
       },

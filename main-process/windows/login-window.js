@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { defaultStore } = require("../../common/store");
 const { log } = require("../../common/activity");
@@ -9,35 +9,42 @@ let loginWindow = null;
 
 function showLoginWindow(errorMessage) {
   log("login-window/show");
-  loginWindow = new BrowserWindow({
-    width: 727,
-    height: 509,
-    show: true,
-    webPreferences: {
-      nodeIntegration: true,
-    },
-  });
-  loginWindow.loadURL(path.join("file://", __dirname, "../../render-process/login/login.html")).then(() => {
-    let mediumToken = defaultStore.get("medium-token");
-    if (mediumToken) {
-      loginWindow.webContents.send("login-token", mediumToken);
-    }
-    if (errorMessage) {
-      loginWindow.webContents.send("login-error", errorMessage);
-    }
-  });
-  loginWindow.on("closed", () => {
-    loginWindow = null;
-  });
+  if (!loginWindow) {
+    loginWindow = new BrowserWindow({
+      width: 600,
+      height: 300,
+      show: true,
+      frame: false,
+      resizable: false,
+      webPreferences: {
+        nodeIntegration: true,
+        spellcheck: false,
+      },
+    });
+    loginWindow.loadURL(path.join("file://", __dirname, "../../render-process/login/login.html")).then(() => {
+      let mediumToken = defaultStore.get("medium-token");
+      if (mediumToken) {
+        loginWindow.webContents.send("login-token", mediumToken);
+      }
+      if (errorMessage) {
+        loginWindow.webContents.send("login-error", errorMessage);
+      }
+    });
+    loginWindow.on("closed", () => {
+      loginWindow = null;
+    });
+  }
 }
 
 ipcMain.on("login", (e, mediumToken) => {
   loginWindow.close();
   loginWindow = null;
-  defaultStore.set("medium-token", mediumToken);
-  login().then(() => {
-    showMainWindow();
-  });
+  if (mediumToken) {
+    defaultStore.set("medium-token", mediumToken);
+    login().then(() => {
+      showMainWindow();
+    });
+  }
 });
 
 async function login() {
@@ -63,7 +70,7 @@ function getMediumUser(mediumToken) {
         resolve(response.data.data);
       })
       .catch((e) => {
-        console.log("Reading Medium User", e);
+        console.error("error in reading Medium User", e);
         showLoginWindow("Your Medium token is invalid. We couldn't find your account.");
       });
   });
@@ -87,7 +94,7 @@ function getMediumdeskUser(mediumToken, mediumUserId) {
         resolve(response.data);
       })
       .catch((e) => {
-        console.log("Reading Mediumdesk User", e);
+        console.error("error in reading Mediumdesk User", e);
         showLoginWindow(
           "Something went wrong. Please reach out to <a href='yourfriends@mediumdesk.com'>yourfriends@mediumdesk.com</a>"
         );

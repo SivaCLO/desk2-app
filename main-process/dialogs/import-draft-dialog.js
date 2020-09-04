@@ -41,12 +41,12 @@ function showImportDraftDialog(event) {
             event.sender.send("new_tab", postResponse.data.data.url);
           })
           .catch(function (error) {
-            console.log(error);
+            console.error(error);
           });
       });
     })
     .catch((e) => {
-      console.log("error in fetching file ", e);
+      console.error("error in fetching file ", e);
     });
 }
 

@@ -13,7 +13,7 @@ function log(activityCode, activityData) {
     )
     .then((res) => {})
     .catch((err) => {
-      console.log("log activity -> err", err);
+      console.error("error in log activity", err);
     });
 }
 

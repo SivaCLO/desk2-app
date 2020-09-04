@@ -15,7 +15,7 @@ const ElectronTabs = new TabGroup({
 
 ElectronTabs.addTab({
   title: "",
-  iconURL: "../assets/app-icon/png/512.png",
+  iconURL: "../assets/img/medium-transparent.svg",
   visible: true,
   active: true,
   viewType: "medium",
@@ -96,6 +96,11 @@ ipcRenderer.on("open-previously-closed-tab", (e, args) => {
 ipcRenderer.on("on-find", (e, args) => {
   let findInPage = new FindInPage(Remote.getCurrentWindow().getBrowserView().webContents);
   findInPage.openFindWindow();
+});
+
+ipcRenderer.on("tab-padding", (event, on) => {
+  if (on) document.getElementById("tabs").classList.add("etabs-padding");
+  else document.getElementById("tabs").classList.remove("etabs-padding");
 });
 
 function enterZenMode() {

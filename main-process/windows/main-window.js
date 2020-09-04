@@ -23,7 +23,7 @@ function showMainWindow() {
       minWidth: 850,
       minHeight: 500,
       title: app.name,
-      titleBarStyle: "hidden",
+      titleBarStyle: "hiddenInset",
       webPreferences: {
         nodeIntegration: true,
       },
@@ -36,29 +36,38 @@ function showMainWindow() {
     });
     mainWindow.on("maximize", () => {
       resizeWindow();
+      resetTabPadding();
     });
     mainWindow.on("minimize", () => {
       resizeWindow();
+      resetTabPadding();
     });
     mainWindow.on("enter-full-screen", () => {
       resizeWindow();
+      resetTabPadding();
     });
     mainWindow.on("leave-full-screen", () => {
       resizeWindow();
+      resetTabPadding();
     });
     mainWindow.on("unmaximize", () => {
       resizeWindow();
+      resetTabPadding();
     });
 
     function resizeWindow() {
       mainWindow.getBrowserView() &&
         mainWindow.getBrowserView().setBounds({
           x: 0,
-          y: 80,
+          y: 82,
           width: mainWindow.getContentBounds().width,
           height: mainWindow.getContentBounds().height - 80,
         });
       mainWindow.webContents.send('resize-tabs')  
+    }
+
+    function resetTabPadding() {
+      mainWindow.webContents.send("tab-padding", process.platform === "darwin" && !mainWindow.isFullScreen());
     }
 
     mainWindow.on("close", () => {
@@ -70,6 +79,10 @@ function showMainWindow() {
 
     mainWindow.on("closed", () => {
       mainWindow = null;
+    });
+
+    mainWindow.webContents.on("did-finish-load", () => {
+      resetTabPadding();
     });
 
     mainWindow.webContents.once("did-finish-load", () => {
@@ -102,7 +115,7 @@ function showMainWindow() {
               }
             })
             .catch((err) => {
-              console.log("err", err);
+              console.error(err);
             });
         }
       });

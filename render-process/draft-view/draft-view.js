@@ -11,7 +11,6 @@ class DraftView {
     this.browserView = new Remote.BrowserView({
       webPreferences: {
         allowRunningInsecureContent: true,
-        preload: path.join(__dirname, "./custom.js"),
         nodeIntegration: true,
         spellcheck: false,
       },

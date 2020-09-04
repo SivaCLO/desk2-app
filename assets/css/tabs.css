@@ -1,14 +1,18 @@
 .etabs-tabgroup {
   position: absolute;
   width: 100%;
-  padding-left: 70px;
-  height: 35px;
-  background-color: var(--color-border);
+  height: 37px;
+  background-color: var(--color-11);
   cursor: default;
   font-size: 12px;
   -webkit-user-select: none;
   user-select: none;
   display: none;
+  padding: 0;
+}
+
+.etabs-padding {
+  padding-left: 78px;
 }
 
 .etabs-tabgroup.visible {
@@ -21,14 +25,13 @@
 .etabs-tab {
   display: none;
   position: relative;
-  height: 35px;
+  height: 37px;
   padding: 6px 8px 4px;
-  border-left: 1px solid var(--color-bg);
   border-bottom: none;
   font-size: 12px;
   cursor: default;
-  background-color: var(--color-border);
-  color: var(--color-subtle);
+  background-color: var(--color-11);
+  color: var(--color-44);
   max-width: 120px;
 }
 
@@ -44,6 +47,11 @@
   display: inline-block;
 }
 
+.etabs-tab:hover {
+  background-color: var(--color-13);
+  color: var(--color-88);
+}
+
 .etabs-tab.visible {
   display: flex;
   float: left;
@@ -51,16 +59,12 @@
 }
 
 .etabs-tab.active {
-  background-color: var(--color-bg);
-  color: var(--color-strong);
+  background-color: var(--color-16);
+  color: var(--color-96);
 }
 
 .etabs-tab.flash {
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 243, 170, 1) 0%,
-    rgba(255, 227, 37, 1) 100%
-  );
+  background: linear-gradient(to bottom, rgba(255, 243, 170, 1) 0%, rgba(255, 227, 37, 1) 100%);
 }
 
 .etabs-buttons {
@@ -69,19 +73,21 @@
 
 .etabs-buttons button {
   float: left;
-  border: 1px solid var(--color-accent);
+  background: var(--color-accent);
+  border: none;
   font-size: 12px;
+  font-weight: bold;
   border-radius: 2px;
-  margin: 8px 7px;
+  margin: 7px 6px;
   width: 24px;
+  height: 24px;
   text-align: center;
   padding: 0;
-  color: var(--color-accent);
+  color: var(--color-88);
 }
 
 .etabs-buttons button:hover {
-  background-color: var(--color-accent);
-  color: white;
+  background: var(--color-accent-dark);
 }
 
 .etabs-tab-badge {
@@ -107,6 +113,15 @@
 .etabs-tab-icon img {
   max-width: 25px;
   max-height: 25px;
+  opacity: 0.4;
+}
+
+.etabs-tab:hover .etabs-tab-icon img {
+  opacity: 1;
+}
+
+.etabs-tab.active .etabs-tab-icon img {
+  opacity: 1;
 }
 
 .etabs-tab-title {
@@ -133,7 +148,7 @@
 
 .etabs-tab-buttons button {
   display: inline-block;
-  color: #333;
+  color: var(--color-33);
   background: none;
   border: none;
   width: 16px;
@@ -143,8 +158,15 @@
 }
 
 .etabs-tab-buttons button:hover {
-  color: #eee;
-  background-color: #aaa;
+  color: var(--color-88);
+}
+
+.etabs-tab.active .etabs-tab-buttons button {
+  color: var(--color-66);
+}
+
+.etabs-tab.active .etabs-tab-buttons button:hover {
+  color: var(--color-96);
 }
 
 .etabs-views {

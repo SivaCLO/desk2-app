@@ -10,7 +10,7 @@ html {
   font-size: 14px;
   line-height: 1.5;
   overflow: hidden; /* Prevents rubber-band scrolling of the whole "page" */
-  color: var(--color);
+  color: var(--color-22);
   background-color: #fff; /* To cover OSes with no default background color */
 }
 
@@ -21,7 +21,7 @@ body {
 }
 
 a {
-  color: var(--color-link);
+  color: var(--color-22);
 }
 
 h1,
@@ -84,7 +84,7 @@ pre, kbd {
   margin: 0;
   border-radius: 4px;
   border: 1px solid;
-  border-color: var(--color-border);
+  border-color: var(--color-88);
   background-color: white;
 }
 
@@ -93,7 +93,7 @@ pre code {
 }
 
 pre > .hljs {
-  color: var(--color-subtle);
+  color: var(--color-44);
   background-color: white;
 }
 

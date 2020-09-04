@@ -366,7 +366,7 @@ class Tab extends EventEmitter {
     Remote.getCurrentWindow().setBrowserView(this.view.browserView);
     this.view.browserView.setBounds({
       x: 0,
-      y: 80,
+      y: 82,
       width: Remote.getCurrentWindow().getContentBounds().width,
       height: Remote.getCurrentWindow().getContentBounds().height - 80,
     });
