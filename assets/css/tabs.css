@@ -31,7 +31,6 @@
   cursor: default;
   background-color: var(--color-11);
   color: var(--color-44);
-  max-width: 120px;
 }
 
 /* Dragula */
@@ -42,7 +41,8 @@
 .etabs-tab:first-child {
   border-left: none;
 }
-.etabs-tab.visible:first-child{
+
+.etabs-tab.visible:first-child {
   display: inline-block;
 }
 
@@ -126,7 +126,6 @@
 .etabs-tab-title {
   display: inline-block;
   margin-left: 10px;
-  max-width: 80px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

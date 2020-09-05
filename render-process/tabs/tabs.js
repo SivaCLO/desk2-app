@@ -113,6 +113,10 @@ ipcRenderer.on("tab-padding", (event, on) => {
   else document.getElementById("tabs").classList.remove("etabs-padding");
 });
 
+ipcRenderer.on("resize-tabs", () => {
+  ElectronTabs.resizeTabs();
+});
+
 function enterZenMode() {
   if (ElectronTabs.getActiveTab().viewType !== "medium" && !zenMode) {
     Remote.getCurrentWindow().setFullScreen(true);
