@@ -2,7 +2,7 @@ const { BrowserWindow, Menu, app, shell, ipcMain } = require("electron");
 const { showEmailWindow } = require("../windows/email-window");
 const { logout } = require("../windows/login-window");
 const { getMainWindow } = require("../windows/main-window");
-const { openShortcutWindow } = require("../windows/shortcut-window")
+const { openShortcutWindow } = require("../windows/shortcut-window");
 const { defaultStore } = require("../../common/store");
 const { log } = require("../../common/activity");
 let zenMode = false;
@@ -19,15 +19,14 @@ let template = [
           log("main-menu/new-story");
         },
       },
-      // {
-      //   label: "Drafts",
-      //   accelerator: "CmdOrCtrl+D",
-      //   click() {
-      //     getMainWindow() &&
-      //       getMainWindow().getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`);
-      //     log("main-menu/draft");
-      //   },
-      // },
+      {
+        label: "Drafts",
+        accelerator: "CmdOrCtrl+D",
+        click() {
+          getMainWindow() && getMainWindow().webContents.send("load-drafts");
+          log("main-menu/draft");
+        },
+      },
       { type: "separator" },
       {
         label: "Sign In via Email",
@@ -223,7 +222,7 @@ let template = [
       {
         label: "Keyboard Shortcuts",
         accelerator: "CmdOrCtrl+/",
-        click:() => {
+        click: () => {
           openShortcutWindow();
           log("main-menu/shortcut-window");
         },

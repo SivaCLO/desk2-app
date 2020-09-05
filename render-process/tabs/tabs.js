@@ -48,13 +48,23 @@ checkAndActivateTab = function (url) {
   }
 };
 
+loadDrafts = function () {
+  ElectronTabs.getTab(0).activate();
+  ElectronTabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/drafts").then();
+};
+
+ipcRenderer.on("load-drafts", (event, url) => {
+  loadDrafts();
+  exitZenMode();
+});
+
 ipcRenderer.on("new_tab", (event, url) => {
   newTab(url);
   exitZenMode();
 });
 
 ipcRenderer.on("restore_tabs", (event, tabs) => {
-  let tempTabs = tabs.sort((a, b) => parseInt(a.id) - parseInt(b.id))
+  let tempTabs = tabs.sort((a, b) => parseInt(a.id) - parseInt(b.id));
   tempTabs.map((tab) => {
     newTab(tab.url);
   });
@@ -127,4 +137,4 @@ function exitZenMode() {
   }
 }
 
-module.exports = { ElectronTabs, newTab, checkAndActivateTab, enterZenMode, exitZenMode };
+module.exports = { ElectronTabs, loadDrafts, newTab, checkAndActivateTab, enterZenMode, exitZenMode };
