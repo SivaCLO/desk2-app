@@ -48,13 +48,24 @@ checkAndActivateTab = function (url) {
   }
 };
 
+loadDrafts = function () {
+  ElectronTabs.getTab(0).activate();
+  ElectronTabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/drafts").then();
+};
+
+ipcRenderer.on("load-drafts", (event, url) => {
+  loadDrafts();
+  exitZenMode();
+});
+
 ipcRenderer.on("new_tab", (event, url) => {
   newTab(url);
   exitZenMode();
 });
 
 ipcRenderer.on("restore_tabs", (event, tabs) => {
-  tabs.map((tab) => {
+  let tempTabs = tabs.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+  tempTabs.map((tab) => {
     newTab(tab.url);
   });
 });
@@ -102,6 +113,10 @@ ipcRenderer.on("tab-padding", (event, on) => {
   else document.getElementById("tabs").classList.remove("etabs-padding");
 });
 
+ipcRenderer.on("resize-tabs", () => {
+  ElectronTabs.resizeTabs();
+});
+
 function enterZenMode() {
   if (ElectronTabs.getActiveTab().viewType !== "medium" && !zenMode) {
     Remote.getCurrentWindow().setFullScreen(true);
@@ -126,4 +141,4 @@ function exitZenMode() {
   }
 }
 
-module.exports = { ElectronTabs, newTab, checkAndActivateTab, enterZenMode, exitZenMode };
+module.exports = { ElectronTabs, loadDrafts, newTab, checkAndActivateTab, enterZenMode, exitZenMode };

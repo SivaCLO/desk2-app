@@ -2,6 +2,8 @@ const { BrowserWindow, Menu, app, shell, ipcMain } = require("electron");
 const { showEmailWindow } = require("../windows/email-window");
 const { logout } = require("../windows/login-window");
 const { getMainWindow } = require("../windows/main-window");
+const { toggleShortcutsWindow } = require("../windows/shortcuts-window");
+const { showImportDialog } = require("../dialogs/import-draft-dialog");
 const { defaultStore } = require("../../common/store");
 const { log } = require("../../common/activity");
 let zenMode = false;
@@ -19,12 +21,11 @@ let template = [
         },
       },
       {
-        label: "Drafts",
-        accelerator: "CmdOrCtrl+D",
+        label: "Import Story",
+        accelerator: "Shift+CmdOrCtrl+I",
         click() {
-          getMainWindow() &&
-            getMainWindow().getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`);
-          log("main-menu/draft");
+          showImportDialog();
+          log("main-menu/import-story");
         },
       },
       { type: "separator" },
@@ -97,6 +98,17 @@ let template = [
     label: "View",
     submenu: [
       {
+        label: "Open Drafts",
+        accelerator: "CmdOrCtrl+D",
+        click() {
+          getMainWindow() && getMainWindow().webContents.send("load-drafts");
+          log("main-menu/drafts");
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
         label: "Next Story",
         accelerator: "Ctrl+Tab",
         click() {
@@ -114,7 +126,7 @@ let template = [
       },
       {
         label: "Close Story",
-        accelerator: "Cmd+W",
+        accelerator: "CmdOrCtrl+W",
         click() {
           getMainWindow() && getMainWindow().webContents.send("close-tab");
           log("view-menu/close-story");
@@ -132,7 +144,7 @@ let template = [
         type: "separator",
       },
       {
-        label: "Reload Tab",
+        label: "Reload Story",
         accelerator: "CmdOrCtrl+R",
         click: (item, focusedWindow) => {
           if (focusedWindow) {
@@ -144,26 +156,57 @@ let template = [
               focusedWindow.webContents.reload();
             }
           }
-          log("view-menu/reload-tab");
+          log("view-menu/reload-story");
         },
       },
       {
-        label: "Reload Window",
-        accelerator: "CmdOrCtrl+Shift+R",
-        click: (item, focusedWindow) => {
-          if (focusedWindow) {
-            // on reload, start fresh and close any old
-            // open secondary windows
-            if (focusedWindow.id === 1) {
-              BrowserWindow.getAllWindows().forEach((win) => {
-                if (win.id > 1) win.close();
-              });
-            }
-            focusedWindow.reload();
-            defaultStore.set("tabs", []);
-          }
-          log("view-menu/reload-window");
+        label: "Reopen Last Closed Story",
+        accelerator: "CmdOrCtrl+Shift+T",
+        click() {
+          getMainWindow() && getMainWindow().webContents.send("open-previously-closed-tab");
+          log("view-menu/open-previously-closed-tab");
         },
+      },
+      {
+        type: "separator",
+      },
+      {
+        label: "Enter Zen Mode",
+        accelerator: "Alt+CmdOrCtrl+Z",
+        click() {
+          getMainWindow() && getMainWindow().webContents.send("enter-zen-mode");
+          log("view-menu/enter-zen-mode");
+        },
+      },
+      {
+        label: "Exit Zen Mode",
+        accelerator: "Esc",
+        click() {
+          getMainWindow() && getMainWindow().webContents.send("exit-zen-mode");
+          log("view-menu/exit-zen-mode");
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
+        label: "Show Keyboard Shortcuts",
+        accelerator: "CmdOrCtrl+/",
+        click: () => {
+          toggleShortcutsWindow();
+          log("main-menu/shortcuts-window");
+        },
+      },
+    ],
+  },
+  {
+    label: "Window",
+    role: "window",
+    submenu: [
+      {
+        label: "Minimize",
+        accelerator: "CmdOrCtrl+M",
+        role: "minimize",
       },
       {
         label: "Toggle Full Screen",
@@ -201,34 +244,14 @@ let template = [
         },
       },
       {
-        type: "separator",
-      },
-      {
-        label: "Enter Zen Mode",
-        accelerator: "Alt+CmdOrCtrl+Z",
-        click() {
-          getMainWindow() && getMainWindow().webContents.send("enter-zen-mode");
-          log("view-menu/enter-zen-mode");
+        label: "Reload Window",
+        accelerator: "CmdOrCtrl+Shift+R",
+        click: (item, focusedWindow) => {
+          if (focusedWindow) {
+            focusedWindow.reload();
+            defaultStore.set("tabs", []);
+          }
         },
-      },
-      {
-        label: "Exit Zen Mode",
-        accelerator: "Esc",
-        click() {
-          getMainWindow() && getMainWindow().webContents.send("exit-zen-mode");
-          log("view-menu/exit-zen-mode");
-        },
-      },
-    ],
-  },
-  {
-    label: "Window",
-    role: "window",
-    submenu: [
-      {
-        label: "Minimize",
-        accelerator: "CmdOrCtrl+M",
-        role: "minimize",
       },
     ],
   },

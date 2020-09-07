@@ -1,6 +1,6 @@
 const Remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
-const { ElectronTabs, enterZenMode, exitZenMode } = require("../tabs/tabs");
+const { ElectronTabs, loadDrafts, enterZenMode, exitZenMode } = require("../tabs/tabs");
 
 document.body.addEventListener("click", (event) => {
   if (event.target.dataset.action) {
@@ -53,8 +53,7 @@ function handleAction(event) {
 
   // Draft Tools
   else if (action === "backToDrafts") {
-    ElectronTabs.getTab(0).activate();
-    ElectronTabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/drafts");
+    loadDrafts();
   } else if (action === "zen-mode") {
     enterZenMode();
   } else if (action === "exit-zen-mode") {
