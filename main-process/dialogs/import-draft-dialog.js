@@ -2,8 +2,9 @@ const { dialog, ipcMain } = require("electron");
 const fs = require("fs");
 const axios = require("axios");
 const { defaultStore } = require("../../common/store");
+const { getMainWindow } = require("../windows/main-window");
 
-ipcMain.on("open-import-draft-dialog", (event) => {
+function showImportDialog() {
   dialog
     .showOpenDialog({
       properties: ["openFile", "openDirectory"],
@@ -34,7 +35,7 @@ ipcMain.on("open-import-draft-dialog", (event) => {
           },
         })
           .then(function (postResponse) {
-            event.sender.send("new_tab", postResponse.data.data.url);
+            getMainWindow().webContents.send("new_tab", postResponse.data.data.url);
           })
           .catch(function (error) {
             console.error(error);
@@ -44,4 +45,10 @@ ipcMain.on("open-import-draft-dialog", (event) => {
     .catch((e) => {
       console.error("error in fetching file ", e);
     });
+}
+
+ipcMain.on("open-import-draft-dialog", (event) => {
+  showImportDialog();
 });
+
+module.exports = { showImportDialog };

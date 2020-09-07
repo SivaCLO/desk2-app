@@ -31,9 +31,10 @@ ipcMain.on("email-submit", (e, url) => {
   }
 });
 
-ipcMain.on("email-close", (e, url) => {
+ipcMain.on("email-close", () => {
   log("email-window/close");
   emailWindow.close();
+  emailWindow = null;
 });
 
 module.exports = { showEmailWindow };
