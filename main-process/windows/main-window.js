@@ -14,12 +14,12 @@ function showMainWindow() {
   if (!mainWindow) {
     if (!defaultStore.get("mediumdesk-user")) return;
     log("main-window/show");
-    const lastWindowState = defaultStore.get("lastWindowState") || Config.WINDOW_SIZE;
+    const mainWindowPosition = defaultStore.get("mainWindowPosition") || { width: 1080, height: 840 };
     const windowOptions = {
-      x: lastWindowState.x,
-      y: lastWindowState.y,
-      width: lastWindowState.width,
-      height: lastWindowState.height,
+      x: mainWindowPosition.x,
+      y: mainWindowPosition.y,
+      width: mainWindowPosition.width,
+      height: mainWindowPosition.height,
       minWidth: 850,
       minHeight: 500,
       title: app.name,
@@ -64,7 +64,7 @@ function showMainWindow() {
           width: mainWindow.getContentBounds().width,
           height: mainWindow.getContentBounds().height - 80,
         });
-      mainWindow.webContents.send('resize-tabs')  
+      mainWindow.webContents.send("resize-tabs");
     }
 
     function resetTabPadding() {
@@ -73,7 +73,7 @@ function showMainWindow() {
 
     mainWindow.on("close", () => {
       if (!mainWindow.fullScreen) {
-        defaultStore.set("lastWindowState", mainWindow.getBounds());
+        defaultStore.set("mainWindowPosition", mainWindow.getBounds());
       }
       log("app/close");
     });

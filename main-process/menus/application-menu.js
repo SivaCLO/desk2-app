@@ -96,7 +96,7 @@ let template = [
     label: "View",
     submenu: [
       {
-        label: "Drafts",
+        label: "Open Drafts",
         accelerator: "CmdOrCtrl+D",
         click() {
           getMainWindow() && getMainWindow().webContents.send("load-drafts");
