@@ -54,7 +54,6 @@ class TabGroup extends EventEmitter {
     let numberOfTabs = this.tabs.length - 1;
     if (numberOfTabs > 0) {
       let maxWidth = (windowWidth - 200) / numberOfTabs - 5;
-      console.log(windowWidth, numberOfTabs, maxWidth);
       if (maxWidth < 200) {
         this.setTabWidth(maxWidth);
       } else {
