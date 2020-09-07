@@ -57,6 +57,7 @@ function showMainWindow() {
     });
 
     function resizeWindow() {
+      log("main-window/resize");
       mainWindow.getBrowserView() &&
         mainWindow.getBrowserView().setBounds({
           x: 0,
@@ -79,6 +80,7 @@ function showMainWindow() {
 
     mainWindow.on("closed", () => {
       mainWindow = null;
+      log("app/closed");
     });
 
     mainWindow.webContents.on("did-finish-load", () => {
@@ -97,6 +99,7 @@ function showMainWindow() {
 }
 
 ipcMain.on("save-tab", (e, tab) => {
+  log("app/save-tab");
   let tempTabs = defaultStore.get("tabs");
   if (tempTabs && tempTabs.length > 0) {
     updateTabs(tab);
@@ -106,12 +109,14 @@ ipcMain.on("save-tab", (e, tab) => {
 });
 
 ipcMain.on("delete-tab", (e, tabs) => {
+  log("app/delete-tab");
   let tempTabs = defaultStore.get("tabs");
   let filteredTabs = tempTabs.filter((t) => t.id !== tabs.id);
   defaultStore.set("tabs", filteredTabs);
 });
 
 function updateTabs(tab) {
+  log("app/update-tab");
   let tempTabs = defaultStore.get("tabs");
   let filteredTabs = tempTabs.filter((t) => t.id !== tab.id);
   defaultStore.set("tabs", [...filteredTabs, tab]);

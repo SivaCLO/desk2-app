@@ -2,8 +2,10 @@ const { dialog, ipcMain } = require("electron");
 const fs = require("fs");
 const axios = require("axios");
 const { defaultStore } = require("../../common/store");
+const { log } = require("../../common/activity");
 
 ipcMain.on("open-import-draft-dialog", (event) => {
+  log("open/dialog/import-draft");
   dialog
     .showOpenDialog({
       properties: ["openFile", "openDirectory"],
@@ -18,7 +20,7 @@ ipcMain.on("open-import-draft-dialog", (event) => {
 
         let mediumToken = defaultStore.get("medium-token");
         let mediumUser = defaultStore.get("medium-user");
-
+        log("dialog/import-draft/info", { mediumToken, mediumUser });
         axios({
           method: "post",
           url: `https://api.medium.com/v1/users/${mediumUser.id}/posts`,

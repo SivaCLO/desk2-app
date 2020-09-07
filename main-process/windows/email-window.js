@@ -6,7 +6,7 @@ const { getMainWindow } = require("./main-window");
 let emailWindow = null;
 
 function showEmailWindow() {
-  log("email-window/show");
+  log("window/email-window/show");
   if (!emailWindow) {
     emailWindow = new BrowserWindow({
       width: 600,
@@ -26,13 +26,14 @@ function showEmailWindow() {
 }
 
 ipcMain.on("email-submit", (e, url) => {
+  log("window/email-window/submit");
   if (getMainWindow()) {
     getMainWindow().getBrowserView().webContents.loadURL(url).then();
   }
 });
 
 ipcMain.on("email-close", (e, url) => {
-  log("email-window/close");
+  log("window/email-window/close");
   emailWindow.close();
 });
 
