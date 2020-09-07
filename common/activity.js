@@ -1,11 +1,13 @@
 const axios = require("axios");
+const { defaultStore } = require("./store");
 
 function log(activityCode, activityData) {
+  let mediumUser = defaultStore.get("medium-user");
   axios
     .post(
       "https://md-functions.azurewebsites.net/api/v2/activity?code=Qv3qRgZB1ZbBLArwzBTrF08HssguuMh7tEMSUCP3Eeakl/sIQOaaIw==",
       {
-        userId: "172949fd7b6203109290f0ba503057336fd72a5dd91b18858155183238fafe37f",
+        userId: mediumUser ? mediumUser.id : "",
         activityCode,
         activityData,
         activityTime: Date.now(),
