@@ -26,7 +26,7 @@
   display: none;
   position: relative;
   height: 37px;
-  padding: 6px 8px 4px;
+  padding: 6px 7px 4px 8px;
   font-size: 12px;
   cursor: default;
   background-color: var(--color-11);
@@ -125,7 +125,7 @@
 
 .etabs-tab-title {
   display: inline-block;
-  margin-left: 10px;
+  margin-left: 4px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -141,18 +141,18 @@
 
 .etabs-tab-buttons {
   display: inline-block;
-  margin-left: 10px;
+  margin-left:5px;
 }
 
 .etabs-tab-buttons button {
   display: inline-block;
   color: var(--color-22);
   background: none;
+  font-size: 14px;
   border: none;
-  width: 16px;
+  width: 14px;
   padding: 0;
   text-align: center;
-  border-radius: 2px;
 }
 
 .etabs-tab:hover .etabs-tab-buttons button {
@@ -164,7 +164,7 @@
 }
 
 .etabs-tab.active .etabs-tab-buttons button {
-  color: var(--color-66);
+  color: var(--color-33);
 }
 
 .etabs-tab.active .etabs-tab-buttons button:hover {
