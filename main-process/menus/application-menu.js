@@ -223,17 +223,10 @@ let template = [
         },
       },
       {
-        label: "Reload MediumDesk",
+        label: "Reload Window",
         accelerator: "CmdOrCtrl+Shift+R",
         click: (item, focusedWindow) => {
           if (focusedWindow) {
-            // on reload, start fresh and close any old
-            // open secondary windows
-            if (focusedWindow.id === 1) {
-              BrowserWindow.getAllWindows().forEach((win) => {
-                if (win.id > 1) win.close();
-              });
-            }
             focusedWindow.reload();
             defaultStore.set("tabs", []);
           }
