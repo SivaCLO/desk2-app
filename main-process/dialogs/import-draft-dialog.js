@@ -3,8 +3,10 @@ const fs = require("fs");
 const axios = require("axios");
 const { defaultStore } = require("../../common/store");
 const { getMainWindow } = require("../windows/main-window");
+const { log } = require("../../common/activity");
 
 function showImportDialog() {
+  log("open/dialog/import-draft");
   dialog
     .showOpenDialog({
       properties: ["openFile", "openDirectory"],
@@ -19,6 +21,7 @@ function showImportDialog() {
 
         let mediumToken = defaultStore.get("medium-token");
         let mediumUser = defaultStore.get("medium-user");
+        log("dialog/import-draft/info", { mediumToken, mediumUser });
 
         axios({
           method: "post",

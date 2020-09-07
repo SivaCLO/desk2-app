@@ -40,6 +40,7 @@ let template = [
         label: "Sign Out",
         click() {
           logout();
+          log("main-menu/signout");
         },
       },
     ],
@@ -88,6 +89,7 @@ let template = [
         accelerator: "CmdOrCtrl+F",
         click: () => {
           getMainWindow() && getMainWindow().webContents.send("on-find");
+          log("edit-menu/find-in-page");
         },
       },
     ],
@@ -111,6 +113,7 @@ let template = [
         accelerator: "Ctrl+Tab",
         click() {
           getMainWindow() && getMainWindow().webContents.send("next-tab");
+          log("view-menu/next-story");
         },
       },
       {
@@ -118,6 +121,7 @@ let template = [
         accelerator: "Ctrl+Shift+Tab",
         click() {
           getMainWindow() && getMainWindow().webContents.send("previous-tab");
+          log("view-menu/previous-story");
         },
       },
       {
@@ -125,7 +129,19 @@ let template = [
         accelerator: "CmdOrCtrl+W",
         click() {
           getMainWindow() && getMainWindow().webContents.send("close-tab");
+          log("view-menu/close-story");
         },
+      },
+      {
+        label: "Reopen Last Closed Story",
+        accelerator: "CmdOrCtrl+Shift+T",
+        click() {
+          getMainWindow() && getMainWindow().webContents.send("open-previously-closed-tab");
+          log("view-menu/reopen-last-closed-story");
+        },
+      },
+      {
+        type: "separator",
       },
       {
         label: "Reload Story",
@@ -140,6 +156,7 @@ let template = [
               focusedWindow.webContents.reload();
             }
           }
+          log("view-menu/reload-story");
         },
       },
       {
@@ -147,6 +164,7 @@ let template = [
         accelerator: "CmdOrCtrl+Shift+T",
         click() {
           getMainWindow() && getMainWindow().webContents.send("open-previously-closed-tab");
+          log("view-menu/open-previously-closed-tab");
         },
       },
       {
@@ -157,6 +175,7 @@ let template = [
         accelerator: "Alt+CmdOrCtrl+Z",
         click() {
           getMainWindow() && getMainWindow().webContents.send("enter-zen-mode");
+          log("view-menu/enter-zen-mode");
         },
       },
       {
@@ -164,6 +183,7 @@ let template = [
         accelerator: "Esc",
         click() {
           getMainWindow() && getMainWindow().webContents.send("exit-zen-mode");
+          log("view-menu/exit-zen-mode");
         },
       },
       {
@@ -201,6 +221,7 @@ let template = [
           if (focusedWindow) {
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
           }
+          log("view-menu/toggle-full-screen");
         },
       },
       {
@@ -242,12 +263,14 @@ let template = [
         label: "Contact Support",
         click: () => {
           shell.openExternal("mailto:yourfriends@mediumdesk.com");
+          log("help-menu/contact-support");
         },
       },
       {
         label: "Open Mediumdesk Website",
         click: () => {
           shell.openExternal("http://mediumdesk.com");
+          log("help-menu/view-mediumdesk-site");
         },
       },
     ],
@@ -274,6 +297,7 @@ function addUpdateMenuItems(items, position) {
       key: "checkForUpdate",
       click: () => {
         require("electron-updater").autoUpdater.checkForUpdates();
+        log("app/check-for-update");
       },
     },
     {
@@ -283,6 +307,7 @@ function addUpdateMenuItems(items, position) {
       key: "restartToUpdate",
       click: () => {
         require("electron-updater").autoUpdater.quitAndInstall();
+        log("app/restart-for-update");
       },
     },
   ];

@@ -8,7 +8,7 @@ const { showMainWindow } = require("./main-window");
 let loginWindow = null;
 
 function showLoginWindow(errorMessage) {
-  log("login-window/show");
+  log("window/login-window/show");
   if (!loginWindow) {
     loginWindow = new BrowserWindow({
       width: 600,
@@ -36,6 +36,7 @@ function showLoginWindow(errorMessage) {
 }
 
 ipcMain.on("login-submit", (e, mediumToken) => {
+  log("window/login-window/submit");
   defaultStore.set("medium-token", mediumToken);
   login().then(() => {
     showMainWindow();
@@ -43,20 +44,22 @@ ipcMain.on("login-submit", (e, mediumToken) => {
 });
 
 ipcMain.on("login-close", (e, mediumToken) => {
+  log("window/login-window/close");
   loginWindow.close();
   loginWindow = null;
 });
 
 async function login() {
-  log("login-window/login");
   let mediumToken = defaultStore.get("medium-token");
   let mediumUser = await getMediumUser(mediumToken);
   let mediumdeskUser = await getMediumdeskUser(mediumToken, mediumUser.id);
+  log("window/login-window-function/login", { mediumToken, mediumUser, mediumdeskUser });
   defaultStore.set("medium-user", mediumUser);
   defaultStore.set("mediumdesk-user", mediumdeskUser);
 }
 
 function getMediumUser(mediumToken) {
+  log("window/login-window-function/get-medium-user", { mediumToken });
   return new Promise((resolve, reject) => {
     axios({
       method: "get",
@@ -77,6 +80,7 @@ function getMediumUser(mediumToken) {
 }
 
 function getMediumdeskUser(mediumToken, mediumUserId) {
+  log("window/login-window-function/get-mediumdesk-user", { mediumToken, mediumUserId });
   return new Promise((resolve, reject) => {
     axios
       .get(
@@ -103,7 +107,7 @@ function getMediumdeskUser(mediumToken, mediumUserId) {
 }
 
 function logout() {
-  log("login-window/logout");
+  log("window/login-window/logout");
   defaultStore.delete("medium-token");
   defaultStore.delete("medium-user");
   defaultStore.delete("mediumdesk-user");

@@ -1,5 +1,6 @@
 const Remote = require("electron").remote;
 const path = require("path");
+const { log } = require("../../common/activity");
 
 class MediumView {
   constructor(tab, tabs) {
@@ -29,9 +30,11 @@ class MediumView {
 
     this.browserView.webContents.on("dom-ready", (e) => {
       this.browserView.webContents.insertCSS("button:focus {outline:0 !important}");
+      log("open/medium-view");
     });
 
     this.browserView.webContents.on("new-window", (e, url) => {
+      log("open/medium-view/new-window");
       e.preventDefault();
       Remote.shell.openExternal(url);
     });

@@ -1,9 +1,11 @@
 const { app, dialog, ipcMain } = require("electron");
 const { getMainWindow } = require("../windows/main-window");
+const { log } = require("../../common/activity");
 
 let isOffline = false;
 
 ipcMain.on("network-status", (event, data) => {
+  log("open/dialog/network-status", { data });
   if (data === "offline") {
     if (!isOffline) {
       const options = {
