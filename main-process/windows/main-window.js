@@ -113,8 +113,10 @@ ipcMain.on("save-tab", (e, tab) => {
 ipcMain.on("delete-tab", (e, tabs) => {
   log("app/delete-tab");
   let tempTabs = defaultStore.get("tabs");
-  let filteredTabs = tempTabs.filter((t) => t.id !== tabs.id);
-  defaultStore.set("tabs", filteredTabs);
+  if(tempTabs) {
+    let filteredTabs = tempTabs.filter((t) => t.id !== tabs.id);
+    defaultStore.set("tabs", filteredTabs);
+  }
 });
 
 function updateTabs(tab) {

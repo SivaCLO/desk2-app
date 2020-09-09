@@ -53,7 +53,7 @@ class TabGroup extends EventEmitter {
     let windowWidth = Remote.getCurrentWindow().getBounds().width;
     let numberOfTabs = this.tabs.length - 1;
     if (numberOfTabs > 0) {
-      let maxWidth = (windowWidth - 200) / numberOfTabs - 5;
+      let maxWidth = (windowWidth - 250) / numberOfTabs;
       if (maxWidth < 120) {
         this.setTabWidth(maxWidth);
       } else {
