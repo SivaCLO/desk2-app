@@ -18,6 +18,7 @@ function showLoginWindow(errorMessage) {
       webPreferences: {
         nodeIntegration: true,
         spellcheck: false,
+        enableRemoteModule: true
       },
     });
     loginWindow.loadURL(path.join("file://", __dirname, "../../render-process/login/login.html")).then(() => {

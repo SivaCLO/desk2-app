@@ -27,6 +27,7 @@ function showMainWindow() {
       autoHideMenuBar: true,
       webPreferences: {
         nodeIntegration: true,
+        enableRemoteModule: true
       },
     };
 

@@ -16,6 +16,7 @@ function showEmailWindow() {
       webPreferences: {
         nodeIntegration: true,
         spellcheck: false,
+        enableRemoteModule: true
       },
     });
     emailWindow.loadURL(path.join("file://", __dirname, "../../render-process/email/email.html")).then();
