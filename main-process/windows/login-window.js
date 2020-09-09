@@ -52,10 +52,10 @@ ipcMain.on("login-close", (e, mediumToken) => {
 async function login() {
   let mediumToken = defaultStore.get("medium-token");
   let mediumUser = await getMediumUser(mediumToken);
-  let theDeskUser = await getTheDeskUser(mediumToken, mediumUser.id);
-  log("window/login-window-function/login", { mediumToken, mediumUser, thedeskUser: theDeskUser });
+  let theDeskAppUser = await getTheDeskAppUser(mediumToken, mediumUser.id);
+  log("window/login-window-function/login", { mediumToken, mediumUser, thedeskUser: theDeskAppUser });
   defaultStore.set("medium-user", mediumUser);
-  defaultStore.set("thedesk-user", theDeskUser);
+  defaultStore.set("thedeskapp-user", theDeskAppUser);
 }
 
 function getMediumUser(mediumToken) {
@@ -79,8 +79,8 @@ function getMediumUser(mediumToken) {
   });
 }
 
-function getTheDeskUser(mediumToken, mediumUserId) {
-  log("window/login-window-function/get-thedesk-user", { mediumToken, mediumUserId });
+function getTheDeskAppUser(mediumToken, mediumUserId) {
+  log("window/login-window-function/get-thedeskapp-user", { mediumToken, mediumUserId });
   return new Promise((resolve, reject) => {
     axios
       .get(
@@ -98,7 +98,7 @@ function getTheDeskUser(mediumToken, mediumUserId) {
         resolve(response.data);
       })
       .catch((e) => {
-        console.error("error in reading The Desk User", e);
+        console.error("error in reading The Desk App User", e);
         showLoginWindow(
           "Something went wrong. Reach out to <a href='yourfriends@thedesk.co'>yourfriends@thedesk.co</a>"
         );
@@ -110,7 +110,7 @@ function logout() {
   log("window/login-window/logout");
   defaultStore.delete("medium-token");
   defaultStore.delete("medium-user");
-  defaultStore.delete("thedesk-user");
+  defaultStore.delete("thedeskapp-user");
   app.exit(0);
 }
 

@@ -1,8 +1,8 @@
 {
   "name": "thedeskapp",
-  "productName": "thedeskapp",
-  "version": "1.0.1",
-  "description": "Productivity Suite for Medium.com",
+  "productName": "Desk for Medium.com",
+  "version": "1.0.2",
+  "description": "Desktop App for Medium.com",
   "main": "main.js",
   "bin": "cli.js",
   "license": "CC0-1.0",
@@ -45,8 +45,8 @@
     "update-electron-app": "^1.5.0"
   },
   "build": {
-    "appId": "co.thedesk.TheDesk",
-    "productName": "The Desk",
+    "appId": "co.thedesk.TheDeskApp",
+    "productName": "Desk for Medium.com",
     "mac": {
       "category": "public.app-category.productivity",
       "type": "distribution",
