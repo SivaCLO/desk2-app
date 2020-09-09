@@ -52,10 +52,10 @@ ipcMain.on("login-close", (e, mediumToken) => {
 async function login() {
   let mediumToken = defaultStore.get("medium-token");
   let mediumUser = await getMediumUser(mediumToken);
-  let mediumdeskUser = await getMediumdeskUser(mediumToken, mediumUser.id);
-  log("window/login-window-function/login", { mediumToken, mediumUser, mediumdeskUser });
+  let theDeskUser = await getTheDeskUser(mediumToken, mediumUser.id);
+  log("window/login-window-function/login", { mediumToken, mediumUser, thedeskUser: theDeskUser });
   defaultStore.set("medium-user", mediumUser);
-  defaultStore.set("mediumdesk-user", mediumdeskUser);
+  defaultStore.set("thedesk-user", theDeskUser);
 }
 
 function getMediumUser(mediumToken) {
@@ -79,28 +79,28 @@ function getMediumUser(mediumToken) {
   });
 }
 
-function getMediumdeskUser(mediumToken, mediumUserId) {
-  log("window/login-window-function/get-mediumdesk-user", { mediumToken, mediumUserId });
+function getTheDeskUser(mediumToken, mediumUserId) {
+  log("window/login-window-function/get-thedesk-user", { mediumToken, mediumUserId });
   return new Promise((resolve, reject) => {
     axios
       .get(
-        "https://md-functions.azurewebsites.net/api/v2/user/" +
+        "https://thedeskfunctions.azurewebsites.net/api/v2/user/" +
           mediumUserId +
-          "?code=hBgZZN/vkdDH3W9aw5Ok6k9i0EJ4iIdEWlracZjabo6ojWFaaQ5S9w=="
+          "?code=9bafK2KAjsBONebLekGF0a80YletTdredAJCgRmV8oCqrwlzhlCfMg=="
       )
       .then(function (response) {
         if (response.data.disabled) {
           showLoginWindow(
-            "Your mediumdesk subscription is not active. Please reach out to <a href='yourfriends@mediumdesk.com'>yourfriends@mediumdesk.com</a>"
+            "Your subscription is not active. Please reach out to <a href='yourfriends@thedesk.co'>yourfriends@thedesk.co</a>"
           );
           reject();
         }
         resolve(response.data);
       })
       .catch((e) => {
-        console.error("error in reading Mediumdesk User", e);
+        console.error("error in reading The Desk User", e);
         showLoginWindow(
-          "Something went wrong. Please reach out to <a href='yourfriends@mediumdesk.com'>yourfriends@mediumdesk.com</a>"
+          "Something went wrong. Reach out to <a href='yourfriends@thedesk.co'>yourfriends@thedesk.co</a>"
         );
       });
   });
@@ -110,7 +110,7 @@ function logout() {
   log("window/login-window/logout");
   defaultStore.delete("medium-token");
   defaultStore.delete("medium-user");
-  defaultStore.delete("mediumdesk-user");
+  defaultStore.delete("thedesk-user");
   app.exit(0);
 }
 

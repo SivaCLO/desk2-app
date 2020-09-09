@@ -5,7 +5,7 @@ function log(activityCode, activityData) {
   let mediumUser = defaultStore.get("medium-user");
   axios
     .post(
-      "https://md-functions.azurewebsites.net/api/v2/activity?code=Qv3qRgZB1ZbBLArwzBTrF08HssguuMh7tEMSUCP3Eeakl/sIQOaaIw==",
+      "https://thedeskfunctions.azurewebsites.net/api/v2/activity?code=IrAqkRQLaEBPrRzrr6u5WUoHtKQcTJwmOlgaHZNDhSPwxJ0zQw0A4w==",
       {
         userId: mediumUser ? mediumUser.id : "",
         activityCode,

@@ -16,7 +16,7 @@ function toggleShortcutsWindow() {
     const windowOptions = {
       x: shortcutsWindowPosition.x,
       y: shortcutsWindowPosition.y,
-      width: 325,
+      width: 350,
       height: 640,
       frame: false,
       resizable: false,

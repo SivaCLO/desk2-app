@@ -7,7 +7,7 @@ const { showLoginWindow, login } = require("./windows/login-window");
 const { defaultStore } = require("../common/store");
 const debug = /--debug/.test(process.argv[2]);
 
-if (process.mas) app.setName("MediumDesk");
+if (process.mas) app.setName("The Desk");
 
 app.on("ready", () => {
   log("app/open", { "app-version": app.getVersion(), os: os.platform() });

@@ -1,8 +1,8 @@
 {
-  "name": "mediumdesk",
-  "productName": "MediumDesk",
-  "version": "2.0.1",
-  "description": "Minimal Desktop App for Medium developed by Medium enthusiasts",
+  "name": "thedeskapp",
+  "productName": "thedeskapp",
+  "version": "1.0.0",
+  "description": "Productivity Suite for Medium.com",
   "main": "main.js",
   "bin": "cli.js",
   "license": "CC0-1.0",
@@ -12,10 +12,8 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps",
-    "release": "electron-builder -mw"
+    "release": "electron-builder -m"
   },
-  "repository": "https://github.com/sivahq/mediumdesk-v2",
-  "author": "Clove Inc.",
   "devDependencies": {
     "@octokit/rest": "^16.3.2",
     "chai": "^3.4.1",
@@ -47,30 +45,26 @@
     "update-electron-app": "^1.5.0"
   },
   "build": {
-    "appId": "com.clovecrypto.MediumDesk",
-    "productName": "MediumDesk",
+    "appId": "co.thedesk.TheDesk",
+    "productName": "The Desk",
     "mac": {
-      "category": "public.app-category.utilities",
+      "category": "public.app-category.productivity",
       "type": "distribution",
       "hardenedRuntime": true,
       "target": [
         "dmg",
         "zip"
       ],
-      "icon": "assets/app-icon/mac/app.icns",
+      "icon": "assets/app-icon/thedesk.icns",
       "entitlements": "assets/mac/entitlements.mac.plist",
       "entitlementsInherit": "assets/mac/entitlements.mac.inherit.plist",
       "gatekeeperAssess": false
     },
-    "win": {
-      "target": "nsis",
-      "icon": "assets/app-icon/win/app.ico"
-    },
     "publish": [
       {
         "provider": "github",
-        "owner": "sivahq",
-        "repo": "mediumdesk-v2",
+        "owner": "thedeskco",
+        "repo": "thedeskapp",
         "token": "c425bcee75779c0c29891512377033d2a2a9cbd8"
       }
     ],

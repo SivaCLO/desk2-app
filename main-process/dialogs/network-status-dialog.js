@@ -10,7 +10,7 @@ ipcMain.on("network-status", (event, data) => {
     if (!isOffline) {
       const options = {
         type: "warning",
-        buttons: ["Close MediumDesk", "Keep Working"],
+        buttons: ["Close Application", "Keep Working"],
         defaultId: 0,
         cancelId: 1,
         message: "Your network status is offline",

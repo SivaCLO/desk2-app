@@ -133,17 +133,6 @@ let template = [
         },
       },
       {
-        label: "Reopen Last Closed Story",
-        accelerator: "CmdOrCtrl+Shift+T",
-        click() {
-          getMainWindow() && getMainWindow().webContents.send("open-previously-closed-tab");
-          log("view-menu/reopen-last-closed-story");
-        },
-      },
-      {
-        type: "separator",
-      },
-      {
         label: "Reload Story",
         accelerator: "CmdOrCtrl+R",
         click: (item, focusedWindow) => {
@@ -164,7 +153,7 @@ let template = [
         accelerator: "CmdOrCtrl+Shift+T",
         click() {
           getMainWindow() && getMainWindow().webContents.send("open-previously-closed-tab");
-          log("view-menu/open-previously-closed-tab");
+          log("view-menu/reopen-last-closed-story");
         },
       },
       {
@@ -204,9 +193,22 @@ let template = [
     role: "window",
     submenu: [
       {
-        label: "Minimize",
+        label: "Minimize Window",
         accelerator: "CmdOrCtrl+M",
         role: "minimize",
+      },
+      {
+        label: "Reload Window",
+        accelerator: "CmdOrCtrl+Shift+R",
+        click: (item, focusedWindow) => {
+          if (focusedWindow) {
+            focusedWindow.reload();
+            defaultStore.set("tabs", []);
+          }
+        },
+      },
+      {
+        type: "separator",
       },
       {
         label: "Toggle Full Screen",
@@ -243,16 +245,6 @@ let template = [
           }
         },
       },
-      {
-        label: "Reload Window",
-        accelerator: "CmdOrCtrl+Shift+R",
-        click: (item, focusedWindow) => {
-          if (focusedWindow) {
-            focusedWindow.reload();
-            defaultStore.set("tabs", []);
-          }
-        },
-      },
     ],
   },
   {
@@ -262,15 +254,15 @@ let template = [
       {
         label: "Contact Support",
         click: () => {
-          shell.openExternal("mailto:yourfriends@mediumdesk.com");
+          shell.openExternal("mailto:yourfriends@thedesk.co");
           log("help-menu/contact-support");
         },
       },
       {
-        label: "Open Mediumdesk Website",
+        label: "Open TheDesk.co",
         click: () => {
-          shell.openExternal("http://mediumdesk.com");
-          log("help-menu/view-mediumdesk-site");
+          shell.openExternal("http://thedesk.co");
+          log("help-menu/view-home-page");
         },
       },
     ],
