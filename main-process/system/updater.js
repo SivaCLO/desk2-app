@@ -7,23 +7,19 @@ function checkForUpdates() {
 }
 
 autoUpdater.on("checking-for-update", () => {
-  console.log("Checking for update");
-  log("app/update/check");
+  log("updater/checking-for-update");
 });
 
 autoUpdater.on("update-available", () => {
-  console.log("Update available");
-  log("app/update/available");
+  log("updater/update-available");
 });
 
 autoUpdater.on("error", (err) => {
-  console.log("Error in updating app");
-  log("app/update/error", err);
+  log("updater/error", err);
 });
 
 autoUpdater.on("update-downloaded", (info) => {
-  console.log("Update downloaded", info);
-  log("app/update/downloaded", info);
+  log("updater/update-downloaded", info);
 });
 
 module.exports = { checkForUpdates };

@@ -6,7 +6,7 @@ const { getMainWindow } = require("./main-window");
 let emailWindow = null;
 
 function showEmailWindow() {
-  log("window/email-window/show");
+  log("email-window/show");
   if (!emailWindow) {
     emailWindow = new BrowserWindow({
       width: 600,
@@ -16,7 +16,7 @@ function showEmailWindow() {
       webPreferences: {
         nodeIntegration: true,
         spellcheck: false,
-        enableRemoteModule: true
+        enableRemoteModule: true,
       },
     });
     emailWindow.loadURL(path.join("file://", __dirname, "../../render-process/email/email.html")).then();
@@ -27,7 +27,7 @@ function showEmailWindow() {
 }
 
 ipcMain.on("email-submit", (e, url) => {
-  log("window/email-window/submit");
+  log("email-window/submit");
   if (getMainWindow()) {
     getMainWindow().getBrowserView().webContents.loadURL(url).then();
   }
