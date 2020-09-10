@@ -15,6 +15,8 @@ function showLoginWindow(errorMessage) {
       height: 300,
       frame: false,
       resizable: false,
+      alwaysOnTop: true,
+      fullscreen: false,
       webPreferences: {
         nodeIntegration: true,
         spellcheck: false,
