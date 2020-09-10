@@ -340,7 +340,7 @@ class Tab extends EventEmitter {
   activate() {
     if (this.isClosed) return;
 
-    log("electron-tabs/activate-tab", { tab: this });
+    log("electron-tabs/activate-tab", { tab: this.view.browserView.webContents.getURL() });
 
     // Deactivate previous Tab
     let activeTab = this.tabGroup.getActiveTab();
@@ -415,7 +415,7 @@ class Tab extends EventEmitter {
   }
 
   close(force) {
-    log("electron-tabs/close-tab", { tab: this });
+    log("electron-tabs/close-tab", { tab: this.view.browserView.webContents.getURL() });
     const abortController = new AbortController();
     const abort = () => abortController.abort();
     this.emit("closing", this, abort);
