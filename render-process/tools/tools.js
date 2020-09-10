@@ -1,6 +1,7 @@
 const Remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
 const { ElectronTabs, loadDrafts, enterZenMode, exitZenMode } = require("../tabs/tabs");
+const { log } = require("../../common/activity");
 
 document.body.addEventListener("click", (event) => {
   if (event.target.dataset.action) {
@@ -32,31 +33,34 @@ function handleAction(event) {
 
   // Medium Tools
   if (action === "home") {
+    log("tools/home");
     Remote.getCurrentWindow().getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`);
-    ipcRenderer.send("log", "click/toolbar/home");
   } else if (action === "refresh") {
+    log("tools/reload");
     Remote.getCurrentWindow().getBrowserView().webContents.reload();
-    ipcRenderer.send("log", "click/toolbar/refresh");
   } else if (action === "back") {
+    log("tools/back");
     Remote.getCurrentWindow().getBrowserView().webContents.goBack();
-    ipcRenderer.send("log", "click/toolbar/back");
   } else if (action === "forward") {
+    log("tools/forward");
     Remote.getCurrentWindow().getBrowserView().webContents.goForward();
-    ipcRenderer.send("log", "click/toolbar/forward");
   } else if (action === "import-draft") {
+    log("tools/import-draft");
     ipcRenderer.send("open-import-draft-dialog");
-    ipcRenderer.send("log", "click/toolbar/import-draft");
   } else if (action === "open-link") {
+    log("tools/open-link");
     Remote.shell.openExternal(Remote.getCurrentWindow().getBrowserView().webContents.getURL());
-    ipcRenderer.send("log", "click/toolbar/open-link");
   }
 
   // Draft Tools
   else if (action === "backToDrafts") {
+    log("tools/back-to-drafts");
     loadDrafts();
   } else if (action === "zen-mode") {
+    log("tools/enter-zen-mode");
     enterZenMode();
   } else if (action === "exit-zen-mode") {
+    log("tools/exit-zen-mode");
     exitZenMode();
   }
 }

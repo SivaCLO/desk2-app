@@ -3,6 +3,7 @@ const Remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
 const MediumView = require("../medium-view/medium-view");
 const DraftView = require("../draft-view/draft-view");
+const { log } = require("../../common/activity");
 
 if (!document) {
   throw Error("electron-tabs module must be called in renderer process");
@@ -33,6 +34,7 @@ class TabGroup extends EventEmitter {
   }
 
   addTab(args = this.options.newTab) {
+    log("electron-tabs/add-tab");
     if (typeof args === "function") {
       args = args(this);
     }
@@ -130,8 +132,14 @@ const TabGroupPrivate = {
     let button = container.appendChild(document.createElement("button"));
     button.classList.add(`${this.options.tabClass}-button-new`);
     button.innerHTML = this.options.newTabButtonText;
-    button.addEventListener("click", this.addTab.bind(this, undefined), false);
-    ipcRenderer.send("log", "hard/refresh/draft-view");
+    button.addEventListener(
+      "click",
+      (() => {
+        log("electron-tabs/new-tab-button");
+        this.addTab();
+      }).bind(this),
+      false
+    );
   },
 
   initVisibility: function () {
@@ -167,7 +175,6 @@ const TabGroupPrivate = {
     TabGroupPrivate.removeTab.bind(this)(tab);
     this.tabs.unshift(tab);
     this.emit("tab-active", tab, this);
-    ipcRenderer.send("log", "click/tab/switch");
     return this;
   },
 
@@ -229,9 +236,6 @@ class Tab extends EventEmitter {
         let toolTitle = document.getElementById(this.tools + "-title");
         toolTitle.innerHTML = title;
         toolTitle.title = title;
-        if (toolTitle.title !== "Your stories") {
-          ipcRenderer.send("log", "change/title", toolTitle.title);
-        }
       }
     } else {
       span.classList.add("hidden");
@@ -336,6 +340,8 @@ class Tab extends EventEmitter {
   activate() {
     if (this.isClosed) return;
 
+    log("electron-tabs/activate-tab", { tab: this });
+
     // Deactivate previous Tab
     let activeTab = this.tabGroup.getActiveTab();
     if (activeTab) {
@@ -409,6 +415,7 @@ class Tab extends EventEmitter {
   }
 
   close(force) {
+    log("electron-tabs/close-tab", { tab: this });
     const abortController = new AbortController();
     const abort = () => abortController.abort();
     this.emit("closing", this, abort);
@@ -427,7 +434,6 @@ class Tab extends EventEmitter {
     TabGroupPrivate.removeTab.bind(tabGroup)(this, true);
 
     this.emit("close", this);
-    ipcRenderer.send("log", "click/tab/close");
     this.tabGroup.resizeTabs();
     if (activeTab.id === this.id) {
       TabGroupPrivate.activateRecentTab.bind(tabGroup)();
@@ -466,7 +472,6 @@ const TabPrivate = {
       button.classList.add(`${tabClass}-button-close`);
       button.innerHTML = this.tabGroup.options.closeButtonText;
       button.addEventListener("click", this.close.bind(this, false), false);
-      ipcRenderer.send("log", "click/tab/open");
     } else {
       container.classList.add("hidden");
     }

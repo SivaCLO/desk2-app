@@ -2,6 +2,7 @@ const TabGroup = require("./electron-tabs");
 const { ipcRenderer } = require("electron");
 const Remote = require("electron").remote;
 const FindInPage = require("electron-find").FindInPage;
+const { log } = require("../../common/activity");
 let zenMode = false;
 
 const ElectronTabs = new TabGroup({
@@ -119,11 +120,11 @@ ipcRenderer.on("resize-tabs", () => {
 
 function enterZenMode() {
   if (ElectronTabs.getActiveTab().viewType !== "medium" && !zenMode) {
+    log("tabs/zen-mode-on");
     Remote.getCurrentWindow().setFullScreen(true);
     document.getElementById("tabs").classList.remove("visible");
     document.getElementById("draft-tools").classList.remove("active");
     document.getElementById("zen-tools").classList.add("active");
-    ipcRenderer.send("log", "click/toolbar/zen-mode");
     ipcRenderer.send("zen-mode-on");
     zenMode = true;
   }
@@ -131,11 +132,11 @@ function enterZenMode() {
 
 function exitZenMode() {
   if (ElectronTabs.getActiveTab().viewType !== "medium" && zenMode) {
+    log("tabs/zen-mode-off");
     Remote.getCurrentWindow().setFullScreen(false);
     document.getElementById("zen-tools").classList.remove("active");
     document.getElementById("draft-tools").classList.add("active");
     document.getElementById("tabs").classList.add("visible");
-    ipcRenderer.send("log", "click/toolbar/exit-zen-mode");
     ipcRenderer.send("zen-mode-off");
     zenMode = false;
   }

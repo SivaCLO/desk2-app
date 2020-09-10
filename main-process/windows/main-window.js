@@ -1,7 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const { defaultStore } = require("../../common/store");
 const path = require("path");
-const Config = require("../../config");
 const { log } = require("../../common/activity");
 
 let mainWindow = null;

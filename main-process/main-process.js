@@ -53,7 +53,3 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
-
-ipcMain.on("log", (e, activityCode, activityData) => {
-  log(activityCode, activityData);
-});
