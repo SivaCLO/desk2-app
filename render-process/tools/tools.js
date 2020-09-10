@@ -32,8 +32,8 @@ function handleAction(event) {
   let action = event.target.dataset.action;
 
   // Medium Tools
-  if (action === "home") {
-    log("tools/home");
+  if (action === "open-drafts") {
+    log("tools/open-drafts");
     Remote.getCurrentWindow().getBrowserView().webContents.loadURL(`https://medium.com/me/stories/drafts`);
   } else if (action === "refresh") {
     log("tools/reload");
