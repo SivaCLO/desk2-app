@@ -59,7 +59,7 @@ async function login() {
   log("login-window/login-token", { mediumToken });
   let mediumUser = await getMediumUser(mediumToken);
   log("login-window/login-medium-user", { mediumToken, mediumUser });
-  let theDeskAppUser = await getTheDeskAppUser(mediumUser.id);
+  let theDeskAppUser = await getTheDeskAppUser(mediumUser);
   log("login-window/login-the-desk-app-user", { mediumToken, mediumUser, theDeskAppUser });
   defaultStore.set("medium-user", mediumUser);
   defaultStore.set("thedeskapp-user", theDeskAppUser);
@@ -86,19 +86,21 @@ function getMediumUser(mediumToken) {
   });
 }
 
-function getTheDeskAppUser(mediumUserId) {
+function getTheDeskAppUser(mediumUser) {
   return new Promise((resolve, reject) => {
     axios
       .get(
         "https://thedeskfunctions.azurewebsites.net/api/v2/user/" +
-          mediumUserId +
+          mediumUser.id +
+          "/" +
+          mediumUser.username +
           "?code=9bafK2KAjsBONebLekGF0a80YletTdredAJCgRmV8oCqrwlzhlCfMg=="
       )
       .then(function (response) {
         if (response.data.disabled) {
           log("login-window/get-the-desk-app-user/disabled", { response: response.data });
           showLoginWindow(
-            "Your subscription is not active. Please reach out to <a href='yourfriends@thedesk.co'>yourfriends@thedesk.co</a>"
+            "Please contact <a href='mailto:yourfriends@thedesk.co'>yourfriends@thedesk.co</a> to request access."
           );
           reject();
         }
@@ -108,7 +110,7 @@ function getTheDeskAppUser(mediumUserId) {
         log("login-window/get-the-desk-app-user/error", { e });
         console.error("error in reading The Desk App User", e);
         showLoginWindow(
-          "Something went wrong. Reach out to <a href='yourfriends@thedesk.co'>yourfriends@thedesk.co</a>"
+          "Something went wrong. Reach out to <a href='mailto:yourfriends@thedesk.co'>yourfriends@thedesk.co</a>"
         );
       });
   });
