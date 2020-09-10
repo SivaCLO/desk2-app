@@ -12,7 +12,7 @@ function getMainWindow() {
 
 function showMainWindow() {
   if (!mainWindow) {
-    if (!defaultStore.get("thedesk-user")) return;
+    if (!defaultStore.get("thedeskapp-user")) return;
     log("main-window/show");
     const mainWindowPosition = defaultStore.get("mainWindowPosition") || { width: 1080, height: 840 };
     const windowOptions = {
@@ -27,37 +27,38 @@ function showMainWindow() {
       autoHideMenuBar: true,
       webPreferences: {
         nodeIntegration: true,
+        enableRemoteModule: true,
       },
     };
 
     mainWindow = new BrowserWindow(windowOptions);
     mainWindow.loadURL(path.join("file://", __dirname, "../../render-process/index.html"));
     mainWindow.on("resize", () => {
+      log("main-window/resize");
       resizeWindow();
     });
     mainWindow.on("maximize", () => {
+      log("main-window/maximize");
       resizeWindow();
-      resetTabPadding();
     });
     mainWindow.on("minimize", () => {
+      log("main-window/minimize");
       resizeWindow();
-      resetTabPadding();
     });
     mainWindow.on("enter-full-screen", () => {
+      log("main-window/enter-full-screen");
       resizeWindow();
-      resetTabPadding();
     });
     mainWindow.on("leave-full-screen", () => {
+      log("main-window/leave-full-screen");
       resizeWindow();
-      resetTabPadding();
     });
     mainWindow.on("unmaximize", () => {
+      log("main-window/unmaximize");
       resizeWindow();
-      resetTabPadding();
     });
 
     function resizeWindow() {
-      log("main-window/resize");
       mainWindow.getBrowserView() &&
         mainWindow.getBrowserView().setBounds({
           x: 0,
@@ -65,30 +66,28 @@ function showMainWindow() {
           width: mainWindow.getContentBounds().width,
           height: mainWindow.getContentBounds().height - 80,
         });
+      mainWindow.webContents.send("tab-padding", process.platform === "darwin" && !mainWindow.isFullScreen());
       mainWindow.webContents.send("resize-tabs");
     }
 
-    function resetTabPadding() {
-      mainWindow.webContents.send("tab-padding", process.platform === "darwin" && !mainWindow.isFullScreen());
-    }
-
     mainWindow.on("close", () => {
+      log("main-window/close");
       if (!mainWindow.fullScreen) {
         defaultStore.set("mainWindowPosition", mainWindow.getBounds());
       }
-      log("app/close");
     });
 
     mainWindow.on("closed", () => {
       mainWindow = null;
-      log("app/closed");
     });
 
     mainWindow.webContents.on("did-finish-load", () => {
-      resetTabPadding();
+      log("main-window/did-finish-load");
+      resizeWindow();
     });
 
     mainWindow.webContents.once("did-finish-load", () => {
+      log("main-window/did-finish-load/once");
       let tempTabs = defaultStore.get("tabs");
       if (tempTabs && tempTabs.length > 0) {
         mainWindow.webContents.send("restore_tabs", tempTabs);
@@ -100,27 +99,24 @@ function showMainWindow() {
 }
 
 ipcMain.on("save-tab", (e, tab) => {
-  log("app/save-tab");
+  log("main-window/save-tab", { tab });
   let tempTabs = defaultStore.get("tabs");
   if (tempTabs && tempTabs.length > 0) {
-    updateTabs(tab);
+    let tempTabs = defaultStore.get("tabs");
+    let filteredTabs = tempTabs.filter((t) => t.id !== tab.id);
+    defaultStore.set("tabs", [...filteredTabs, tab]);
   } else {
     defaultStore.set("tabs", [tab]);
   }
 });
 
 ipcMain.on("delete-tab", (e, tabs) => {
-  log("app/delete-tab");
+  log("main-window/delete-tab", { tabs });
   let tempTabs = defaultStore.get("tabs");
-  let filteredTabs = tempTabs.filter((t) => t.id !== tabs.id);
-  defaultStore.set("tabs", filteredTabs);
+  if (tempTabs) {
+    let filteredTabs = tempTabs.filter((t) => t.id !== tabs.id);
+    defaultStore.set("tabs", filteredTabs);
+  }
 });
-
-function updateTabs(tab) {
-  log("app/update-tab");
-  let tempTabs = defaultStore.get("tabs");
-  let filteredTabs = tempTabs.filter((t) => t.id !== tab.id);
-  defaultStore.set("tabs", [...filteredTabs, tab]);
-}
 
 module.exports = { showMainWindow, getMainWindow };

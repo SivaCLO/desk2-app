@@ -16,31 +16,31 @@ let template = [
         label: "New Story",
         accelerator: "CmdOrCtrl+N",
         click() {
+          log("application-menu/file/new-story");
           getMainWindow() && getMainWindow().webContents.send("new_tab");
-          log("main-menu/new-story");
         },
       },
       {
         label: "Import Story",
         accelerator: "Shift+CmdOrCtrl+I",
         click() {
+          log("application-menu/file/import-story");
           showImportDialog();
-          log("main-menu/import-story");
         },
       },
       { type: "separator" },
       {
         label: "Sign In via Email",
         click() {
+          log("application-menu/file/email-signin");
           showEmailWindow();
-          log("main-menu/email-signin");
         },
       },
       {
         label: "Sign Out",
         click() {
+          log("application-menu/file/signout");
           logout();
-          log("main-menu/signout");
         },
       },
     ],
@@ -88,8 +88,8 @@ let template = [
         label: "Find in Page",
         accelerator: "CmdOrCtrl+F",
         click: () => {
+          log("application-menu/edit/find-in-page");
           getMainWindow() && getMainWindow().webContents.send("on-find");
-          log("edit-menu/find-in-page");
         },
       },
     ],
@@ -101,8 +101,8 @@ let template = [
         label: "Open Drafts",
         accelerator: "CmdOrCtrl+D",
         click() {
+          log("application-menu/view/open-drafts");
           getMainWindow() && getMainWindow().webContents.send("load-drafts");
-          log("main-menu/drafts");
         },
       },
       {
@@ -112,30 +112,31 @@ let template = [
         label: "Next Story",
         accelerator: "Ctrl+Tab",
         click() {
+          log("application-menu/view/next-story");
           getMainWindow() && getMainWindow().webContents.send("next-tab");
-          log("view-menu/next-story");
         },
       },
       {
         label: "Previous Story",
         accelerator: "Ctrl+Shift+Tab",
         click() {
+          log("application-menu/view/previous-story");
           getMainWindow() && getMainWindow().webContents.send("previous-tab");
-          log("view-menu/previous-story");
         },
       },
       {
         label: "Close Story",
         accelerator: "CmdOrCtrl+W",
         click() {
+          log("application-menu/view/close-story");
           getMainWindow() && getMainWindow().webContents.send("close-tab");
-          log("view-menu/close-story");
         },
       },
       {
         label: "Reload Story",
         accelerator: "CmdOrCtrl+R",
         click: (item, focusedWindow) => {
+          log("application-menu/view/reload-story", { focusedWindow });
           if (focusedWindow) {
             // on reload, start fresh and close any old
             // open secondary windows
@@ -145,15 +146,14 @@ let template = [
               focusedWindow.webContents.reload();
             }
           }
-          log("view-menu/reload-story");
         },
       },
       {
         label: "Reopen Last Closed Story",
         accelerator: "CmdOrCtrl+Shift+T",
         click() {
+          log("application-menu/view/reopen-last-closed-story");
           getMainWindow() && getMainWindow().webContents.send("open-previously-closed-tab");
-          log("view-menu/reopen-last-closed-story");
         },
       },
       {
@@ -163,16 +163,16 @@ let template = [
         label: "Enter Zen Mode",
         accelerator: "Alt+CmdOrCtrl+Z",
         click() {
+          log("application-menu/view/enter-zen-mode");
           getMainWindow() && getMainWindow().webContents.send("enter-zen-mode");
-          log("view-menu/enter-zen-mode");
         },
       },
       {
         label: "Exit Zen Mode",
         accelerator: "Esc",
         click() {
+          log("application-menu/view/exit-zen-mode");
           getMainWindow() && getMainWindow().webContents.send("exit-zen-mode");
-          log("view-menu/exit-zen-mode");
         },
       },
       {
@@ -182,8 +182,8 @@ let template = [
         label: "Show Keyboard Shortcuts",
         accelerator: "CmdOrCtrl+/",
         click: () => {
+          log("application-menu/view/show-shortcuts");
           toggleShortcutsWindow();
-          log("main-menu/shortcuts-window");
         },
       },
     ],
@@ -201,6 +201,7 @@ let template = [
         label: "Reload Window",
         accelerator: "CmdOrCtrl+Shift+R",
         click: (item, focusedWindow) => {
+          log("application-menu/window/reload-window", { focusedWindow });
           if (focusedWindow) {
             focusedWindow.reload();
             defaultStore.set("tabs", []);
@@ -220,10 +221,10 @@ let template = [
           }
         })(),
         click: (item, focusedWindow) => {
+          log("application-menu/window/toggle-full-screen", { focusedWindow });
           if (focusedWindow) {
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
           }
-          log("view-menu/toggle-full-screen");
         },
       },
       {
@@ -236,6 +237,7 @@ let template = [
           }
         })(),
         click: (item, focusedWindow) => {
+          log("application-menu/window/toggle-dev-tools", { focusedWindow });
           if (focusedWindow) {
             focusedWindow.webContents.openDevTools({ mode: "undocked" });
             if (focusedWindow.getBrowserView()) {
@@ -254,15 +256,15 @@ let template = [
       {
         label: "Contact Support",
         click: () => {
+          log("application-menu/help/contact-support");
           shell.openExternal("mailto:yourfriends@thedesk.co");
-          log("help-menu/contact-support");
         },
       },
       {
         label: "Open TheDesk.co",
         click: () => {
+          log("application-menu/help/open-home-page");
           shell.openExternal("http://thedesk.co");
-          log("help-menu/view-home-page");
         },
       },
     ],
@@ -288,8 +290,8 @@ function addUpdateMenuItems(items, position) {
       visible: false,
       key: "checkForUpdate",
       click: () => {
+        log("application-menu/app/check-for-update");
         require("electron-updater").autoUpdater.checkForUpdates();
-        log("app/check-for-update");
       },
     },
     {
@@ -298,8 +300,8 @@ function addUpdateMenuItems(items, position) {
       visible: false,
       key: "restartToUpdate",
       click: () => {
+        log("application-menu/app/restart-for-update");
         require("electron-updater").autoUpdater.quitAndInstall();
-        log("app/restart-for-update");
       },
     },
   ];
@@ -348,6 +350,7 @@ if (process.platform === "darwin") {
         label: "Quit",
         accelerator: "Command+Q",
         click: () => {
+          log("application-menu/app/quit");
           app.exit(0);
         },
       },

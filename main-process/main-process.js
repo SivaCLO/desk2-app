@@ -7,10 +7,10 @@ const { showLoginWindow, login } = require("./windows/login-window");
 const { defaultStore } = require("../common/store");
 const debug = /--debug/.test(process.argv[2]);
 
-if (process.mas) app.setName("The Desk");
+if (process.mas) app.setName("Desk for Medium.com");
 
 app.on("ready", () => {
-  log("app/open", { "app-version": app.getVersion(), os: os.platform() });
+  log("main-process/app/ready", { "app-version": app.getVersion(), os: os.platform() });
 
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders["User-Agent"] = session.defaultSession

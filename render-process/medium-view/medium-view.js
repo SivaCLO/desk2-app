@@ -16,13 +16,17 @@ class MediumView {
 
     this.browserView.webContents.on("will-navigate", (e, url) => {
       const fromURL = this.browserView.webContents.getURL();
+      log("medium-view/will-navigate", { fromURL, url });
       const { newTab, checkAndActivateTab } = require("../tabs/tabs");
       if (url.startsWith("https://medium.com/new-story")) {
+        log("medium-view/new-story", { fromURL });
         newTab("", () => this.browserView.webContents.loadURL(fromURL));
       } else if (url.startsWith("https://medium.com/p") && url.includes("/edit")) {
         if (checkAndActivateTab(url)) {
+          log("medium-view/edit-story/already-open", { url });
           this.browserView.webContents.loadURL(fromURL);
         } else {
+          log("medium-view/edit-story", { fromURL, url });
           newTab(url, () => this.browserView.webContents.loadURL(fromURL));
         }
       }
@@ -30,11 +34,10 @@ class MediumView {
 
     this.browserView.webContents.on("dom-ready", (e) => {
       this.browserView.webContents.insertCSS("button:focus {outline:0 !important}");
-      log("open/medium-view");
     });
 
     this.browserView.webContents.on("new-window", (e, url) => {
-      log("open/medium-view/new-window");
+      log("medium-view/new-window", { fromURL: this.browserView.webContents.getURL(), url });
       e.preventDefault();
       Remote.shell.openExternal(url);
     });

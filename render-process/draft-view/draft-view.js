@@ -35,8 +35,10 @@ class DraftView {
 
     this.browserView.webContents.on("will-navigate", (e, url) => {
       const fromURL = this.browserView.webContents.getURL();
+      log("draft-view/will-navigate", { fromURL, url });
       Remote.shell.openExternal(url);
       if (url.includes("postPublishedType")) {
+        log("draft-view/publish", { fromURL, url });
         this.tab.close();
         this.tabs.getTab(0).activate();
         this.tabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/public");
@@ -50,6 +52,7 @@ class DraftView {
     });
 
     this.browserView.webContents.on("new-window", (e, url) => {
+      log("draft-view/new-window", { url });
       e.preventDefault();
       Remote.shell.openExternal(url);
     });
@@ -60,9 +63,9 @@ class DraftView {
 
     this.browserView.webContents.on("did-navigate-in-page", (event) => {
       if (this.browserView.webContents.getURL().endsWith("/edit")) {
+        log("draft-view/did-navigate-in-page", { url: this.browserView.webContents.getURL() });
         let toolTitle = document.getElementById("draft-tools-title");
         toolTitle.innerHTML = this.browserView.webContents.getURL();
-        log("medium/draft/start", toolTitle.innerHTML);
         ipcRenderer.send("save-tab", {
           id: this.tab.id,
           url: this.browserView.webContents.getURL(),
@@ -73,6 +76,7 @@ class DraftView {
 }
 
 function hideMediumLogoAndAvatar(browserView) {
+  log("draft-view/hide-medium-links", { url: browserView.webContents.getURL() });
   browserView.webContents
     .executeJavaScript(
       'if(document.getElementsByClassName("js-metabarLogoLeft").length > 0) document.getElementsByClassName("js-metabarLogoLeft").item(0).style.display="none";' +

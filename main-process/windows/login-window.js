@@ -8,7 +8,7 @@ const { showMainWindow } = require("./main-window");
 let loginWindow = null;
 
 function showLoginWindow(errorMessage) {
-  log("window/login-window/show");
+  log("login-window/show");
   if (!loginWindow) {
     loginWindow = new BrowserWindow({
       width: 600,
@@ -18,14 +18,17 @@ function showLoginWindow(errorMessage) {
       webPreferences: {
         nodeIntegration: true,
         spellcheck: false,
+        enableRemoteModule: true,
       },
     });
     loginWindow.loadURL(path.join("file://", __dirname, "../../render-process/login/login.html")).then(() => {
       let mediumToken = defaultStore.get("medium-token");
       if (mediumToken) {
+        log("login-window/existing-token", { mediumToken });
         loginWindow.webContents.send("login-token", mediumToken);
       }
       if (errorMessage) {
+        log("login-window/existing-error", { errorMessage });
         loginWindow.webContents.send("login-error", errorMessage);
       }
     });
@@ -36,7 +39,7 @@ function showLoginWindow(errorMessage) {
 }
 
 ipcMain.on("login-submit", (e, mediumToken) => {
-  log("window/login-window/submit");
+  log("login-window/submit");
   defaultStore.set("medium-token", mediumToken);
   login().then(() => {
     showMainWindow();
@@ -44,22 +47,23 @@ ipcMain.on("login-submit", (e, mediumToken) => {
 });
 
 ipcMain.on("login-close", (e, mediumToken) => {
-  log("window/login-window/close");
+  log("login-window/close");
   loginWindow.close();
   loginWindow = null;
 });
 
 async function login() {
   let mediumToken = defaultStore.get("medium-token");
+  log("login-window/login-token", { mediumToken });
   let mediumUser = await getMediumUser(mediumToken);
-  let theDeskUser = await getTheDeskUser(mediumToken, mediumUser.id);
-  log("window/login-window-function/login", { mediumToken, mediumUser, thedeskUser: theDeskUser });
+  log("login-window/login-medium-user", { mediumToken, mediumUser });
+  let theDeskAppUser = await getTheDeskAppUser(mediumUser.id);
+  log("login-window/login-the-desk-app-user", { mediumToken, mediumUser, theDeskAppUser });
   defaultStore.set("medium-user", mediumUser);
-  defaultStore.set("thedesk-user", theDeskUser);
+  defaultStore.set("thedeskapp-user", theDeskAppUser);
 }
 
 function getMediumUser(mediumToken) {
-  log("window/login-window-function/get-medium-user", { mediumToken });
   return new Promise((resolve, reject) => {
     axios({
       method: "get",
@@ -73,14 +77,14 @@ function getMediumUser(mediumToken) {
         resolve(response.data.data);
       })
       .catch((e) => {
+        log("login-window/get-medium-user/error", { e });
         console.error("error in reading Medium User", e);
         showLoginWindow("Your Medium token is invalid. We couldn't find your account.");
       });
   });
 }
 
-function getTheDeskUser(mediumToken, mediumUserId) {
-  log("window/login-window-function/get-thedesk-user", { mediumToken, mediumUserId });
+function getTheDeskAppUser(mediumUserId) {
   return new Promise((resolve, reject) => {
     axios
       .get(
@@ -90,6 +94,7 @@ function getTheDeskUser(mediumToken, mediumUserId) {
       )
       .then(function (response) {
         if (response.data.disabled) {
+          log("login-window/get-the-desk-app-user/disabled", { response: response.data });
           showLoginWindow(
             "Your subscription is not active. Please reach out to <a href='yourfriends@thedesk.co'>yourfriends@thedesk.co</a>"
           );
@@ -98,7 +103,8 @@ function getTheDeskUser(mediumToken, mediumUserId) {
         resolve(response.data);
       })
       .catch((e) => {
-        console.error("error in reading The Desk User", e);
+        log("login-window/get-the-desk-app-user/error", { e });
+        console.error("error in reading The Desk App User", e);
         showLoginWindow(
           "Something went wrong. Reach out to <a href='yourfriends@thedesk.co'>yourfriends@thedesk.co</a>"
         );
@@ -107,10 +113,10 @@ function getTheDeskUser(mediumToken, mediumUserId) {
 }
 
 function logout() {
-  log("window/login-window/logout");
+  log("login-window/logout");
   defaultStore.delete("medium-token");
   defaultStore.delete("medium-user");
-  defaultStore.delete("thedesk-user");
+  defaultStore.delete("thedeskapp-user");
   app.exit(0);
 }
 

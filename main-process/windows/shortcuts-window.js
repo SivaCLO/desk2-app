@@ -24,6 +24,7 @@ function toggleShortcutsWindow() {
       webPreferences: {
         nodeIntegration: true,
         spellcheck: false,
+        enableRemoteModule: true,
       },
     };
 
@@ -31,7 +32,7 @@ function toggleShortcutsWindow() {
     shortcutsWindow.loadURL(path.join("file://", __dirname, "../../render-process/shortcuts/shortcuts.html")).then();
     shortcutsWindow.on("close", () => {
       defaultStore.set("shortcutsWindowPosition", shortcutsWindow.getBounds());
-      log("shortcuts-window/close");
+      log("shortcuts-window/close-button");
     });
     shortcutsWindow.on("closed", () => {
       shortcutsWindow = null;

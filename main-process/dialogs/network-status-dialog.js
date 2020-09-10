@@ -5,9 +5,10 @@ const { log } = require("../../common/activity");
 let isOffline = false;
 
 ipcMain.on("network-status", (event, data) => {
-  log("open/dialog/network-status", { data });
+  log("network-status-dialog/status-check", { status: data });
   if (data === "offline") {
     if (!isOffline) {
+      log("network-status-dialog/offline-dialog");
       const options = {
         type: "warning",
         buttons: ["Close Application", "Keep Working"],
@@ -31,6 +32,7 @@ ipcMain.on("network-status", (event, data) => {
     }
   } else {
     if (isOffline) {
+      log("network-status-dialog/online-dialog");
       const options = {
         type: "info",
         buttons: ["Ok"],
