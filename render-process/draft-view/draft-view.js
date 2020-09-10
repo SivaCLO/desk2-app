@@ -81,7 +81,9 @@ function hideMediumLogoAndAvatar(browserView) {
     .executeJavaScript(
       'if(document.getElementsByClassName("js-metabarLogoLeft").length > 0) document.getElementsByClassName("js-metabarLogoLeft").item(0).style.display="none";' +
         'if(document.getElementsByClassName("buttonSet buttonSet--wide").length > 0) document.getElementsByClassName("buttonSet buttonSet--wide").item(0).style.display="none";' +
-        'if(document.getElementsByClassName("js-doneButton").length > 0) document.getElementsByClassName("js-doneButton").item(0).style.display="none";'
+        'if(document.getElementsByClassName("js-doneButton").length > 0) document.getElementsByClassName("js-doneButton").item(0).style.display="none";' +
+        'if(document.getElementsByClassName("u-flexCenter u-height65 u-xs-height56 u-marginRight18").length > 0) document.getElementsByClassName("u-flexCenter u-height65 u-xs-height56 u-marginRight18").item(0).innerHTML = "";' +
+        'if(document.getElementsByClassName("u-inlineBlock u-height28 u-xs-height24 u-verticalAlignTop u-marginRight20 u-marginLeft15 u-borderRightLighter").length > 0) document.getElementsByClassName("u-inlineBlock u-height28 u-xs-height24 u-verticalAlignTop u-marginRight20 u-marginLeft15 u-borderRightLighter").item(0).classList.remove("u-height28");'
     )
     .then();
 }
