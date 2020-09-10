@@ -240,7 +240,7 @@ let template = [
       {
         label: "Open TheDesk.co",
         click: () => {
-          log("application-menu/help/open-home-page");
+          log("application-menu/help/open-thedesk-co");
           shell.openExternal("http://thedesk.co");
         },
       },
