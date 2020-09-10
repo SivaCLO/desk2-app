@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../assets/css/tabs.css" />
     <link rel="stylesheet" href="../assets/css/tools.css" />
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
-    <script src="https://use.fontawesome.com/93a8f50001.js"></script>
   </head>
   <body>
     <div id="tabs" class="etabs-tabgroup" style="-webkit-app-region: drag;">
@@ -20,13 +19,19 @@
         <div class="row">
           <div class="col text-left">
             <button type="button" class="medium-action" data-action="home" data-tooltip="Open draft list">
-              <i class="fa fa-home" data-action="home" data-tooltip="Open draft list"></i>
+              <svg class="bi" width="14" height="14" fill="white" data-action="home" data-tooltip="Open draft list">
+                <use xlink:href="../node_modules/bootstrap-icons/bootstrap-icons.svg#house-door" />
+              </svg>
             </button>
             <button type="button" class="medium-action" data-action="back" data-tooltip="Go back">
-              <i class="fa fa-arrow-left" data-action="back" data-tooltip="Go back"></i>
+              <svg class="bi" width="14" height="14" fill="white" data-action="back" data-tooltip="Go back">
+                <use xlink:href="../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-left" />
+              </svg>
             </button>
             <button type="button" class="medium-action" data-action="forward" data-tooltip="Go forward">
-              <i class="fa fa-arrow-right" data-action="forward" data-tooltip="Go forward"></i>
+              <svg class="bi" width="14" height="14" fill="white" data-action="forward" data-tooltip="Go forward">
+                <use xlink:href="../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-right" />
+              </svg>
             </button>
           </div>
           <div class="col text-center">
@@ -36,10 +41,21 @@
           </div>
           <div class="col text-right">
             <button type="button" class="medium-action" data-action="refresh" data-tooltip="Refresh page">
-              <i class="fa fa-refresh" data-action="refresh" data-tooltip="Refresh page"></i>
+              <svg class="bi" width="14" height="14" fill="white" data-action="refresh" data-tooltip="Refresh page">
+                <use xlink:href="../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-repeat" />
+              </svg>
             </button>
             <button type="button" class="medium-action" data-action="bookmarks" data-tooltip="Open quick links">
-              <i class="fa fa-star" data-action="bookmarks" data-tooltip="Open quick links"></i>
+              <svg
+                class="bi"
+                width="14"
+                height="14"
+                fill="white"
+                data-action="bookmarks"
+                data-tooltip="Open quick links"
+              >
+                <use xlink:href="../node_modules/bootstrap-icons/bootstrap-icons.svg#star" />
+              </svg>
             </button>
             <button
               type="button"
@@ -47,7 +63,16 @@
               data-action="import-draft"
               data-tooltip="Import a markdown file as draft"
             >
-              <i class="fa fa-download" data-action="import-draft" data-tooltip="Import a markdown file as draft"></i>
+              <svg
+                class="bi"
+                width="14"
+                height="14"
+                fill="white"
+                data-action="import-draft"
+                data-tooltip="Import a markdown file as draft"
+              >
+                <use xlink:href="../node_modules/bootstrap-icons/bootstrap-icons.svg#download" />
+              </svg>
             </button>
           </div>
         </div>
@@ -59,7 +84,16 @@
         <div class="row">
           <div class="col text-left">
             <button type="button" class="medium-action" data-action="backToDrafts" data-tooltip="Go back to draft list">
-              <i class="fa fa-arrow-left" data-action="backToDrafts" data-tooltip="Go back to draft list"></i>
+              <svg
+                class="bi"
+                width="14"
+                height="14"
+                fill="white"
+                data-action="backToDrafts"
+                data-tooltip="Go back to draft list"
+              >
+                <use xlink:href="../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-left" />
+              </svg>
             </button>
           </div>
           <div class="col text-center">
@@ -69,7 +103,16 @@
           </div>
           <div class="col text-right">
             <button type="button" class="medium-action" data-action="zen-mode" data-tooltip="Turn on zen mode">
-              <i class="fa fa-arrow-up" data-action="zen-mode" data-tooltip="Enter zen mode"></i>
+              <svg
+                class="bi"
+                width="14"
+                height="14"
+                fill="white"
+                data-action="zen-mode"
+                data-tooltip="Turn on zen mode"
+              >
+                <use xlink:href="../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-up" />
+              </svg>
             </button>
           </div>
         </div>
@@ -81,7 +124,9 @@
         <div class="row">
           <div class="col text-right">
             <button type="button" class="zen-medium-action" data-action="exit-zen-mode">
-              <i class="fa fa-close" data-action="exit-zen-mode"></i>
+              <svg class="bi" width="20" height="20" fill="currentColor" data-action="exit-zen-mode">
+                <use xlink:href="../node_modules/bootstrap-icons/bootstrap-icons.svg#x" />
+              </svg>
             </button>
           </div>
         </div>
@@ -91,7 +136,7 @@
     <div class="network-status" id="network-status"></div>
 
     <script>
-      require("bootstrap")
+      require("bootstrap");
       require("./tabs/tabs");
       require("./tools/tools");
       require("./ex-links");
