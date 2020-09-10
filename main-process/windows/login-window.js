@@ -100,7 +100,7 @@ function getTheDeskAppUser(mediumUser) {
         if (response.data.disabled) {
           log("login-window/get-the-desk-app-user/disabled", { response: response.data });
           showLoginWindow(
-            "Please contact <a href='mailto:yourfriends@thedesk.co'>yourfriends@thedesk.co</a> to request access."
+            "Account disabled. Please contact <a href='mailto:yourfriends@thedesk.co'>yourfriends@thedesk.co</a>"
           );
           reject();
         }
