@@ -1,11 +1,10 @@
 {
   "name": "thedeskapp",
   "productName": "Desk for Medium.com",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "description": "Desktop App for Medium.com",
   "main": "main.js",
   "bin": "cli.js",
-  "license": "CC0-1.0",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --debug",
@@ -19,7 +18,7 @@
     "chai": "^3.4.1",
     "chai-as-promised": "^6.0.0",
     "check-for-leaks": "^1.2.1",
-    "electron": "^9.1.2",
+    "electron": "^9.3.0",
     "electron-builder": "^22.8.0",
     "electron-notarize": "^1.0.0",
     "electron-packager": "^15.0.0",
@@ -36,6 +35,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "bootstrap": "^4.5.2",
+    "bootstrap-icons": "^1.0.0",
     "electron-find": "^1.0.6",
     "electron-log": "^4.2.2",
     "electron-settings": "^4.0.2",
@@ -67,7 +67,7 @@
       {
         "provider": "github",
         "owner": "thedeskco",
-        "repo": "thedeskapp",
+        "repo": "thedeskapp-releases",
         "token": "c425bcee75779c0c29891512377033d2a2a9cbd8"
       }
     ],

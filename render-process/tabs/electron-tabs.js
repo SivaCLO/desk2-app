@@ -36,11 +36,11 @@ class TabGroup extends EventEmitter {
   }
 
   addTab(args = this.options.newTab) {
-    log("electron-tabs/add-tab");
     if (typeof args === "function") {
       args = args(this);
     }
     let id = this.newTabId;
+    log("electron-tabs/add-tab", { id, args });
     this.newTabId++;
     let tab = new Tab(this, id, args);
     this.tabs.push(tab);
@@ -342,7 +342,7 @@ class Tab extends EventEmitter {
   activate() {
     if (this.isClosed) return;
 
-    log("electron-tabs/activate-tab", { tab: this });
+    log("electron-tabs/activate-tab", { id: this.id, url: this.url, title: this.getTitle() });
 
     // Deactivate previous Tab
     let activeTab = this.tabGroup.getActiveTab();
@@ -418,7 +418,7 @@ class Tab extends EventEmitter {
   }
 
   close(force) {
-    log("electron-tabs/close-tab", { tab: this });
+    log("electron-tabs/close-tab", { id: this.id, url: this.url, title: this.getTitle() });
     const abortController = new AbortController();
     const abort = () => abortController.abort();
     this.emit("closing", this, abort);

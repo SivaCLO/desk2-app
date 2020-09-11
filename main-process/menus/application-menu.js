@@ -1,4 +1,4 @@
-const { BrowserWindow, Menu, app, shell, ipcMain } = require("electron");
+const { Menu, app, shell, ipcMain } = require("electron");
 const { showEmailWindow } = require("../windows/email-window");
 const { logout } = require("../windows/login-window");
 const { getMainWindow } = require("../windows/main-window");
@@ -136,7 +136,7 @@ let template = [
         label: "Reload Story",
         accelerator: "CmdOrCtrl+R",
         click: (item, focusedWindow) => {
-          log("application-menu/view/reload-story", { focusedWindow });
+          log("application-menu/view/reload-story");
           if (focusedWindow) {
             // on reload, start fresh and close any old
             // open secondary windows
@@ -201,15 +201,12 @@ let template = [
         label: "Reload Window",
         accelerator: "CmdOrCtrl+Shift+R",
         click: (item, focusedWindow) => {
-          log("application-menu/window/reload-window", { focusedWindow });
+          log("application-menu/window/reload-window");
           if (focusedWindow) {
             focusedWindow.reload();
             defaultStore.set("tabs", []);
           }
         },
-      },
-      {
-        type: "separator",
       },
       {
         label: "Toggle Full Screen",
@@ -221,29 +218,9 @@ let template = [
           }
         })(),
         click: (item, focusedWindow) => {
-          log("application-menu/window/toggle-full-screen", { focusedWindow });
+          log("application-menu/window/toggle-full-screen");
           if (focusedWindow) {
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
-          }
-        },
-      },
-      {
-        label: "Toggle Developer Tools",
-        accelerator: (() => {
-          if (process.platform === "darwin") {
-            return "Alt+Command+I";
-          } else {
-            return "Ctrl+Shift+I";
-          }
-        })(),
-        click: (item, focusedWindow) => {
-          log("application-menu/window/toggle-dev-tools", { focusedWindow });
-          if (focusedWindow) {
-            focusedWindow.webContents.openDevTools({ mode: "undocked" });
-            if (focusedWindow.getBrowserView()) {
-              focusedWindow.getBrowserView().webContents &&
-                focusedWindow.getBrowserView().webContents.openDevTools({ mode: "undocked" });
-            }
           }
         },
       },
@@ -263,7 +240,7 @@ let template = [
       {
         label: "Open TheDesk.co",
         click: () => {
-          log("application-menu/help/open-home-page");
+          log("application-menu/help/open-thedesk-co");
           shell.openExternal("http://thedesk.co");
         },
       },
@@ -369,6 +346,34 @@ if (process.platform === "darwin") {
   );
 
   addUpdateMenuItems(template[0].submenu, 1);
+}
+
+if (/--debug/.test(process.argv[2])) {
+  template[template.length - 2].submenu.push(
+    {
+      type: "separator",
+    },
+    {
+      label: "Show Developer Tools",
+      accelerator: (() => {
+        if (process.platform === "darwin") {
+          return "Alt+Command+I";
+        } else {
+          return "Ctrl+Shift+I";
+        }
+      })(),
+      click: (item, focusedWindow) => {
+        log("application-menu/window/toggle-dev-tools");
+        if (focusedWindow) {
+          focusedWindow.webContents.openDevTools({ mode: "undocked" });
+          if (focusedWindow.getBrowserView()) {
+            focusedWindow.getBrowserView().webContents &&
+              focusedWindow.getBrowserView().webContents.openDevTools({ mode: "undocked" });
+          }
+        }
+      },
+    }
+  );
 }
 
 if (process.platform === "win32") {

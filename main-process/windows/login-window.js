@@ -15,6 +15,8 @@ function showLoginWindow(errorMessage) {
       height: 300,
       frame: false,
       resizable: false,
+      alwaysOnTop: true,
+      fullscreen: false,
       webPreferences: {
         nodeIntegration: true,
         spellcheck: false,
@@ -57,7 +59,7 @@ async function login() {
   log("login-window/login-token", { mediumToken });
   let mediumUser = await getMediumUser(mediumToken);
   log("login-window/login-medium-user", { mediumToken, mediumUser });
-  let theDeskAppUser = await getTheDeskAppUser(mediumUser.id);
+  let theDeskAppUser = await getTheDeskAppUser(mediumUser);
   log("login-window/login-the-desk-app-user", { mediumToken, mediumUser, theDeskAppUser });
   defaultStore.set("medium-user", mediumUser);
   defaultStore.set("thedeskapp-user", theDeskAppUser);
@@ -79,25 +81,25 @@ function getMediumUser(mediumToken) {
       .catch((e) => {
         log("login-window/get-medium-user/error", { e });
         console.error("error in reading Medium User", e);
-        showLoginWindow("Your Medium token is invalid. We couldn't find your account.");
+        showLoginWindow("Your Medium token is invalid");
       });
   });
 }
 
-function getTheDeskAppUser(mediumUserId) {
+function getTheDeskAppUser(mediumUser) {
   return new Promise((resolve, reject) => {
     axios
       .get(
         "https://thedeskfunctions.azurewebsites.net/api/v2/user/" +
-          mediumUserId +
+          mediumUser.id +
+          "/" +
+          mediumUser.username +
           "?code=9bafK2KAjsBONebLekGF0a80YletTdredAJCgRmV8oCqrwlzhlCfMg=="
       )
       .then(function (response) {
         if (response.data.disabled) {
           log("login-window/get-the-desk-app-user/disabled", { response: response.data });
-          showLoginWindow(
-            "Your subscription is not active. Please reach out to <a href='yourfriends@thedesk.co'>yourfriends@thedesk.co</a>"
-          );
+          showLoginWindow("Account disabled");
           reject();
         }
         resolve(response.data);
@@ -105,9 +107,7 @@ function getTheDeskAppUser(mediumUserId) {
       .catch((e) => {
         log("login-window/get-the-desk-app-user/error", { e });
         console.error("error in reading The Desk App User", e);
-        showLoginWindow(
-          "Something went wrong. Reach out to <a href='yourfriends@thedesk.co'>yourfriends@thedesk.co</a>"
-        );
+        showLoginWindow("Something went wrong");
       });
   });
 }
