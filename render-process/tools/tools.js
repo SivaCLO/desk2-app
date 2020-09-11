@@ -50,6 +50,9 @@ function handleAction(event) {
   } else if (action === "open-link") {
     log("tools/open-link");
     Remote.shell.openExternal(Remote.getCurrentWindow().getBrowserView().webContents.getURL());
+  }else if(action === "bookmarks"){
+    log("tools/open-bookmark");
+    ipcRenderer.send("open-bookmark")
   }
 
   // Draft Tools

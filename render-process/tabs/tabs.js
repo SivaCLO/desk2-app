@@ -48,13 +48,17 @@ checkAndActivateTab = function (url) {
   }
 };
 
-loadDrafts = function () {
+loadDrafts = function (url) {
   ElectronTabs.getTab(0).activate();
-  ElectronTabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/drafts").then();
+  if(!url){
+    ElectronTabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/drafts").then();
+  }else{
+    ElectronTabs.getTab(0).view.browserView.webContents.loadURL(url)
+  }
 };
 
 ipcRenderer.on("load-drafts", (event, url) => {
-  loadDrafts();
+  loadDrafts(url);
   exitZenMode();
 });
 

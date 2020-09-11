@@ -1,5 +1,6 @@
 const { Menu, app, shell, ipcMain } = require("electron");
 const { showEmailWindow } = require("../windows/email-window");
+const { showBookmarkWindow } = require("../windows/bookmark-window");
 const { logout } = require("../windows/login-window");
 const { getMainWindow } = require("../windows/main-window");
 const { toggleShortcutsWindow } = require("../windows/shortcuts-window");
@@ -34,6 +35,14 @@ let template = [
         click() {
           log("application-menu/file/email-signin");
           showEmailWindow();
+        },
+      },
+      {
+        label: "Bookmarks",
+        accelerator: "CmdOrCtrl+Shift+B",
+        click() {
+          log("application-menu/file/bookmark");
+          showBookmarkWindow();
         },
       },
       {
@@ -390,4 +399,7 @@ app.on("ready", () => {
   ipcMain.on("zen-mode-off", () => {
     zenMode = false;
   });
+  ipcMain.on("open-bookmark", ()=>{
+    showBookmarkWindow();
+  })
 });
