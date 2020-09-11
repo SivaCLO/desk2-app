@@ -81,7 +81,7 @@ function getMediumUser(mediumToken) {
       .catch((e) => {
         log("login-window/get-medium-user/error", { e });
         console.error("error in reading Medium User", e);
-        showLoginWindow("Your Medium token is invalid. We couldn't find your account.");
+        showLoginWindow("Your Medium token is invalid");
       });
   });
 }
@@ -99,9 +99,7 @@ function getTheDeskAppUser(mediumUser) {
       .then(function (response) {
         if (response.data.disabled) {
           log("login-window/get-the-desk-app-user/disabled", { response: response.data });
-          showLoginWindow(
-            "Account disabled. Please contact <a href='mailto:yourfriends@thedesk.co'>yourfriends@thedesk.co</a>"
-          );
+          showLoginWindow("Account disabled");
           reject();
         }
         resolve(response.data);
@@ -109,9 +107,7 @@ function getTheDeskAppUser(mediumUser) {
       .catch((e) => {
         log("login-window/get-the-desk-app-user/error", { e });
         console.error("error in reading The Desk App User", e);
-        showLoginWindow(
-          "Something went wrong. Reach out to <a href='mailto:yourfriends@thedesk.co'>yourfriends@thedesk.co</a>"
-        );
+        showLoginWindow("Something went wrong");
       });
   });
 }
