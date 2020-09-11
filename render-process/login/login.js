@@ -7,7 +7,7 @@ document.getElementById("submit").addEventListener("click", function () {
     ipcRenderer.send("login-submit", token);
     ipcRenderer.send("login-close");
   } else {
-    document.getElementById("error-msg").innerHTML = "Please enter a valid medium token";
+    document.getElementById("error-msg").innerHTML = "Please enter a Medium token";
   }
 });
 

@@ -16,7 +16,7 @@ class MediumView {
 
     this.browserView.webContents.on("will-navigate", (e, url) => {
       const fromURL = this.browserView.webContents.getURL();
-      log("medium-view/will-navigate", { fromURL, url });
+      log("medium-view/will-navigate", { url, fromURL });
       const { newTab, checkAndActivateTab } = require("../tabs/tabs");
       if (url.startsWith("https://medium.com/new-story")) {
         log("medium-view/new-story", { fromURL });
@@ -26,7 +26,7 @@ class MediumView {
           log("medium-view/edit-story/already-open", { url });
           this.browserView.webContents.loadURL(fromURL);
         } else {
-          log("medium-view/edit-story", { fromURL, url });
+          log("medium-view/edit-story", { url, fromURL });
           newTab(url, () => this.browserView.webContents.loadURL(fromURL));
         }
       }
@@ -37,7 +37,7 @@ class MediumView {
     });
 
     this.browserView.webContents.on("new-window", (e, url) => {
-      log("medium-view/new-window", { fromURL: this.browserView.webContents.getURL(), url });
+      log("medium-view/new-window", { url, fromURL: this.browserView.webContents.getURL() });
       e.preventDefault();
       Remote.shell.openExternal(url);
     });

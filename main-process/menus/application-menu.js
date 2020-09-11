@@ -136,7 +136,7 @@ let template = [
         label: "Reload Story",
         accelerator: "CmdOrCtrl+R",
         click: (item, focusedWindow) => {
-          log("application-menu/view/reload-story", { focusedWindow });
+          log("application-menu/view/reload-story");
           if (focusedWindow) {
             // on reload, start fresh and close any old
             // open secondary windows
@@ -201,7 +201,7 @@ let template = [
         label: "Reload Window",
         accelerator: "CmdOrCtrl+Shift+R",
         click: (item, focusedWindow) => {
-          log("application-menu/window/reload-window", { focusedWindow });
+          log("application-menu/window/reload-window");
           if (focusedWindow) {
             focusedWindow.reload();
             defaultStore.set("tabs", []);
@@ -218,7 +218,7 @@ let template = [
           }
         })(),
         click: (item, focusedWindow) => {
-          log("application-menu/window/toggle-full-screen", { focusedWindow });
+          log("application-menu/window/toggle-full-screen");
           if (focusedWindow) {
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
           }
@@ -363,7 +363,7 @@ if (/--debug/.test(process.argv[2])) {
         }
       })(),
       click: (item, focusedWindow) => {
-        log("application-menu/window/toggle-dev-tools", { focusedWindow });
+        log("application-menu/window/toggle-dev-tools");
         if (focusedWindow) {
           focusedWindow.webContents.openDevTools({ mode: "undocked" });
           if (focusedWindow.getBrowserView()) {

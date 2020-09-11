@@ -35,10 +35,10 @@ class DraftView {
 
     this.browserView.webContents.on("will-navigate", (e, url) => {
       const fromURL = this.browserView.webContents.getURL();
-      log("draft-view/will-navigate", { fromURL, url });
+      log("draft-view/will-navigate", { url, fromURL });
       Remote.shell.openExternal(url);
       if (url.includes("postPublishedType")) {
-        log("draft-view/publish", { fromURL, url });
+        log("draft-view/publish", { url, fromURL });
         this.tab.close();
         this.tabs.getTab(0).activate();
         this.tabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/public");

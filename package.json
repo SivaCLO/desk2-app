@@ -1,11 +1,10 @@
 {
   "name": "thedeskapp",
   "productName": "Desk for Medium.com",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "description": "Desktop App for Medium.com",
   "main": "main.js",
   "bin": "cli.js",
-  "license": "CC0-1.0",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --debug",
@@ -68,7 +67,7 @@
       {
         "provider": "github",
         "owner": "thedeskco",
-        "repo": "thedeskapp",
+        "repo": "thedeskapp-releases",
         "token": "c425bcee75779c0c29891512377033d2a2a9cbd8"
       }
     ],

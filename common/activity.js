@@ -8,6 +8,7 @@ function log(activityCode, activityData) {
       "https://thedeskfunctions.azurewebsites.net/api/v2/activity?code=IrAqkRQLaEBPrRzrr6u5WUoHtKQcTJwmOlgaHZNDhSPwxJ0zQw0A4w==",
       {
         userId: mediumUser ? mediumUser.id : "",
+        userName: mediumUser ? mediumUser.username : "",
         activityCode,
         activityData,
         activityTime: Date.now(),
