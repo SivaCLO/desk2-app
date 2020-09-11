@@ -4,6 +4,8 @@ const { ipcRenderer } = require("electron");
 const MediumView = require("../medium-view/medium-view");
 const DraftView = require("../draft-view/draft-view");
 const { log } = require("../../common/activity");
+const FindInPage = require("electron-find").FindInPage;
+let findInPage = null;
 
 if (!document) {
   throw Error("electron-tabs module must be called in renderer process");
@@ -375,6 +377,7 @@ class Tab extends EventEmitter {
     this.setTitle(this.view.browserView.webContents.getTitle());
 
     this.emit("active", this);
+    destroyFindInPage();
     return this;
   }
 
@@ -498,4 +501,20 @@ const TabPrivate = {
   },
 };
 
+ipcRenderer.on("on-find", (e, args) => {
+  if(findInPage){
+    findInPage.destroy()
+  }
+  findInPage = new FindInPage(Remote.getCurrentWindow().getBrowserView().webContents,{
+    preload: true
+  });
+  findInPage.openFindWindow();
+});
+
+function destroyFindInPage(){
+  if(findInPage){
+    findInPage.destroy()
+    findInPage = null;
+  }
+}
 module.exports = TabGroup;
