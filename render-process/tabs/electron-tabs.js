@@ -506,8 +506,14 @@ ipcRenderer.on("on-find", (e, args) => {
     findInPage.destroy()
   }
   findInPage = new FindInPage(Remote.getCurrentWindow().getBrowserView().webContents,{
-    preload: true
+    preload: true,
+    parentElement: document.querySelector('.toolbar.active'),
+    offsetTop: 40,
   });
+  setTimeout(()=>{
+    let elements =document.getElementsByClassName('find-box')[0].children
+    elements[0].focus();
+  },500)
   findInPage.openFindWindow();
 });
 

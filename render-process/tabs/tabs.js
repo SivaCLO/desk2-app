@@ -1,7 +1,6 @@
 const TabGroup = require("./electron-tabs");
 const { ipcRenderer } = require("electron");
 const Remote = require("electron").remote;
-const FindInPage = require("electron-find").FindInPage;
 const { log } = require("../../common/activity");
 let zenMode = false;
 
@@ -104,10 +103,6 @@ ipcRenderer.on("open-previously-closed-tab", (e, args) => {
   exitZenMode();
 });
 
-ipcRenderer.on("on-find", (e, args) => {
-  let findInPage = new FindInPage(Remote.getCurrentWindow().getBrowserView().webContents);
-  findInPage.openFindWindow();
-});
 
 ipcRenderer.on("tab-padding", (event, on) => {
   if (on) document.getElementById("tabs").classList.add("etabs-padding");
