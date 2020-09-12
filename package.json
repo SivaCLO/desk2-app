@@ -11,7 +11,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps",
-    "release": "electron-builder -m"
+    "release": "electron-builder -ml"
   },
   "devDependencies": {
     "@octokit/rest": "^16.3.2",
@@ -63,6 +63,7 @@
       "entitlementsInherit": "assets/mac/entitlements.mac.inherit.plist",
       "gatekeeperAssess": false
     },
+    "linux": {},
     "publish": [
       {
         "provider": "github",
