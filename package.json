@@ -63,7 +63,11 @@
       "entitlementsInherit": "assets/mac/entitlements.mac.inherit.plist",
       "gatekeeperAssess": false
     },
-    "linux": {},
+    "linux": {
+      "target": [
+	"AppImage"
+      ]
+    },
     "publish": [
       {
         "provider": "github",
