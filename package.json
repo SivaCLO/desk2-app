@@ -65,8 +65,9 @@
     },
     "linux": {
       "target": [
-	"AppImage"
-      ]
+        "AppImage"
+      ],
+      "icon": "assets/app-icon/thedesk-512.png"
     },
     "publish": [
       {
