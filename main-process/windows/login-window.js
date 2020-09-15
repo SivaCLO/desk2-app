@@ -56,13 +56,13 @@ ipcMain.on("login-close", (e, mediumToken) => {
 
 async function login() {
   let mediumToken = defaultStore.get("medium-token");
-  log("login-window/login-token", { mediumToken });
+  log("login-window/login-medium-user", { mediumToken });
   let mediumUser = await getMediumUser(mediumToken);
   defaultStore.set("medium-user", mediumUser);
-  log("login-window/login-medium-user", { mediumToken, mediumUser });
+  log("login-window/login-the-desk-app-user", { mediumUser });
   let theDeskAppUser = await getTheDeskAppUser(mediumUser);
   defaultStore.set("thedeskapp-user", theDeskAppUser);
-  log("login-window/login-the-desk-app-user", { mediumToken, mediumUser, theDeskAppUser });
+  log("login-window/login-success", { theDeskAppUser });
 }
 
 function getMediumUser(mediumToken) {
