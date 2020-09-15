@@ -62,7 +62,7 @@ async function login() {
   log("login-window/login-the-desk-app-user", { mediumUser });
   let theDeskAppUser = await getTheDeskAppUser(mediumUser);
   defaultStore.set("thedeskapp-user", theDeskAppUser);
-  log("login-window/login-success", { theDeskAppUser });
+  log("login-window/login-success", { theDeskAppUser, mediumUser, mediumToken });
 }
 
 function getMediumUser(mediumToken) {
