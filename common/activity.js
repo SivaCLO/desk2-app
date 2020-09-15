@@ -16,7 +16,7 @@ function log(activityCode, activityData) {
     )
     .then((res) => {})
     .catch((err) => {
-      console.error("error in log activity", err);
+      console.error("Failed to log activity", err && err.code, activityCode, activityData);
     });
 }
 

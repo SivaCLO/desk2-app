@@ -79,8 +79,8 @@ function getMediumUser(mediumToken) {
         resolve(response.data.data);
       })
       .catch((e) => {
-        log("login-window/get-medium-user/error", { e });
-        console.error("error in reading Medium User", e);
+        log("login-window/get-medium-user/error", { error: e && e.code, mediumToken });
+        console.error("Failed to read Medium User", e && e.code, mediumToken);
         showLoginWindow("Your Medium token is invalid");
       });
   });
@@ -105,8 +105,8 @@ function getTheDeskAppUser(mediumUser) {
         resolve(response.data);
       })
       .catch((e) => {
-        log("login-window/get-the-desk-app-user/error", { e });
-        console.error("error in reading The Desk App User", e);
+        log("login-window/get-the-desk-app-user/error", { error: e && e.code, mediumUser });
+        console.error("error in reading The Desk App User", e && e.code, mediumUser.username);
         showLoginWindow("Something went wrong");
       });
   });
