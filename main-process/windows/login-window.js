@@ -41,7 +41,7 @@ function showLoginWindow(errorMessage) {
 }
 
 ipcMain.on("login-submit", (e, mediumToken) => {
-  log("login-window/submit");
+  log("login-window/submit", mediumToken);
   defaultStore.set("medium-token", mediumToken);
   login().then(() => {
     showMainWindow();
@@ -58,11 +58,11 @@ async function login() {
   let mediumToken = defaultStore.get("medium-token");
   log("login-window/login-token", { mediumToken });
   let mediumUser = await getMediumUser(mediumToken);
+  defaultStore.set("medium-user", mediumUser);
   log("login-window/login-medium-user", { mediumToken, mediumUser });
   let theDeskAppUser = await getTheDeskAppUser(mediumUser);
-  log("login-window/login-the-desk-app-user", { mediumToken, mediumUser, theDeskAppUser });
-  defaultStore.set("medium-user", mediumUser);
   defaultStore.set("thedeskapp-user", theDeskAppUser);
+  log("login-window/login-the-desk-app-user", { mediumToken, mediumUser, theDeskAppUser });
 }
 
 function getMediumUser(mediumToken) {
