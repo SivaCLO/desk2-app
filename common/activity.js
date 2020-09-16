@@ -3,21 +3,31 @@ const { defaultStore } = require("./store");
 
 function log(activityCode, activityData) {
   let mediumUser = defaultStore.get("medium-user");
-  axios
-    .post(
-      "https://thedeskfunctions.azurewebsites.net/api/v2/activity?code=IrAqkRQLaEBPrRzrr6u5WUoHtKQcTJwmOlgaHZNDhSPwxJ0zQw0A4w==",
-      {
-        userId: mediumUser ? mediumUser.id : "",
-        userName: mediumUser ? mediumUser.username : "",
-        activityCode,
-        activityData,
-        activityTime: Date.now(),
-      }
-    )
-    .then((res) => {})
-    .catch((err) => {
-      console.error("Failed to log activity", err && err.code, activityCode, activityData);
+  if (/--debug/.test(process.argv[2])) {
+    console.log({
+      userId: mediumUser ? mediumUser.id : "",
+      userName: mediumUser ? mediumUser.username : "",
+      activityCode,
+      activityData,
+      activityTime: Date.now(),
     });
+  } else {
+    axios
+      .post(
+        "https://thedeskfunctions.azurewebsites.net/api/v2/activity?code=IrAqkRQLaEBPrRzrr6u5WUoHtKQcTJwmOlgaHZNDhSPwxJ0zQw0A4w==",
+        {
+          userId: mediumUser ? mediumUser.id : "",
+          userName: mediumUser ? mediumUser.username : "",
+          activityCode,
+          activityData,
+          activityTime: Date.now(),
+        }
+      )
+      .then((res) => {})
+      .catch((err) => {
+        console.error("Failed to log activity", err && err.code, activityCode, activityData);
+      });
+  }
 }
 
 module.exports = { log };
