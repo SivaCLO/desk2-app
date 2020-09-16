@@ -41,7 +41,7 @@ function showLoginWindow(errorMessage) {
 }
 
 ipcMain.on("login-submit", (e, mediumToken) => {
-  log("login-window/submit");
+  log("login-window/submit", mediumToken);
   defaultStore.set("medium-token", mediumToken);
   login().then(() => {
     showMainWindow();
@@ -56,13 +56,13 @@ ipcMain.on("login-close", (e, mediumToken) => {
 
 async function login() {
   let mediumToken = defaultStore.get("medium-token");
-  log("login-window/login-token", { mediumToken });
+  log("login-window/login-medium-user", { mediumToken });
   let mediumUser = await getMediumUser(mediumToken);
-  log("login-window/login-medium-user", { mediumToken, mediumUser });
-  let theDeskAppUser = await getTheDeskAppUser(mediumUser);
-  log("login-window/login-the-desk-app-user", { mediumToken, mediumUser, theDeskAppUser });
   defaultStore.set("medium-user", mediumUser);
+  log("login-window/login-the-desk-app-user", { mediumUser });
+  let theDeskAppUser = await getTheDeskAppUser(mediumUser);
   defaultStore.set("thedeskapp-user", theDeskAppUser);
+  log("login-window/login-success", { theDeskAppUser, mediumUser, mediumToken });
 }
 
 function getMediumUser(mediumToken) {
@@ -79,8 +79,8 @@ function getMediumUser(mediumToken) {
         resolve(response.data.data);
       })
       .catch((e) => {
-        log("login-window/get-medium-user/error", { e });
-        console.error("error in reading Medium User", e);
+        log("login-window/get-medium-user/error", { error: e && e.code, mediumToken });
+        console.error("Failed to read Medium User", e && e.code, mediumToken);
         showLoginWindow("Your Medium token is invalid");
       });
   });
@@ -105,8 +105,8 @@ function getTheDeskAppUser(mediumUser) {
         resolve(response.data);
       })
       .catch((e) => {
-        log("login-window/get-the-desk-app-user/error", { e });
-        console.error("error in reading The Desk App User", e);
+        log("login-window/get-the-desk-app-user/error", { error: e && e.code, mediumUser });
+        console.error("error in reading The Desk App User", e && e.code, mediumUser.username);
         showLoginWindow("Something went wrong");
       });
   });
