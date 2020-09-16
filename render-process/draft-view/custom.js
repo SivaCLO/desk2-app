@@ -1,6 +1,8 @@
 console.log("Custom JS File loaded successfully...");
 
 window.addEventListener("load", () => {
+  hider();
+  dividerAndPublicationHider();
   document.body.addEventListener("click", (event) => {
     // console.log("Dataset action events", event.target.dataset.action);
     if (
@@ -10,9 +12,10 @@ window.addEventListener("load", () => {
     ) {
       hider();
     }
+    if (event.target.dataset.action === "add-to-collection") {
+      dividerAndPublicationHider();
+    }
   });
-
-  dividerAndPublicationHider();
 });
 
 function hider() {
@@ -25,10 +28,14 @@ function hider() {
 }
 
 function dividerAndPublicationHider() {
-  let metaBarLeft = document.getElementsByClassName("metabar-block").item(0).childNodes;
-  if (metaBarLeft.length > 0) {
-    if (metaBarLeft[0].className === "js-metabarLogoLeft") metaBarLeft[0].innerHTML = "";
-    metaBarLeft[2].innerHTML = "";
-    metaBarLeft[3].innerHTML = "";
-  }
+  setTimeout(() => {
+    let metaBarLeft = document.getElementsByClassName("metabar-block").item(0).childNodes;
+    if (metaBarLeft.length > 3) {
+      metaBarLeft[0].innerHTML = "";
+      metaBarLeft[1].innerHTML = "";
+      metaBarLeft[2].innerHTML = "";
+      metaBarLeft[3].innerHTML = "";
+    }
+  }, 1000);
+  hider();
 }
