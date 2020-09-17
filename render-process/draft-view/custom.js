@@ -1,46 +1,52 @@
-console.log("Custom JS File loaded successfully...");
+console.log("Running Custom JS from the Desk app...");
 
 window.addEventListener("load", () => {
-  hideMediumLogoAndAvatar();
-  hideDividerAndPublicationLogo();
+  hideMeta();
+  setTimeout(() => {
+    hideMeta();
+    setTimeout(() => {
+      hideMeta();
+      setTimeout(() => {
+        hideMeta();
+      }, 5000);
+    }, 1500);
+  }, 500);
+
   document.body.addEventListener("click", (event) => {
-    console.log("Dataset action events", event.target.dataset.action);
     if (
       event.target.dataset.action === "save-draft-collection" ||
       event.target.dataset.action === "overlay-confirm" ||
-      event.target.dataset.action === "close"
+      event.target.dataset.action === "close" ||
+      event.target.dataset.action === "add-to-collection"
     ) {
-      hideMediumLogoAndAvatar();
+      hideMeta();
       setTimeout(() => {
-        hideMediumLogoAndAvatar();
-      }, 5000);
-    }
-    if (event.target.dataset.action === "add-to-collection") {
-      hideDividerAndPublicationLogo();
-      setTimeout(() => {
-        hideDividerAndPublicationLogo();
-      }, 5000);
+        hideMeta();
+        setTimeout(() => {
+          hideMeta();
+          setTimeout(() => {
+            hideMeta();
+          }, 5000);
+        }, 1500);
+      }, 500);
     }
   });
 });
 
-function hideMediumLogoAndAvatar() {
-  console.log("hideMediumLogoAndAvatar");
-  if (document.getElementsByClassName("js-metabarLogoLeft").length > 0)
-    document.getElementsByClassName("js-metabarLogoLeft").item(0).style.display = "none";
-  if (document.getElementsByClassName("buttonSet buttonSet--wide").length > 0)
-    document.getElementsByClassName("buttonSet buttonSet--wide").item(0).style.display = "none";
-}
-
-function hideDividerAndPublicationLogo() {
-  console.log("hideDividerAndPublicationLogo");
+function hideMeta() {
   let metaBarLeft = document.getElementsByClassName("metabar-block").item(0).childNodes;
-  if (metaBarLeft.length > 3) {
+  if (metaBarLeft.length > 0) {
     metaBarLeft[0].innerHTML = "";
+  }
+  if (metaBarLeft.length > 4) {
     metaBarLeft[1].innerHTML = "";
     metaBarLeft[2].innerHTML = "";
     metaBarLeft[3].innerHTML = "";
   }
 
-  hideMediumLogoAndAvatar();
+  let buttonSet = document.getElementsByClassName("buttonSet buttonSet--wide").item(0);
+  if (buttonSet) buttonSet.style.display = "none";
+
+  let jsDoneButton = document.getElementsByClassName("js-doneButton").item(0);
+  if (jsDoneButton) jsDoneButton.style.display = "none";
 }
