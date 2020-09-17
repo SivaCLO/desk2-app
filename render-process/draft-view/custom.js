@@ -13,13 +13,13 @@ window.addEventListener("load", () => {
       hideMediumLogoAndAvatar();
       setTimeout(() => {
         hideMediumLogoAndAvatar();
-      }, 1500);
+      }, 3000);
     }
     if (event.target.dataset.action === "add-to-collection") {
       hideDividerAndPublicationLogo();
       setTimeout(() => {
         hideDividerAndPublicationLogo();
-      }, 1500);
+      }, 3000);
     }
   });
 });
