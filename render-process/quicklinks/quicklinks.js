@@ -5,14 +5,12 @@ window.addEventListener(
   "keyup",
   (e) => {
     if (e.code === "Escape") {
-      console.log("Escape press");
-      ipcRenderer.send("close-quicklink");
+      ipcRenderer.send("close-quicklinks-window");
     }
     if (e.code === "ArrowUp" || e.code === "ArrowDown") {
       arrowUpOrDownSelector(e.code);
     }
     if (e.code === "Enter") {
-      console.log("Enter press");
       let activeElement = document.getElementsByClassName("active").item(0);
       activeElement.click();
     }
@@ -52,7 +50,7 @@ function arrowUpOrDownSelector(keyEvent) {
     tempArray = [],
     arrayElementIndex,
     activeElementPosition = null;
-  listOfItems = document.getElementsByClassName("list-group").item(0).childNodes;
+  listOfItems = document.getElementById("quicklink-list").childNodes;
 
   for (i = 0; i < listOfItems.length - 1; i++) {
     if (listOfItems[i].nodeName === "A") {
