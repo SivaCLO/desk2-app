@@ -13,6 +13,7 @@ class DraftView {
         allowRunningInsecureContent: true,
         nodeIntegration: true,
         spellcheck: false,
+        preload: path.join(__dirname, "custom.js"),
       },
     });
 
@@ -24,14 +25,6 @@ class DraftView {
         url,
       });
     }
-
-    this.browserView.webContents.on("did-start-loading", () => {
-      hideMediumLogoAndAvatar(this.browserView);
-    });
-
-    this.browserView.webContents.on("did-finish-load", () => {
-      hideMediumLogoAndAvatar(this.browserView);
-    });
 
     this.browserView.webContents.on("will-navigate", (e, url) => {
       const fromURL = this.browserView.webContents.getURL();
@@ -73,17 +66,6 @@ class DraftView {
       }
     });
   }
-}
-
-function hideMediumLogoAndAvatar(browserView) {
-  log("draft-view/hide-medium-links", { url: browserView.webContents.getURL() });
-  browserView.webContents
-    .executeJavaScript(
-      'if(document.getElementsByClassName("js-metabarLogoLeft").length > 0) document.getElementsByClassName("js-metabarLogoLeft").item(0).style.display="none";' +
-        'if(document.getElementsByClassName("buttonSet buttonSet--wide").length > 0) document.getElementsByClassName("buttonSet buttonSet--wide").item(0).style.display="none";' +
-        'if(document.getElementsByClassName("js-doneButton").length > 0) document.getElementsByClassName("js-doneButton").item(0).style.display="none";'
-    )
-    .then();
 }
 
 module.exports = DraftView;
