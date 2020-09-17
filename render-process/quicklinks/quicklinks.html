@@ -7,51 +7,24 @@
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
   </head>
   <body style="-webkit-app-region: drag;">
-    <div class="container m-5">
+    <div class="container p-0 m-0">
       <div class="row">
-        <div class="col-12 text-center lead font-weight-bold d-flex align-item-center justify-content-center">
-          Go To
-        </div>
-      </div>
-      <div class="row d-block m-2 justify-content-center text-primary">
-        <div
-          class="col-12 border border-primary d-flex justify-content-center p-2 m-2"
-          data-action="series"
-          style="cursor: pointer; max-width: 100px;"
-        >
-          Series
-        </div>
-        <div
-          class="col-12 border border-primary d-flex justify-content-center p-2 m-2"
-          data-action="stats"
-          style="cursor: pointer; max-width: 100px;"
-        >
-          Stats
-        </div>
-        <div
-          class="col-12 border border-primary d-flex justify-content-center p-2 m-2"
-          data-action="settings"
-          style="cursor: pointer; max-width: 100px;"
-        >
-          Settings
-        </div>
-        <div
-          class="col-12 border border-primary d-flex justify-content-center p-2 m-2"
-          data-action="profile"
-          style="cursor: pointer; max-width: 100px;"
-        >
-          Profile
-        </div>
-      </div>
-      <div class="row m-2">
-        <div class="col-12 d-flex justify-content-center">
-          <button class="btn btn-secondary ml-2" id="cancel">
-            Cancel
-          </button>
+        <div class="col-12">
+          <div class="list-group">
+            <div class="text-center lead font-weight-bold d-flex align-item-center justify-content-center m-3">
+              Quick Links
+            </div>
+            <a class="list-group-item list-group-item-action active pl-4 border-0" href="#" data-action="series"
+              >Series</a
+            >
+            <a class="list-group-item list-group-item-action pl-4 border-0" href="#" data-action="stats">Stats</a>
+            <a class="list-group-item list-group-item-action pl-4 border-0" href="#" data-action="settings">Settings</a>
+            <a class="list-group-item list-group-item-action pl-4 border-0" href="#" data-action="profile">Profile</a>
+            <a class="list-group-item list-group-item-action pl-4 border-0" href="#" data-action="cancel">Cancel</a>
+          </div>
         </div>
       </div>
     </div>
-
     <script>
       require("bootstrap");
       require("./quicklinks");

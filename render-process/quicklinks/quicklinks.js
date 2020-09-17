@@ -21,11 +21,8 @@ function handleAction(event) {
   } else if (action === "series") {
     log("quicklinks/series");
     ipcRenderer.send("open-quicklink", "https://medium.com/me/series/drafts");
+  } else if (action === "cancel") {
+    log("quicklinks/cancel");
   }
-
   ipcRenderer.send("close-quicklinks-window");
 }
-
-document.getElementById("cancel").addEventListener("click", function () {
-  ipcRenderer.send("close-quicklinks-window");
-});
