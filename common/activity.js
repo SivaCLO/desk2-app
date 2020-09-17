@@ -3,7 +3,8 @@ const { defaultStore } = require("./store");
 
 function log(activityCode, activityData) {
   let mediumUser = defaultStore.get("medium-user");
-  if (/--debug/.test(process.argv[2])) {
+  let debug = defaultStore.get("debug");
+  if (debug) {
     console.log({
       userId: mediumUser ? mediumUser.id : "",
       userName: mediumUser ? mediumUser.username : "",

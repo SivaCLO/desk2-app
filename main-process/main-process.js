@@ -7,6 +7,8 @@ const { showLoginWindow, login } = require("./windows/login-window");
 const { defaultStore } = require("../common/store");
 const debug = /--debug/.test(process.argv[2]);
 
+defaultStore.set("debug", debug);
+
 if (process.mas) app.setName("Desk for Medium.com");
 
 app.on("ready", () => {
