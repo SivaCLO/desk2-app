@@ -23,7 +23,8 @@ function showImportDialog() {
               buttons: ["Ok"],
               defaultId: 0,
               cancelId: 0,
-              message: "You have selected folder or unsupported format. Please select the file...!",
+              message:
+                "You have selected a folder or a file that is not supported. \n\nPlease select a file in markdown format.",
             };
             log("import-draft-dialog/error", { path: file.filePaths[0], err });
             dialog
