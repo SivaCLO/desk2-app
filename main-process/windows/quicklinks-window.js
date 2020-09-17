@@ -49,8 +49,4 @@ ipcMain.on("close-quicklinks-window", () => {
   closeQuicklinksWindow();
 });
 
-ipcMain.on("close-quicklink", (e, url) => {
-  closeQuicklinksWindow();
-});
-
 module.exports = { showQuicklinksWindow };
