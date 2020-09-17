@@ -9,9 +9,9 @@ document.body.addEventListener("click", (event) => {
 
 function handleAction(event) {
   let action = event.target.dataset.action;
-  if (action === "stats") {
-    log("quicklinks/stats");
-    ipcRenderer.send("open-quicklink", "https://medium.com/me/stats");
+  if (action === "stories") {
+    log("quicklinks/stories");
+    ipcRenderer.send("open-quicklink", "https://medium.com/me/stories/public");
   } else if (action === "profile") {
     log("quicklinks/profile");
     ipcRenderer.send("open-quicklink", "https://medium.com/me");
