@@ -48,17 +48,17 @@ checkAndActivateTab = function (url) {
   }
 };
 
-loadDrafts = function (url) {
+loadMediumLink = function (url) {
   ElectronTabs.getTab(0).activate();
-  if(!url){
+  if (!url) {
     ElectronTabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/drafts").then();
-  }else{
-    ElectronTabs.getTab(0).view.browserView.webContents.loadURL(url)
+  } else {
+    ElectronTabs.getTab(0).view.browserView.webContents.loadURL(url);
   }
 };
 
-ipcRenderer.on("load-drafts", (event, url) => {
-  loadDrafts(url);
+ipcRenderer.on("load-medium-link", (event, url) => {
+  loadMediumLink(url);
   exitZenMode();
 });
 
@@ -107,7 +107,6 @@ ipcRenderer.on("open-previously-closed-tab", (e, args) => {
   exitZenMode();
 });
 
-
 ipcRenderer.on("tab-padding", (event, on) => {
   if (on) document.getElementById("tabs").classList.add("etabs-padding");
   else document.getElementById("tabs").classList.remove("etabs-padding");
@@ -141,4 +140,4 @@ function exitZenMode() {
   }
 }
 
-module.exports = { ElectronTabs, loadDrafts, newTab, checkAndActivateTab, enterZenMode, exitZenMode };
+module.exports = { ElectronTabs, loadMediumLink, newTab, checkAndActivateTab, enterZenMode, exitZenMode };

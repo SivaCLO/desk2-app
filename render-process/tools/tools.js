@@ -1,6 +1,6 @@
 const Remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
-const { ElectronTabs, loadDrafts, enterZenMode, exitZenMode } = require("../tabs/tabs");
+const { ElectronTabs, loadMediumLink, enterZenMode, exitZenMode } = require("../tabs/tabs");
 const { log } = require("../../common/activity");
 
 document.body.addEventListener("click", (event) => {
@@ -50,15 +50,15 @@ function handleAction(event) {
   } else if (action === "open-link") {
     log("tools/open-link");
     Remote.shell.openExternal(Remote.getCurrentWindow().getBrowserView().webContents.getURL());
-  }else if(action === "bookmarks"){
-    log("tools/open-bookmark");
-    ipcRenderer.send("open-bookmark")
+  } else if (action === "quicklinks") {
+    log("tools/quicklinks");
+    ipcRenderer.send("open-quicklinks-window");
   }
 
   // Draft Tools
   else if (action === "backToDrafts") {
     log("tools/back-to-drafts");
-    loadDrafts();
+    loadMediumLink();
   } else if (action === "zen-mode") {
     log("tools/enter-zen-mode");
     enterZenMode();

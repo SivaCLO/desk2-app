@@ -1,9 +1,9 @@
 const { Menu, app, shell, ipcMain } = require("electron");
 const { showEmailWindow } = require("../windows/email-window");
-const { showBookmarkWindow } = require("../windows/bookmark-window");
 const { logout } = require("../windows/login-window");
 const { getMainWindow } = require("../windows/main-window");
 const { toggleShortcutsWindow } = require("../windows/shortcuts-window");
+const { showQuicklinksWindow } = require("../windows/quicklinks-window");
 const { showImportDialog } = require("../dialogs/import-draft-dialog");
 const { defaultStore } = require("../../common/store");
 const { log } = require("../../common/activity");
@@ -35,14 +35,6 @@ let template = [
         click() {
           log("application-menu/file/email-signin");
           showEmailWindow();
-        },
-      },
-      {
-        label: "Bookmarks",
-        accelerator: "CmdOrCtrl+Shift+B",
-        click() {
-          log("application-menu/file/bookmark");
-          showBookmarkWindow();
         },
       },
       {
@@ -111,7 +103,7 @@ let template = [
         accelerator: "CmdOrCtrl+D",
         click() {
           log("application-menu/view/open-drafts");
-          getMainWindow() && getMainWindow().webContents.send("load-drafts");
+          getMainWindow() && getMainWindow().webContents.send("load-medium-link");
         },
       },
       {
@@ -193,6 +185,14 @@ let template = [
         click: () => {
           log("application-menu/view/show-shortcuts");
           toggleShortcutsWindow();
+        },
+      },
+      {
+        label: "Show Quick Links",
+        accelerator: "CmdOrCtrl+.",
+        click() {
+          log("application-menu/view/quicklinks");
+          showQuicklinksWindow();
         },
       },
     ],
@@ -399,7 +399,4 @@ app.on("ready", () => {
   ipcMain.on("zen-mode-off", () => {
     zenMode = false;
   });
-  ipcMain.on("open-bookmark", ()=>{
-    showBookmarkWindow();
-  })
 });
