@@ -10,7 +10,7 @@ function showQuicklinksWindow() {
     log("quicklinks-window/show");
     quicklinksWindow = new BrowserWindow({
       width: 200,
-      height: 265,
+      height: 264,
       frame: false,
       resizable: false,
       alwaysOnTop: true,
