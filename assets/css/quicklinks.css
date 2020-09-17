@@ -1,0 +1,10 @@
+.list-group-title {
+  background-color: var(--color-16);
+  color: var(--color-100);
+}
+
+.list-group-item.active {
+  background-color: var(--color-accent) !important;
+  color: var(--color-100);
+  border: none;
+}
