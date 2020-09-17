@@ -17,7 +17,25 @@ function showImportDialog() {
       if (file.filePaths[0]) {
         fs.readFile(file.filePaths[0], "utf-8", (err, content) => {
           if (err) {
-            alert("An error occurred reading the file :" + err.message);
+            // alert("An error occurred reading the file :" + err.message);
+            const options = {
+              type: "info",
+              buttons: ["Ok"],
+              defaultId: 0,
+              cancelId: 0,
+              message: "You have selected folder or unsupported format. Please select the file...!",
+            };
+
+            dialog
+              .showMessageBox(getMainWindow(), options)
+              .then((response) => {
+                if (response.response === 1) {
+                  app.exit(0);
+                }
+              })
+              .catch((err) => {
+                console.error(err);
+              });
             return;
           }
 
