@@ -19,7 +19,7 @@ autoUpdater.on("error", (err) => {
 });
 
 autoUpdater.on("update-downloaded", (info) => {
-  log("updater/update-downloaded", info);
+  log("updater/update-downloaded", { version: info.version, downloadedFile: info.downloadedFile });
 });
 
 module.exports = { checkForUpdates };
