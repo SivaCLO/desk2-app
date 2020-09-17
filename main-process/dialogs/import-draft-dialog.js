@@ -25,7 +25,7 @@ function showImportDialog() {
               cancelId: 0,
               message: "You have selected folder or unsupported format. Please select the file...!",
             };
-
+            log("import-draft-dialog/error", { path: file.filePaths[0], err });
             dialog
               .showMessageBox(getMainWindow(), options)
               .then((response) => {
