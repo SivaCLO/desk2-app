@@ -1,6 +1,25 @@
 const { ipcRenderer } = require("electron");
 const { log } = require("../../common/activity");
 
+window.addEventListener(
+  "keyup",
+  (e) => {
+    if (e.code === "Escape") {
+      console.log("Escape press");
+      ipcRenderer.send("close-quicklink");
+    }
+    if (e.code === "ArrowUp" || e.code === "ArrowDown") {
+      arrowUpOrDownSelector(e.code);
+    }
+    if (e.code === "Enter") {
+      console.log("Enter press");
+      let activeElement = document.getElementsByClassName("active").item(0);
+      activeElement.click();
+    }
+  },
+  true
+);
+
 document.body.addEventListener("click", (event) => {
   if (event.target.dataset.action) {
     handleAction(event);
@@ -25,4 +44,34 @@ function handleAction(event) {
     log("quicklinks/cancel");
   }
   ipcRenderer.send("close-quicklinks-window");
+}
+
+function arrowUpOrDownSelector(keyEvent) {
+  let listOfItems,
+    i,
+    tempArray = [],
+    arrayElementIndex,
+    activeElementPosition = null;
+  listOfItems = document.getElementsByClassName("list-group").item(0).childNodes;
+
+  for (i = 0; i < listOfItems.length - 1; i++) {
+    if (listOfItems[i].nodeName === "A") {
+      if (listOfItems[i].id === "quicklink-item") tempArray.push(i);
+      if (listOfItems[i].classList.value.includes("active")) {
+        activeElementPosition = i;
+      }
+    }
+  }
+
+  arrayElementIndex = tempArray.indexOf(activeElementPosition);
+
+  if (keyEvent === "ArrowUp" && arrayElementIndex !== 0) {
+    listOfItems[activeElementPosition].classList.remove("active");
+    listOfItems[tempArray[arrayElementIndex - 1]].classList.add("active");
+  }
+
+  if (keyEvent === "ArrowDown" && tempArray.length - 1 !== arrayElementIndex) {
+    listOfItems[activeElementPosition].classList.remove("active");
+    listOfItems[tempArray[arrayElementIndex + 1]].classList.add("active");
+  }
 }

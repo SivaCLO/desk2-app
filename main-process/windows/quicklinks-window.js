@@ -28,6 +28,12 @@ function showQuicklinksWindow() {
   }
 }
 
+function closeQuicklinksWindow() {
+  log("quicklinks-window/close");
+  quicklinksWindow.close();
+  quicklinksWindow = null;
+}
+
 ipcMain.on("open-quicklink", (e, url) => {
   log("quicklinks-window/open-quicklink");
   if (getMainWindow()) {
@@ -40,9 +46,11 @@ ipcMain.on("open-quicklinks-window", () => {
 });
 
 ipcMain.on("close-quicklinks-window", () => {
-  log("quicklinks-window/close");
-  quicklinksWindow.close();
-  quicklinksWindow = null;
+  closeQuicklinksWindow();
+});
+
+ipcMain.on("close-quicklink", (e, url) => {
+  closeQuicklinksWindow();
 });
 
 module.exports = { showQuicklinksWindow };
