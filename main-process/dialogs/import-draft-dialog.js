@@ -9,7 +9,7 @@ function showImportDialog() {
   log("import-draft-dialog/show");
   dialog
     .showOpenDialog({
-      properties: ["openFile", "openDirectory"],
+      properties: ["openFile"],
       filters: [{ name: "Custom File Type", extensions: ["md"] }],
     })
     .then((file) => {
