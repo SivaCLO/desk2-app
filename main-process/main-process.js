@@ -8,7 +8,6 @@ const { defaultStore } = require("../common/store");
 const debug = /--debug/.test(process.argv[2]);
 
 defaultStore.set("debug", debug);
-defaultStore.set("os-platform", os.platform());
 
 if (process.mas) app.setName("Desk for Medium.com");
 

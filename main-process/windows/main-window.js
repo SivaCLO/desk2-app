@@ -28,7 +28,7 @@ function showMainWindow() {
       minHeight: 500,
       title: app.name,
       titleBarStyle: "hiddenInset",
-      frame: defaultStore.get("os-platform") !== "darwin" ? false : true,
+      frame: os.platform() === "darwin",
       autoHideMenuBar: true,
       webPreferences: {
         nodeIntegration: true,
