@@ -3,6 +3,7 @@
 
 /* All User Activities */
 SELECT c.userName, c.activityCode, c.activityData, TimestampToDateTime(c.activityTime) FROM c WHERE c.activityTime >= 1600352616000 ORDER BY c.activityTime DESC
+SELECT c.userName, COUNT(c._self) FROM c WHERE c.activityTime >= 1600352616000 GROUP BY c.userName
 
 /* First-time login window shown */
 SELECT COUNT(c._self) FROM c WHERE c.activityCode = 'login-window/show' AND c.activityTime >= 1600352616000 ORDER BY c.activityTime DESC

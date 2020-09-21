@@ -15,7 +15,6 @@ function showLoginWindow(errorMessage) {
       height: 300,
       frame: false,
       resizable: false,
-      alwaysOnTop: true,
       fullscreen: false,
       webPreferences: {
         nodeIntegration: true,
@@ -23,20 +22,20 @@ function showLoginWindow(errorMessage) {
         enableRemoteModule: true,
       },
     });
-    loginWindow.loadURL(path.join("file://", __dirname, "../../render-process/login/login.html")).then(() => {
-      let mediumToken = defaultStore.get("medium-token");
-      if (mediumToken) {
-        log("login-window/existing-token", { mediumToken });
-        loginWindow.webContents.send("login-token", mediumToken);
-      }
-      if (errorMessage) {
-        log("login-window/existing-error", { errorMessage });
-        loginWindow.webContents.send("login-error", errorMessage);
-      }
-    });
+    loginWindow.loadURL(path.join("file://", __dirname, "../../render-process/login/login.html")).then();
     loginWindow.on("closed", () => {
       loginWindow = null;
     });
+  }
+
+  let mediumToken = defaultStore.get("medium-token");
+  if (mediumToken) {
+    log("login-window/existing-token", { mediumToken });
+    loginWindow.webContents.send("login-token", mediumToken);
+  }
+  if (errorMessage) {
+    log("login-window/existing-error", { errorMessage });
+    loginWindow.webContents.send("login-error", errorMessage);
   }
 }
 
@@ -45,14 +44,20 @@ ipcMain.on("login-submit", (e, mediumToken) => {
   defaultStore.set("medium-token", mediumToken);
   login().then(() => {
     showMainWindow();
+    close();
   });
 });
 
 ipcMain.on("login-close", (e, mediumToken) => {
-  log("login-window/close");
-  loginWindow.close();
-  loginWindow = null;
+  close();
 });
+
+function close() {
+  log("login-window/close");
+  if (loginWindow) {
+    loginWindow.close();
+  }
+}
 
 async function login() {
   let mediumToken = defaultStore.get("medium-token");
@@ -99,7 +104,9 @@ function getTheDeskAppUser(mediumUser) {
       .then(function (response) {
         if (response.data.disabled) {
           log("login-window/get-the-desk-app-user/disabled", { response: response.data });
-          showLoginWindow("Account disabled");
+          showLoginWindow(
+            "<button class='btn btn-warning' style='-webkit-app-region: none;' id='signup'>Request access to private beta</button>"
+          );
           reject();
         }
         resolve(response.data);
