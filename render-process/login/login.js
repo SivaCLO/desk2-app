@@ -20,7 +20,7 @@ document.body.addEventListener("click", function (e) {
   if (e.target.id == "signup") {
     log("login/singup", { mediumToken: document.getElementById("token").value });
     e.preventDefault();
-    shell.openExternal("https://form.typeform.com/to/gX1Ug8Gc");
+    shell.openExternal("https://medium.com/desktop-app");
   }
 });
 
