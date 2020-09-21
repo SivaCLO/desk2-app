@@ -29,7 +29,6 @@ function showMainWindow() {
       title: app.name,
       titleBarStyle: "hiddenInset",
       frame: os.platform() === "darwin",
-      autoHideMenuBar: true,
       webPreferences: {
         nodeIntegration: true,
         enableRemoteModule: true,
