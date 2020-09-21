@@ -31,14 +31,14 @@ let template = [
       },
       { type: "separator" },
       {
-        label: "Sign In via Email",
+        label: "Sign in with email",
         click() {
           log("application-menu/file/email-signin");
           showEmailWindow();
         },
       },
       {
-        label: "Sign Out",
+        label: "Sign out",
         click() {
           log("application-menu/file/signout");
           logout();

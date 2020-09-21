@@ -1,4 +1,6 @@
 const { ipcRenderer } = require("electron");
+const shell = require("electron").shell;
+const { log } = require("../../common/activity");
 
 document.getElementById("submit").addEventListener("click", function () {
   document.getElementById("error-msg").innerHTML = "";
@@ -12,6 +14,14 @@ document.getElementById("submit").addEventListener("click", function () {
 
 document.getElementById("cancel").addEventListener("click", function () {
   ipcRenderer.send("login-close");
+});
+
+document.body.addEventListener("click", function (e) {
+  if (e.target.id == "signup") {
+    log("login/singup", { mediumToken: document.getElementById("token").value });
+    e.preventDefault();
+    shell.openExternal("https://form.typeform.com/to/gX1Ug8Gc");
+  }
 });
 
 ipcRenderer.on("login-error", (event, error_message) => {

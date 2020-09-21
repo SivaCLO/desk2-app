@@ -4,7 +4,6 @@ const { defaultStore } = require("../../common/store");
 const { log } = require("../../common/activity");
 const axios = require("axios");
 const { showMainWindow } = require("./main-window");
-const os = require("os");
 
 let loginWindow = null;
 
@@ -16,7 +15,6 @@ function showLoginWindow(errorMessage) {
       height: 300,
       frame: false,
       resizable: false,
-      alwaysOnTop: os.platform() == "darwin",
       fullscreen: false,
       webPreferences: {
         nodeIntegration: true,
@@ -106,7 +104,9 @@ function getTheDeskAppUser(mediumUser) {
       .then(function (response) {
         if (response.data.disabled) {
           log("login-window/get-the-desk-app-user/disabled", { response: response.data });
-          showLoginWindow("Account disabled");
+          showLoginWindow(
+            "<button class='btn btn-warning' style='-webkit-app-region: none;' id='signup'>Request access to private beta</button>"
+          );
           reject();
         }
         resolve(response.data);
