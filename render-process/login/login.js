@@ -5,7 +5,6 @@ document.getElementById("submit").addEventListener("click", function () {
   let token = document.getElementById("token").value;
   if (token) {
     ipcRenderer.send("login-submit", token);
-    ipcRenderer.send("login-close");
   } else {
     document.getElementById("error-msg").innerHTML = "Please enter a Medium token";
   }
