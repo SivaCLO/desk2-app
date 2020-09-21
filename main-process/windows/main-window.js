@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
+const os = require("os");
 const { defaultStore } = require("../../common/store");
 const path = require("path");
 const { log } = require("../../common/activity");
@@ -12,7 +13,11 @@ function getMainWindow() {
 function showMainWindow() {
   if (!mainWindow) {
     if (!defaultStore.get("thedeskapp-user")) return;
-    log("main-window/show");
+    log("main-window/show", {
+      "app-version": app.getVersion(),
+      "os-type": os.platform(),
+      "os-version": os.release(),
+    });
     const mainWindowPosition = defaultStore.get("mainWindowPosition") || { width: 1140, height: 840 };
     const windowOptions = {
       x: mainWindowPosition.x,
