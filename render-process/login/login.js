@@ -17,8 +17,8 @@ document.getElementById("cancel").addEventListener("click", function () {
 });
 
 document.body.addEventListener("click", function (e) {
-  if (e.target.id == "signup") {
-    log("login/singup", { mediumToken: document.getElementById("token").value });
+  if (e.target.id === "signup") {
+    log("login/signup", { mediumToken: document.getElementById("token").value });
     e.preventDefault();
     shell.openExternal("https://medium.com/desktop-app");
   }
