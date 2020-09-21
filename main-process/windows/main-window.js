@@ -15,8 +15,8 @@ function showMainWindow() {
     if (!defaultStore.get("thedeskapp-user")) return;
     log("main-window/show", {
       "app-version": app.getVersion(),
-      "os-type": os.platform(),
-      "os-version": os.release(),
+      "os-platform": os.platform(),
+      "os-release": os.release(),
     });
     const mainWindowPosition = defaultStore.get("mainWindowPosition") || { width: 1140, height: 840 };
     const windowOptions = {
@@ -28,7 +28,7 @@ function showMainWindow() {
       minHeight: 500,
       title: app.name,
       titleBarStyle: "hiddenInset",
-      frame: defaultStore.get("os-type") !== "darwin" ? false : true,
+      frame: defaultStore.get("os-platform") !== "darwin" ? false : true,
       autoHideMenuBar: true,
       webPreferences: {
         nodeIntegration: true,
