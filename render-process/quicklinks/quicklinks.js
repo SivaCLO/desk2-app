@@ -54,7 +54,7 @@ function arrowUpOrDownSelector(keyEvent) {
 
   for (i = 0; i < listOfItems.length - 1; i++) {
     if (listOfItems[i].nodeName === "A") {
-      if (listOfItems[i].id === "quicklink-item") tempArray.push(i);
+      if (listOfItems[i].classList.value.includes("quicklink-item")) tempArray.push(i);
       if (listOfItems[i].classList.value.includes("active")) {
         activeElementPosition = i;
       }
