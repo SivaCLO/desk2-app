@@ -23,6 +23,7 @@ function showMainWindow() {
       minHeight: 500,
       title: app.name,
       titleBarStyle: "hiddenInset",
+      frame: defaultStore.get("os-type") !== "darwin" ? false : true,
       autoHideMenuBar: true,
       webPreferences: {
         nodeIntegration: true,
@@ -55,7 +56,7 @@ function showMainWindow() {
       log("main-window/unmaximize");
       resizeWindow();
     });
-
+    
     function resizeWindow() {
       mainWindow.getBrowserView() &&
         mainWindow.getBrowserView().setBounds({

@@ -7,12 +7,91 @@
     <link rel="stylesheet" href="../assets/css/tabs.css" />
     <link rel="stylesheet" href="../assets/css/tools.css" />
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
+  <style>
+
+html {
+margin: 0px;
+padding: 0px;
+}
+
+body {
+padding: 0px;
+margin: 0px;
+position: absolute;
+top: 0px;
+left: 0px;
+right: 0px;
+bottom: 0px;
+}
+
+#title-bar {
+-webkit-app-region: drag;
+height: 32px; 
+padding: 0px;
+margin: 0px; 
+font-family: sans-serif;
+}
+
+#title {
+position: fixed;
+top: 0px;
+left: 12px; 
+line-height: 32px;
+font-size: 14px;
+}
+
+#title-bar-btns {
+-webkit-app-region: no-drag;
+position: fixed;
+top: 1px;
+right: 0px; 
+}
+
+#title-bar-btns button {
+height: 32px;
+width: 32px;
+background-color: transparent;
+border: none;
+color: #F1F1F1;
+font-size: 16px;
+}
+
+#title-bar-btns button:hover {
+background-color: #3F3F41;
+}
+
+#content {
+padding: 12px; 
+color: #CCCCCC;
+}
+
+
+   </style>
+
   </head>
   <body>
     <div id="tabs" class="etabs-tabgroup" style="-webkit-app-region: drag;">
       <div class="etabs-tabs"></div>
       <div class="etabs-buttons"></div>
     </div>
+
+    <div id="title-bar">
+      <div id="title-bar-btns">
+        <button id="menu-btn">=</button>
+           <button id="min-btn"><svg class="bi" width="18" height="18" fill="white" data-action="back" data-tooltip="Go back">
+            <use
+              xlink:href="../node_modules/bootstrap-icons/bootstrap-icons.svg#dash"
+              data-action="back"
+              data-tooltip="Go back"
+            />
+          </svg></button>
+           <button id="max-btn">+</button>
+           <button id="close-btn"><svg class="bi" width="20" height="20" fill="currentColor" data-action="exit-zen-mode">
+            <use xlink:href="../node_modules/bootstrap-icons/bootstrap-icons.svg#x" data-action="exit-zen-mode" />
+          </svg></button>
+      </div>
+ </div>
 
     <section id="medium-tools" class="toolbar">
       <div class="container">
@@ -181,6 +260,7 @@
       require("./ex-links");
       require("./normalize-shortcuts");
       require("./network-status/network-status");
+      require("./custom");
     </script>
   </body>
 </html>

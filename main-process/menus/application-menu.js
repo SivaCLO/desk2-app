@@ -393,6 +393,16 @@ if (process.platform === "win32") {
 app.on("ready", () => {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
+  
+  ipcMain.on(`display-app-menu`, function(e, args) {
+    if (defaultStore.get("mainWindowPosition") !== "darwin") {
+      menu.popup({
+        x: args.x,
+        y: args.y
+      });
+    }
+  });
+
   ipcMain.on("zen-mode-on", () => {
     zenMode = true;
   });
