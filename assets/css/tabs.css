@@ -9,6 +9,7 @@
   user-select: none;
   display: none;
   padding: 0;
+  -webkit-app-region: drag;
 }
 
 .etabs-padding {
@@ -28,6 +29,7 @@
   cursor: default;
   background-color: var(--color-11);
   color: var(--color-44);
+  -webkit-app-region: none;
 }
 
 /* Dragula */
@@ -65,6 +67,7 @@
 
 .etabs-buttons {
   float: left;
+  -webkit-app-region: none;
 }
 
 .etabs-buttons button {

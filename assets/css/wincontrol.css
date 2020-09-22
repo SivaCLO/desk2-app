@@ -1,5 +1,5 @@
 .wincontrol {
-  -webkit-app-region: drag;
+  -webkit-app-region: none;
   height: 37px;
   position: fixed;
   top: 0;
