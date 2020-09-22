@@ -3,7 +3,7 @@ const { ipcRenderer } = require("electron");
 const os = require("os");
 
 if (os.platform() !== "darwin") {
-  document.getElementById("wincontrol").style.display = "block";
+  document.getElementById("wincontrol").classList.add("visible");
 }
 
 document.body.addEventListener("click", (event) => {

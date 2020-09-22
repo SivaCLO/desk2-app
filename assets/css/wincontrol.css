@@ -7,6 +7,10 @@
   display: none;
 }
 
+.wincontrol.visible {
+  display: block;
+}
+
 .wincontrol-action {
   height: 37px;
   width: 45px;

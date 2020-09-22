@@ -2,6 +2,7 @@ const TabGroup = require("./electron-tabs");
 const { ipcRenderer } = require("electron");
 const Remote = require("electron").remote;
 const { log } = require("../../common/activity");
+const os = require("os");
 let zenMode = false;
 
 const ElectronTabs = new TabGroup({
@@ -121,6 +122,7 @@ function enterZenMode() {
     log("tabs/zen-mode-on");
     Remote.getCurrentWindow().setFullScreen(true);
     document.getElementById("tabs").classList.remove("visible");
+    document.getElementById("wincontrol").classList.remove("visible");
     document.getElementById("draft-tools").classList.remove("active");
     document.getElementById("zen-tools").classList.add("active");
     ipcRenderer.send("zen-mode-on");
@@ -134,6 +136,9 @@ function exitZenMode() {
     Remote.getCurrentWindow().setFullScreen(false);
     document.getElementById("zen-tools").classList.remove("active");
     document.getElementById("draft-tools").classList.add("active");
+    if (os.platform() !== "darwin") {
+      document.getElementById("wincontrol").classList.add("visible");
+    }
     document.getElementById("tabs").classList.add("visible");
     ipcRenderer.send("zen-mode-off");
     zenMode = false;
