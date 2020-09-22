@@ -7,12 +7,12 @@ for (var i = 0; i < shortcutContainer.length - 1; i++) {
     if (os.platform() !== "darwin") {
       if (shortcutContainer[i].children[j].id === "darwincontrol") {
         x = shortcutContainer[i].children[j];
-        x.innerHTML = "";
+        x.remove();
       }
     } else {
       if (shortcutContainer[i].children[j].id !== "darwincontrol") {
         x = shortcutContainer[i].children[j];
-        x.innerHTML = "";
+        x.remove();
       }
     }
   }
