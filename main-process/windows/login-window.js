@@ -104,9 +104,7 @@ function getTheDeskAppUser(mediumUser) {
       .then(function (response) {
         if (response.data.disabled) {
           log("login-window/get-the-desk-app-user/disabled", { response: response.data });
-          showLoginWindow(
-            "<button class='btn btn-warning' style='-webkit-app-region: none;' id='signup'>Request access to private beta</button>"
-          );
+          showLoginWindow("<button class='btn btn-warning' id='signup'>Request access to private beta</button>");
           reject();
         }
         resolve(response.data);

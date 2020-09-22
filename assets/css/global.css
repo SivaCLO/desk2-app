@@ -48,16 +48,16 @@ h3 {
 table {
   width: 100%;
   border-spacing: 0;
-  border: 1px solid hsla(0,0%,0%,.08);
+  border: 1px solid hsla(0, 0%, 0%, 0.08);
   border-width: 0 1px 1px 0;
 }
 th {
-  background-color: hsla(0,0%,50%,.06);
+  background-color: hsla(0, 0%, 50%, 0.06);
 }
 th,
 td {
   text-align: center;
-  border: 1px solid hsla(0,0%,0%,.08);
+  border: 1px solid hsla(0, 0%, 0%, 0.08);
   border-width: 1px 0 0 1px;
 }
 
@@ -67,16 +67,18 @@ svg {
 
 /* Code */
 
-code, kbd {
+code,
+kbd {
   font-family: monospace;
   border-radius: 4px;
   padding: 1px 4px;
   white-space: nowrap;
-  color: hsl(0,0%,36%);
-  background-color: hsla(0,0%,60%,.15);
+  color: hsl(0, 0%, 36%);
+  background-color: hsla(0, 0%, 60%, 0.15);
 }
 
-pre, kbd {
+pre,
+kbd {
   font-size: 13px;
   overflow: auto;
   padding: 1em;
@@ -100,7 +102,6 @@ kbd {
   padding: 0.5em;
 }
 
-
 /* Utilities ---------------------------- */
 
 .u-avoid-clicks {
@@ -123,7 +124,6 @@ kbd {
   display: none;
 }
 
-
 /* Content ------------------ */
 
 .content {
@@ -134,8 +134,16 @@ kbd {
   opacity: 0;
 }
 .content.is-shown {
-  visibility: visible;;
+  visibility: visible;
   opacity: 1;
 }
 
-button:focus {outline:0 !important}
+button:focus {
+  outline: 0 !important;
+}
+
+input,
+button,
+a {
+  -webkit-app-region: none;
+}
