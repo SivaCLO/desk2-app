@@ -162,7 +162,7 @@ let template = [
       },
       {
         label: "Enter Zen Mode",
-        accelerator: "Alt+CmdOrCtrl+Z",
+        accelerator: "CmdOrCtrl+Alt+Z",
         click() {
           log("application-menu/view/enter-zen-mode");
           getMainWindow() && getMainWindow().webContents.send("enter-zen-mode");
@@ -393,12 +393,12 @@ if (process.platform === "win32") {
 app.on("ready", () => {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
-  
-  ipcMain.on(`display-app-menu`, function(e, args) {
+
+  ipcMain.on(`display-app-menu`, function (e, args) {
     if (defaultStore.get("mainWindowPosition") !== "darwin") {
       menu.popup({
         x: args.x,
-        y: args.y
+        y: args.y,
       });
     }
   });
