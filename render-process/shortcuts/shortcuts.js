@@ -1,18 +1,17 @@
 const { ipcRenderer } = require("electron");
 const os = require("os");
-var x;
-var shortcutContainer = document.getElementsByClassName("container")[0].children;
-for (var i = 0; i < shortcutContainer.length - 1; i++) {
-  for (var j = 0; j < shortcutContainer[i].children.length - 1; j++) {
+
+let shortcuts = document.getElementsByClassName("container")[0].children;
+
+for (let i = 0; i < shortcuts.length - 1; i++) {
+  for (let j = 0; j < shortcuts[i].children.length - 1; j++) {
     if (os.platform() !== "darwin") {
-      if (shortcutContainer[i].children[j].id === "darwincontrol") {
-        x = shortcutContainer[i].children[j];
-        x.remove();
+      if (shortcuts[i].children[j].classList.contains("osx-shortcuts")) {
+        shortcuts[i].children[j].remove();
       }
     } else {
-      if (shortcutContainer[i].children[j].id !== "darwincontrol") {
-        x = shortcutContainer[i].children[j];
-        x.remove();
+      if (shortcuts[i].children[j].classList.contains("win-shortcuts")) {
+        shortcuts[i].children[j].remove();
       }
     }
   }
