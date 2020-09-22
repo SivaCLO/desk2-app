@@ -3,8 +3,9 @@
   color: var(--color-100);
 }
 
-.list-group-item.active {
+.quicklink-item.active {
   background-color: var(--color-accent) !important;
   color: var(--color-100);
   border: none;
+  margin-top: 0 !important;
 }
