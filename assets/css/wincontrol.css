@@ -16,13 +16,15 @@
   width: 45px;
   background-color: transparent;
   border: none;
-  color: var(--color-66);
+  color: var(--color-55);
 }
 
 .wincontrol-action:hover {
   background-color: #3f3f41;
+  color: var(--color-100);
 }
 
 .wincontrol-action.wincontrol-close:hover {
   background-color: red;
+  color: var(--color-100);
 }
