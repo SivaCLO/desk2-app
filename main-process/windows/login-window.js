@@ -4,6 +4,7 @@ const { defaultStore } = require("../../common/store");
 const { log } = require("../../common/activity");
 const axios = require("axios");
 const { showMainWindow } = require("./main-window");
+const os = require("os")
 
 let loginWindow = null;
 
@@ -13,7 +14,8 @@ function showLoginWindow(errorMessage) {
     loginWindow = new BrowserWindow({
       width: 600,
       height: 300,
-      frame: false,
+      frame: os.platform() === "linux",
+      autoHideMenuBar: os.platform() === "linux",
       resizable: false,
       fullscreen: false,
       webPreferences: {

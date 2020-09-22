@@ -2,6 +2,7 @@ const { BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { log } = require("../../common/activity");
 const { getMainWindow } = require("./main-window");
+const os = require("os")
 
 let emailWindow = null;
 
@@ -11,7 +12,8 @@ function showEmailWindow() {
     emailWindow = new BrowserWindow({
       width: 600,
       height: 300,
-      frame: false,
+      frame: os.platform() === "linux",
+      autoHideMenuBar: os.platform() === "linux",
       resizable: false,
       fullscreen: false,
       webPreferences: {

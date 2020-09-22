@@ -2,6 +2,7 @@ const { BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { log } = require("../../common/activity");
 const { getMainWindow } = require("./main-window");
+const os = require("os")
 
 let quicklinksWindow = null;
 
@@ -11,7 +12,8 @@ function showQuicklinksWindow() {
     quicklinksWindow = new BrowserWindow({
       width: 200,
       height: 264,
-      frame: false,
+      frame: os.platform() === "linux",
+      autoHideMenuBar: os.platform() === "linux",
       resizable: false,
       alwaysOnTop: true,
       fullscreen: false,

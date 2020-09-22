@@ -2,6 +2,7 @@ const { BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { log } = require("../../common/activity");
 const { defaultStore } = require("../../common/store");
+const os = require("os")
 
 let shortcutsWindow = null;
 
@@ -18,7 +19,8 @@ function toggleShortcutsWindow() {
       y: shortcutsWindowPosition.y,
       width: 350,
       height: 655,
-      frame: false,
+      frame: os.platform() === "linux",
+      autoHideMenuBar: os.platform() === "linux",
       resizable: false,
       alwaysOnTop: true,
       fullscreen: false,
