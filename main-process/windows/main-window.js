@@ -28,7 +28,7 @@ function showMainWindow() {
       minHeight: 500,
       title: app.name,
       titleBarStyle: "hiddenInset",
-      frame: os.platform() === "darwin",
+      frame: os.platform() === "linux",
       webPreferences: {
         nodeIntegration: true,
         enableRemoteModule: true,

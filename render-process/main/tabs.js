@@ -136,7 +136,7 @@ function exitZenMode() {
     Remote.getCurrentWindow().setFullScreen(false);
     document.getElementById("zen-tools").classList.remove("active");
     document.getElementById("draft-tools").classList.add("active");
-    if (os.platform() !== "darwin") {
+    if (os.platform() === "win32") {
       document.getElementById("wincontrol").classList.add("visible");
     }
     document.getElementById("tabs").classList.add("visible");

@@ -2,7 +2,7 @@ const remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
 const os = require("os");
 
-if (os.platform() !== "darwin") {
+if (os.platform() === "win32") {
   document.getElementById("wincontrol").classList.add("visible");
 }
 
