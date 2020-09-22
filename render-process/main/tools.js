@@ -1,6 +1,6 @@
 const Remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
-const { ElectronTabs, loadMediumLink, enterZenMode, exitZenMode } = require("../tabs/tabs");
+const { ElectronTabs, loadMediumLink, enterZenMode, exitZenMode } = require("./tabs");
 const { log } = require("../../common/activity");
 
 document.body.addEventListener("click", (event) => {

@@ -17,7 +17,7 @@ class MediumView {
     this.browserView.webContents.on("will-navigate", (e, url) => {
       const fromURL = this.browserView.webContents.getURL();
       log("medium-view/will-navigate", { url, fromURL });
-      const { newTab, checkAndActivateTab } = require("../tabs/tabs");
+      const { newTab, checkAndActivateTab } = require("../main/tabs");
       if (url.startsWith("https://medium.com/new-story")) {
         log("medium-view/new-story", { fromURL });
         newTab("", () => this.browserView.webContents.loadURL(fromURL));

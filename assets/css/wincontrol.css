@@ -1,0 +1,24 @@
+.wincontrol {
+  -webkit-app-region: drag;
+  height: 37px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: none;
+}
+
+.wincontrol-action {
+  height: 37px;
+  width: 45px;
+  background-color: transparent;
+  border: none;
+  color: var(--color-66);
+}
+
+.wincontrol-action:hover {
+  background-color: #3f3f41;
+}
+
+.wincontrol-action.wincontrol-close:hover {
+  background-color: red;
+}
