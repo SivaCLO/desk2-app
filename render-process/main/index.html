@@ -1,214 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../assets/css/variables.css" />
-    <link rel="stylesheet" href="../../assets/css/global.css" />
-    <link rel="stylesheet" href="../../assets/css/tabs.css" />
-    <link rel="stylesheet" href="../../assets/css/tools.css" />
-    <link rel="stylesheet" href="../../assets/css/wincontrol.css" />
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
-  </head>
-  <body>
-    <div id="tabs" class="etabs-tabgroup">
-      <div class="etabs-tabs"></div>
-      <div class="etabs-buttons"></div>
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="../../assets/css/variables.css" />
+  <link rel="stylesheet" href="../../assets/css/global.css" />
+  <link rel="stylesheet" href="../../assets/css/tabs.css" />
+  <link rel="stylesheet" href="../../assets/css/tools.css" />
+  <link rel="stylesheet" href="../../assets/css/wincontrol.css" />
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <div id="tabs" class="etabs-tabgroup">
+    <div class="etabs-tabs"></div>
+    <div class="etabs-buttons"></div>
+  </div>
+
+  <div id="wincontrol" class="wincontrol">
+    <button type="button" class="wincontrol-action" data-action="menu">
+      <svg class="bi" width="15" height="15" data-action="menu">
+        <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#chevron-down" data-action="menu" />
+      </svg>
+    </button>
+    <button type="button" class="wincontrol-action" data-action="minimize">
+      <svg class="bi" width="18" height="18" data-action="minimize">
+        <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#dash" data-action="minimize" />
+      </svg>
+    </button>
+    <button type="button" class="wincontrol-action" data-action="maximize">
+      <svg class="bi" width="10" height="10" data-action="maximize">
+        <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#square" data-action="maximize" />
+      </svg>
+    </button>
+    <button type="button" class="wincontrol-action wincontrol-close" data-action="close">
+      <svg class="bi" width="20" height="20" data-action="close">
+        <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#x" data-action="close" />
+      </svg>
+    </button>
+  </div>
+
+  <section id="medium-tools" class="toolbar">
+    <div class="container">
+      <div class="row">
+        <div class="col text-left">
+          <button type="button" class="medium-action" data-action="open-drafts" data-tooltip="Open draft list">
+            <svg class="bi" width="18" height="18" fill="white" data-action="open-drafts"
+              data-tooltip="Open draft list">
+              <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#house-door"
+                data-action="open-drafts" data-tooltip="Open draft list" />
+            </svg>
+          </button>
+          <button type="button" class="medium-action" data-action="back" data-tooltip="Go back">
+            <svg class="bi" width="18" height="18" fill="white" data-action="back" data-tooltip="Go back">
+              <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-left" data-action="back"
+                data-tooltip="Go back" />
+            </svg>
+          </button>
+          <button type="button" class="medium-action" data-action="forward" data-tooltip="Go forward">
+            <svg class="bi" width="18" height="18" fill="white" data-action="forward" data-tooltip="Go forward">
+              <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-right" data-action="forward"
+                data-tooltip="Go forward" />
+            </svg>
+          </button>
+        </div>
+        <div class="col text-center">
+          <a href="#" class="medium-action-link">
+            <div class="tools-title" id="medium-tools-title" data-action="open-link"></div>
+          </a>
+        </div>
+        <div class="col text-right">
+          <button type="button" class="medium-action" data-action="refresh" data-tooltip="Refresh page">
+            <svg class="bi" width="18" height="18" fill="white" data-action="refresh" data-tooltip="Refresh page">
+              <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-repeat"
+                data-action="refresh" data-tooltip="Refresh page" />
+            </svg>
+          </button>
+          <button type="button" class="medium-action" data-action="quicklinks" data-tooltip="Open quick links">
+            <svg class="bi" width="18" height="18" fill="white" data-action="quicklinks"
+              data-tooltip="Open quick links">
+              <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#star" data-action="quicklinks"
+                data-tooltip="Open quick links" />
+            </svg>
+          </button>
+          <button type="button" class="medium-action" data-action="import-draft"
+            data-tooltip="Import a markdown file as draft">
+            <svg class="bi" width="18" height="18" fill="white" data-action="import-draft"
+              data-tooltip="Import a markdown file as draft">
+              <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#download"
+                data-action="import-draft" data-tooltip="Import a markdown file as draft" />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div id="wincontrol" class="wincontrol">
-      <button type="button" class="wincontrol-action" data-action="menu">
-        <svg class="bi" width="15" height="15" data-action="menu">
-          <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#chevron-down" data-action="menu" />
-        </svg>
-      </button>
-      <button type="button" class="wincontrol-action" data-action="minimize">
-        <svg class="bi" width="18" height="18" data-action="minimize">
-          <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#dash" data-action="minimize" />
-        </svg>
-      </button>
-      <button type="button" class="wincontrol-action" data-action="maximize">
-        <svg class="bi" width="10" height="10" data-action="maximize">
-          <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#square" data-action="maximize" />
-        </svg>
-      </button>
-      <button type="button" class="wincontrol-action wincontrol-close" data-action="close">
-        <svg class="bi" width="20" height="20" data-action="close">
-          <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#x" data-action="close" />
-        </svg>
-      </button>
+  <section id="draft-tools" class="toolbar">
+    <div class="container">
+      <div class="row">
+        <div class="col text-left">
+          <button type="button" class="medium-action" data-action="backToDrafts" data-tooltip="Go back to draft list">
+            <svg class="bi" width="18" height="18" fill="white" data-action="backToDrafts"
+              data-tooltip="Go back to draft list">
+              <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-left"
+                data-action="backToDrafts" data-tooltip="Go back to draft list" />
+            </svg>
+          </button>
+        </div>
+        <div class="col text-center">
+          <a href="#" class="medium-action-link">
+            <div class="tools-title" id="draft-tools-title" data-action="open-link"></div>
+          </a>
+        </div>
+        <div class="col text-right">
+          <button type="button" class="medium-action" data-action="zoom-in" data-tooltip="Zoom In">
+            <svg class="bi" width="18" height="18" fill="white" data-action="zoom-in" data-tooltip="Zoom In">
+              <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#zoom-in" data-action="zoom-in"
+                data-tooltip="Zoom In" />
+            </svg>
+          </button>
+          <button type="button" class="medium-action" data-action="reset-zoom" data-tooltip="Reset Zoom">
+            <svg class="bi" width="18" height="18" fill="white" data-action="reset-zoom" data-tooltip="Reset Zoom">
+              <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-clockwise"
+                data-action="reset-zoom" data-tooltip="Reset Zoom" />
+            </svg>
+          </button>
+          <button type="button" class="medium-action" data-action="zoom-out" data-tooltip="Zoom Out">
+            <svg class="bi" width="18" height="18" fill="white" data-action="zoom-out" data-tooltip="Zoom Out">
+              <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#zoom-out" data-action="zoom-out"
+                data-tooltip="Zoom Out" />
+            </svg>
+          </button>
+          <button type="button" class="medium-action" data-action="zen-mode" data-tooltip="Turn on zen mode">
+            <svg class="bi" width="18" height="18" fill="white" data-action="zen-mode" data-tooltip="Turn on zen mode">
+              <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-up" data-action="zen-mode"
+                data-tooltip="Turn on zen mode" />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <section id="medium-tools" class="toolbar">
-      <div class="container">
-        <div class="row">
-          <div class="col text-left">
-            <button type="button" class="medium-action" data-action="open-drafts" data-tooltip="Open draft list">
-              <svg
-                class="bi"
-                width="18"
-                height="18"
-                fill="white"
-                data-action="open-drafts"
-                data-tooltip="Open draft list"
-              >
-                <use
-                  xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#house-door"
-                  data-action="open-drafts"
-                  data-tooltip="Open draft list"
-                />
-              </svg>
-            </button>
-            <button type="button" class="medium-action" data-action="back" data-tooltip="Go back">
-              <svg class="bi" width="18" height="18" fill="white" data-action="back" data-tooltip="Go back">
-                <use
-                  xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-left"
-                  data-action="back"
-                  data-tooltip="Go back"
-                />
-              </svg>
-            </button>
-            <button type="button" class="medium-action" data-action="forward" data-tooltip="Go forward">
-              <svg class="bi" width="18" height="18" fill="white" data-action="forward" data-tooltip="Go forward">
-                <use
-                  xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-right"
-                  data-action="forward"
-                  data-tooltip="Go forward"
-                />
-              </svg>
-            </button>
-          </div>
-          <div class="col text-center">
-            <a href="#" class="medium-action-link">
-              <div class="tools-title" id="medium-tools-title" data-action="open-link"></div>
-            </a>
-          </div>
-          <div class="col text-right">
-            <button type="button" class="medium-action" data-action="refresh" data-tooltip="Refresh page">
-              <svg class="bi" width="18" height="18" fill="white" data-action="refresh" data-tooltip="Refresh page">
-                <use
-                  xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-repeat"
-                  data-action="refresh"
-                  data-tooltip="Refresh page"
-                />
-              </svg>
-            </button>
-            <button type="button" class="medium-action" data-action="quicklinks" data-tooltip="Open quick links">
-              <svg
-                class="bi"
-                width="18"
-                height="18"
-                fill="white"
-                data-action="quicklinks"
-                data-tooltip="Open quick links"
-              >
-                <use
-                  xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#star"
-                  data-action="quicklinks"
-                  data-tooltip="Open quick links"
-                />
-              </svg>
-            </button>
-            <button
-              type="button"
-              class="medium-action"
-              data-action="import-draft"
-              data-tooltip="Import a markdown file as draft"
-            >
-              <svg
-                class="bi"
-                width="18"
-                height="18"
-                fill="white"
-                data-action="import-draft"
-                data-tooltip="Import a markdown file as draft"
-              >
-                <use
-                  xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#download"
-                  data-action="import-draft"
-                  data-tooltip="Import a markdown file as draft"
-                />
-              </svg>
-            </button>
-          </div>
+  <section id="zen-tools" class="zen-toolbar">
+    <div class="container">
+      <div class="row">
+        <div class="col text-right">
+          <button type="button" class="zen-medium-action" data-action="exit-zen-mode">
+            <svg class="bi" width="20" height="20" fill="currentColor" data-action="exit-zen-mode">
+              <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#x" data-action="exit-zen-mode" />
+            </svg>
+          </button>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="draft-tools" class="toolbar">
-      <div class="container">
-        <div class="row">
-          <div class="col text-left">
-            <button type="button" class="medium-action" data-action="backToDrafts" data-tooltip="Go back to draft list">
-              <svg
-                class="bi"
-                width="18"
-                height="18"
-                fill="white"
-                data-action="backToDrafts"
-                data-tooltip="Go back to draft list"
-              >
-                <use
-                  xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-left"
-                  data-action="backToDrafts"
-                  data-tooltip="Go back to draft list"
-                />
-              </svg>
-            </button>
-          </div>
-          <div class="col text-center">
-            <a href="#" class="medium-action-link">
-              <div class="tools-title" id="draft-tools-title" data-action="open-link"></div>
-            </a>
-          </div>
-          <div class="col text-right">
-            <button type="button" class="medium-action" data-action="zen-mode" data-tooltip="Turn on zen mode">
-              <svg
-                class="bi"
-                width="18"
-                height="18"
-                fill="white"
-                data-action="zen-mode"
-                data-tooltip="Turn on zen mode"
-              >
-                <use
-                  xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#arrow-up"
-                  data-action="zen-mode"
-                  data-tooltip="Turn on zen mode"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+  <div class="network-status" id="network-status"></div>
 
-    <section id="zen-tools" class="zen-toolbar">
-      <div class="container">
-        <div class="row">
-          <div class="col text-right">
-            <button type="button" class="zen-medium-action" data-action="exit-zen-mode">
-              <svg class="bi" width="20" height="20" fill="currentColor" data-action="exit-zen-mode">
-                <use
-                  xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#x"
-                  data-action="exit-zen-mode"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+  <script>
+    require("bootstrap");
+    require("./network-status");
+    require("./tabs");
+    require("./tools");
+    require("./wincontrols");
+    require("../ex-links");
+    require("../normalize-shortcuts");
+  </script>
+</body>
 
-    <div class="network-status" id="network-status"></div>
-
-    <script>
-      require("bootstrap");
-      require("./network-status");
-      require("./tabs");
-      require("./tools");
-      require("./wincontrols");
-      require("../ex-links");
-      require("../normalize-shortcuts");
-    </script>
-  </body>
 </html>

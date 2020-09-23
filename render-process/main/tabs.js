@@ -117,6 +117,18 @@ ipcRenderer.on("resize-tabs", () => {
   ElectronTabs.resizeTabs();
 });
 
+ipcRenderer.on("zoom-in", (e, args) => {
+  zoomIn();
+});
+
+ipcRenderer.on("zoom-out", (e, args) => {
+  zoomOut();
+});
+
+ipcRenderer.on("reset-zoom", (e, args) => {
+  resetZoom();
+});
+
 function enterZenMode() {
   if (ElectronTabs.getActiveTab().viewType !== "medium" && !zenMode) {
     log("tabs/zen-mode-on");
@@ -145,4 +157,31 @@ function exitZenMode() {
   }
 }
 
-module.exports = { ElectronTabs, loadMediumLink, newTab, checkAndActivateTab, enterZenMode, exitZenMode };
+function zoomIn() {
+  let win = Remote.getCurrentWindow().getBrowserView().webContents;
+  var currentZoom = win.webContents.getZoomFactor();
+  if (currentZoom >= 1 && currentZoom < 5) win.webContents.zoomFactor = currentZoom + 0.2;
+}
+
+function zoomOut() {
+  let win = Remote.getCurrentWindow().getBrowserView().webContents;
+  var currentZoom = win.webContents.getZoomFactor();
+  if (currentZoom > 1 && currentZoom < 5) win.webContents.zoomFactor = currentZoom - 0.2;
+}
+
+function resetZoom() {
+  let win = Remote.getCurrentWindow().getBrowserView().webContents;
+  win.webContents.setZoomFactor(1.0);
+}
+
+module.exports = {
+  ElectronTabs,
+  loadMediumLink,
+  newTab,
+  checkAndActivateTab,
+  enterZenMode,
+  exitZenMode,
+  zoomOut,
+  zoomIn,
+  resetZoom,
+};
