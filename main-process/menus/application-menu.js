@@ -161,6 +161,33 @@ let template = [
         type: "separator",
       },
       {
+        label: "Zoom In",
+        accelerator: "CmdOrCtrl+=",
+        click: () => {
+          log("application-menu/view/zoom-in");
+          getMainWindow() && getMainWindow().webContents.send("zoom-in");
+        },
+      },
+      {
+        label: "Zoom Out",
+        accelerator: "CmdOrCtrl+-",
+        click: () => {
+          log("application-menu/view/zoom-out");
+          getMainWindow() && getMainWindow().webContents.send("zoom-out");
+        },
+      },
+      {
+        label: "Reset Zoom",
+        accelerator: "CmdOrCtrl+0",
+        click: () => {
+          log("application-menu/view/reset-zoom");
+          getMainWindow() && getMainWindow().webContents.send("reset-zoom");
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
         label: "Enter Zen Mode",
         accelerator: "CmdOrCtrl+Alt+Z",
         click() {

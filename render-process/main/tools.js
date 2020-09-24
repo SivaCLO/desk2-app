@@ -1,6 +1,6 @@
 const Remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
-const { ElectronTabs, loadMediumLink, enterZenMode, exitZenMode } = require("./tabs");
+const { ElectronTabs, loadMediumLink, enterZenMode, exitZenMode, zoomIn, zoomOut, resetZoom } = require("./tabs");
 const { log } = require("../../common/activity");
 
 document.body.addEventListener("click", (event) => {
@@ -65,5 +65,14 @@ function handleAction(event) {
   } else if (action === "exit-zen-mode") {
     log("tools/exit-zen-mode");
     exitZenMode();
+  } else if (action === "zoom-in") {
+    log("tools/zoom-in");
+    zoomIn();
+  } else if (action === "zoom-out") {
+    log("tools/zoom-out");
+    zoomOut();
+  } else if (action === "reset-zoom") {
+    log("tools/reset-zoom");
+    resetZoom();
   }
 }
