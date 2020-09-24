@@ -3,6 +3,7 @@
 
 /* All User Activities */
 SELECT c.userName, c.activityCode, c.activityData, TimestampToDateTime(c.activityTime) FROM c WHERE c.activityTime >= 1600352616000 ORDER BY c.activityTime DESC
+SELECT c.userName, c.activityCode, c.activityData, TimestampToDateTime(c.activityTime) FROM c WHERE c.userName != "sivaragavan" AND c.userName != "balasurendaran" AND c.activityTime >= 1600352616000 ORDER BY c.activityTime DESC
 SELECT c.userName, COUNT(c._self) FROM c WHERE c.activityTime >= 1600352616000 GROUP BY c.userName
 
 /* First-time login window shown */
@@ -26,3 +27,6 @@ SELECT c.userName, c.activityCode, c.activityData, TimestampToDateTime(c.activit
 
 /* Specific User Activity */
 SELECT c.activityCode, c.activityData, TimestampToDateTime(c.activityTime) FROM c WHERE c.userName = 'lowjiayu' ORDER BY c.activityTime DESC
+
+/* Published Stories */
+SELECT c.userName, c.activityData, TimestampToDateTime(c.activityTime) from c WHERE c.activityCode = "draft-view/publish" AND c.activityTime >= 1600352616000 ORDER BY c.activityTime
