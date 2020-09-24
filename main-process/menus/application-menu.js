@@ -180,7 +180,7 @@ let template = [
         type: "separator",
       },
       {
-        label: "Show Keyboard Shortcuts(Help)",
+        label: "Show Keyboard Shortcuts",
         accelerator: "CmdOrCtrl+H",
         click: () => {
           log("application-menu/view/show-shortcuts");
