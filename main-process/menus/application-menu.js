@@ -180,8 +180,8 @@ let template = [
         type: "separator",
       },
       {
-        label: "Show Keyboard Shortcuts",
-        accelerator: "CmdOrCtrl+/",
+        label: "Show Keyboard Shortcuts(Help)",
+        accelerator: "CmdOrCtrl+H",
         click: () => {
           log("application-menu/view/show-shortcuts");
           toggleShortcutsWindow();
