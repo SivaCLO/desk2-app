@@ -245,6 +245,17 @@ let template = [
         },
       },
       {
+        label: "Reset and Close App",
+        click: (item, focusedWindow) => {
+          log("application-menu/window/reset-close-app");
+          if (focusedWindow) {
+            focusedWindow.webContents.session.clearCache().then();
+            focusedWindow.webContents.session.clearStorageData().then();
+            app.exit(0);
+          }
+        },
+      },
+      {
         label: "Toggle Full Screen",
         accelerator: (() => {
           if (process.platform === "darwin") {
