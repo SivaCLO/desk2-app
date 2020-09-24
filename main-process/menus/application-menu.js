@@ -34,9 +34,6 @@ let template = [
         label: "Sign in with email",
         click() {
           log("application-menu/file/email-signin");
-          if (getMainWindow()) {
-            getMainWindow().webContents.send("load-medium-link", "https://medium.com/me/stories/public");
-          }
           showEmailWindow();
         },
       },
