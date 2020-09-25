@@ -116,6 +116,7 @@ function getTheDeskAppUser(mediumUser) {
       .then(function (response) {
         if (response.data.deskType && (response.data.deskType === "writer" || response.data.deskType === "editor")) {
           log("login-window/get-the-desk-app-user/" + response.data.deskType, { response: response.data });
+          defaultStore.set("desk-type", response.data.deskType);
           resolve(response.data);
         } else {
           log("login-window/get-the-desk-app-user/invalid-desk-type", { response: response.data });
