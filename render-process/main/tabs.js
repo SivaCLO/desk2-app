@@ -158,20 +158,20 @@ function exitZenMode() {
 }
 
 function zoomIn() {
-  let win = Remote.getCurrentWindow().getBrowserView().webContents;
-  var currentZoom = win.webContents.getZoomFactor();
-  if (currentZoom >= 1 && currentZoom < 5) win.webContents.zoomFactor = currentZoom + 0.2;
+  let webContents = Remote.getCurrentWindow().getBrowserView().webContents;
+  const currentZoom = webContents.getZoomFactor();
+  if (currentZoom < 2.0) webContents.zoomFactor = currentZoom + 0.2;
 }
 
 function zoomOut() {
-  let win = Remote.getCurrentWindow().getBrowserView().webContents;
-  var currentZoom = win.webContents.getZoomFactor();
-  if (currentZoom > 1 && currentZoom < 5) win.webContents.zoomFactor = currentZoom - 0.2;
+  let webContents = Remote.getCurrentWindow().getBrowserView().webContents;
+  const currentZoom = webContents.getZoomFactor();
+  if (currentZoom > -2.0) webContents.zoomFactor = currentZoom - 0.2;
 }
 
 function resetZoom() {
-  let win = Remote.getCurrentWindow().getBrowserView().webContents;
-  win.webContents.setZoomFactor(1.0);
+  let webContents = Remote.getCurrentWindow().getBrowserView().webContents;
+  webContents.setZoomFactor(1.0);
 }
 
 module.exports = {
