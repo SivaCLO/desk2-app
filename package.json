@@ -1,7 +1,7 @@
 {
   "name": "thedeskapp",
   "productName": "Desk for Medium.com",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Desktop App for Medium.com",
   "main": "main.js",
   "bin": "cli.js",

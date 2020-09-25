@@ -4,7 +4,7 @@ const { defaultStore } = require("../../common/store");
 const { log } = require("../../common/activity");
 const axios = require("axios");
 const { showMainWindow } = require("./main-window");
-const os = require("os")
+const os = require("os");
 
 let loginWindow = null;
 
@@ -24,12 +24,18 @@ function showLoginWindow(errorMessage) {
         enableRemoteModule: true,
       },
     });
-    loginWindow.loadURL(path.join("file://", __dirname, "../../render-process/login/login.html")).then();
+    loginWindow.loadURL(path.join("file://", __dirname, "../../render-process/login/login.html")).then(() => {
+      loadValues(errorMessage);
+    });
     loginWindow.on("closed", () => {
       loginWindow = null;
     });
+  } else {
+    loadValues(errorMessage);
   }
+}
 
+function loadValues(errorMessage) {
   let mediumToken = defaultStore.get("medium-token");
   if (mediumToken) {
     log("login-window/existing-token", { mediumToken });
@@ -88,7 +94,11 @@ function getMediumUser(mediumToken) {
       .catch((e) => {
         log("login-window/get-medium-user/error", { error: e && e.code, mediumToken });
         console.error("Failed to read Medium User", e && e.code, mediumToken);
-        showLoginWindow("Your Medium token is invalid");
+        if (e && e.code) {
+          showLoginWindow("Something went wrong");
+        } else {
+          showLoginWindow("Your Medium token is invalid");
+        }
       });
   });
 }
@@ -104,12 +114,14 @@ function getTheDeskAppUser(mediumUser) {
           "?code=9bafK2KAjsBONebLekGF0a80YletTdredAJCgRmV8oCqrwlzhlCfMg=="
       )
       .then(function (response) {
-        if (response.data.disabled) {
-          log("login-window/get-the-desk-app-user/disabled", { response: response.data });
+        if (response.data.deskType && (response.data.deskType === "writer" || response.data.deskType === "editor")) {
+          log("login-window/get-the-desk-app-user/" + response.data.deskType, { response: response.data });
+          resolve(response.data);
+        } else {
+          log("login-window/get-the-desk-app-user/invalid-desk-type", { response: response.data });
           showLoginWindow("<button class='btn btn-warning' id='signup'>Request access to private beta</button>");
           reject();
         }
-        resolve(response.data);
       })
       .catch((e) => {
         log("login-window/get-the-desk-app-user/error", { error: e && e.code, mediumUser });
