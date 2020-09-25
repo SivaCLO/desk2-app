@@ -395,7 +395,7 @@ if (process.platform === "darwin") {
   addUpdateMenuItems(template[0].submenu, 1);
 }
 
-if (/--debug/.test(process.argv[2])) {
+if (/--debug/.test(process.argv[2]) || defaultStore.get("desk-type") === "admin") {
   template[template.length - 2].submenu.push(
     {
       type: "separator",
