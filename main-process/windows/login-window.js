@@ -114,7 +114,12 @@ function getTheDeskAppUser(mediumUser) {
           "?code=9bafK2KAjsBONebLekGF0a80YletTdredAJCgRmV8oCqrwlzhlCfMg=="
       )
       .then(function (response) {
-        if (response.data.deskType && (response.data.deskType === "writer" || response.data.deskType === "editor")) {
+        if (
+          response.data.deskType &&
+          (response.data.deskType === "writer" ||
+            response.data.deskType === "editor" ||
+            response.data.deskType === "admin")
+        ) {
           log("login-window/get-the-desk-app-user/" + response.data.deskType, { response: response.data });
           defaultStore.set("desk-type", response.data.deskType);
           resolve(response.data);

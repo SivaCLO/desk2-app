@@ -6,8 +6,8 @@ function log(activityCode, activityData) {
   let debug = defaultStore.get("debug");
   if (debug) {
     console.log({
-      userId: mediumUser ? mediumUser.id : "",
       userName: mediumUser ? mediumUser.username : "",
+      deskType: defaultStore.get("desk-type"),
       activityCode,
       activityData,
       activityTime: Date.now(),
@@ -17,8 +17,8 @@ function log(activityCode, activityData) {
       .post(
         "https://thedeskfunctions.azurewebsites.net/api/v2/activity?code=IrAqkRQLaEBPrRzrr6u5WUoHtKQcTJwmOlgaHZNDhSPwxJ0zQw0A4w==",
         {
-          userId: mediumUser ? mediumUser.id : "",
           userName: mediumUser ? mediumUser.username : "",
+          deskType: defaultStore.get("desk-type"),
           activityCode,
           activityData,
           activityTime: Date.now(),
