@@ -36,6 +36,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.2",
     "bootstrap-icons": "^1.0.0",
+    "chart.js": "^2.9.3",
     "electron-find": "^1.0.6",
     "electron-log": "^4.2.2",
     "electron-settings": "^4.0.2",
@@ -45,6 +46,7 @@
     "glob": "^7.1.0",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
+    "rss-parser": "^3.9.0",
     "update-electron-app": "^1.5.0"
   },
   "build": {

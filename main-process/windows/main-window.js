@@ -32,6 +32,7 @@ function showMainWindow() {
       webPreferences: {
         nodeIntegration: true,
         enableRemoteModule: true,
+        preload: path.join(__dirname, "preload.js"),
       },
     };
 
