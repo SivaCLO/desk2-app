@@ -208,7 +208,7 @@ let template = [
       },
       {
         label: "Show Keyboard Shortcuts",
-        accelerator: "CmdOrCtrl+H",
+        accelerator: process.platform !== "linux" ? "CmdOrCtrl+/" : "Ctrl+H",
         click: () => {
           log("application-menu/view/show-shortcuts");
           toggleShortcutsWindow();
