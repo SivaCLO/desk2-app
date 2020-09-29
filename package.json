@@ -3,6 +3,11 @@
   "productName": "Desk for Medium.com",
   "version": "1.0.6",
   "description": "Desktop App for Medium.com",
+  "repository": {
+    "url": "https://github.com/thedeskco/thedeskapp"
+  },
+  "license": "UNLICENSED",
+  "private": true,
   "main": "main.js",
   "bin": "cli.js",
   "scripts": {
@@ -28,8 +33,7 @@
     "prettier": "2.0.5",
     "request": "^2.70.0",
     "rimraf": "^2.5.2",
-    "signcode": "^0.5.0",
-    "spectron": "^5.0.0",
+    "spectron": "^11.0.0",
     "tap": "^14.10.6"
   },
   "dependencies": {
