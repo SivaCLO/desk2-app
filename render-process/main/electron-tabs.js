@@ -237,7 +237,6 @@ class Tab extends EventEmitter {
       } else {
         let toolTitle = document.getElementById(this.tools + "-title");
         toolTitle.innerHTML = title;
-        toolTitle.title = title;
       }
     } else {
       span.classList.add("hidden");

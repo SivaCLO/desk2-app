@@ -47,9 +47,21 @@ function handleAction(event) {
   } else if (action === "import-draft") {
     log("tools/import-draft");
     ipcRenderer.send("open-import-draft-dialog");
-  } else if (action === "open-link") {
-    log("tools/open-link");
-    Remote.shell.openExternal(Remote.getCurrentWindow().getBrowserView().webContents.getURL());
+  } else if (action === "copy-link") {
+    log("tools/copy-link");
+    var str = Remote.getCurrentWindow().getBrowserView().webContents.getURL();
+
+    const el = document.createElement("textarea");
+    el.value = str;
+    el.setAttribute("readonly", "");
+    el.style.position = "absolute";
+    el.style.left = "-9999px";
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+
+    alert(`Link Copied`);
   } else if (action === "quicklinks") {
     log("tools/quicklinks");
     ipcRenderer.send("open-quicklinks-window");
