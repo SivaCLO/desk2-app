@@ -2,7 +2,7 @@ const { BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { log } = require("../../common/activity");
 const { getMainWindow } = require("./main-window");
-const os = require("os")
+const os = require("os");
 
 let emailWindow = null;
 
@@ -32,7 +32,7 @@ function showEmailWindow() {
 ipcMain.on("email-submit", (e, url) => {
   log("email-window/submit");
   if (getMainWindow()) {
-    getMainWindow().getBrowserView().webContents.loadURL(url).then();
+    getMainWindow().webContents.send("load-medium-link", url);
   }
 });
 
