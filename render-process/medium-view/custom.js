@@ -16,6 +16,8 @@ window.addEventListener("contextmenu", (event) => {
       el.select();
       document.execCommand("copy");
       document.body.removeChild(el);
+
+      alert(`Link Copied`);
     }
   }
 });
