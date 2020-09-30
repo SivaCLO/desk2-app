@@ -237,7 +237,6 @@ class Tab extends EventEmitter {
       } else {
         let toolTitle = document.getElementById(this.tools + "-title");
         toolTitle.innerHTML = title;
-        toolTitle.title = title;
       }
     } else {
       span.classList.add("hidden");
@@ -502,24 +501,24 @@ const TabPrivate = {
 };
 
 ipcRenderer.on("on-find", (e, args) => {
-  if(findInPage){
-    findInPage.destroy()
+  if (findInPage) {
+    findInPage.destroy();
   }
-  findInPage = new FindInPage(Remote.getCurrentWindow().getBrowserView().webContents,{
+  findInPage = new FindInPage(Remote.getCurrentWindow().getBrowserView().webContents, {
     preload: true,
-    parentElement: document.querySelector('.toolbar.active'),
+    parentElement: document.querySelector(".toolbar.active"),
     offsetTop: 40,
   });
-  setTimeout(()=>{
-    let elements =document.getElementsByClassName('find-box')[0].children
+  setTimeout(() => {
+    let elements = document.getElementsByClassName("find-box")[0].children;
     elements[0].focus();
-  },500)
+  }, 500);
   findInPage.openFindWindow();
 });
 
-function destroyFindInPage(){
-  if(findInPage){
-    findInPage.destroy()
+function destroyFindInPage() {
+  if (findInPage) {
+    findInPage.destroy();
     findInPage = null;
   }
 }

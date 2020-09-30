@@ -61,7 +61,7 @@ function handleAction(event) {
     document.execCommand("copy");
     document.body.removeChild(el);
 
-    alert(`Copied`);
+    alert(`Link Copied`);
   } else if (action === "quicklinks") {
     log("tools/quicklinks");
     ipcRenderer.send("open-quicklinks-window");
