@@ -1,27 +1,51 @@
 console.log("Preload JS file loaded successfully...!");
 
-let Parser = require("rss-parser");
-let parser = new Parser();
+const axios = require("axios");
+const moment = require("moment");
 
-(async () => {
-  let feed = await parser.parseURL("https://medium.com/feed/@sivaragavan");
-  // console.log(typeof feed);
-  // console.log(Object.keys(feed).length);
+fetchData();
 
-  var listOfMonths = [];
+async function fetchData() {
+  let userObj, postObj;
 
-  feed.items.forEach((item) => {
-    if (item) {
-      console.log("item.title", item.title);
-      let monthName = item.pubDate.split(" ")[2];
-      listOfMonths.push(monthName);
-    }
-  });
-  console.log("listOfMonths", listOfMonths);
+  if (userObj === undefined) {
+    let fetchedData = await fetchUserDetails("https://medium.com/@sivaragavan?format=json");
+    userObj = fetchedData;
+  }
 
-  var count = {};
-  listOfMonths.forEach(function (i) {
-    count[i] = (count[i] || 0) + 1;
-  });
-  console.log(count);
-})();
+  console.log("fetchData -> userObj", userObj);
+}
+
+async function fetchUserDetails(url) {
+  let data, obj, userObj;
+
+  await axios
+    .get(url)
+    .then(function (response) {
+      data = response.data.replace("])}while(1);</x>", "");
+      obj = JSON.parse(data);
+      userObj = {
+        userId: obj.payload.user.userId,
+        name: obj.payload.user.name,
+        username: obj.payload.user.username,
+        createdAt: obj.payload.user.createdAt,
+        imageId: obj.payload.user.imageId,
+        backgroundImageId: obj.payload.user.backgroundImageId,
+        bio: obj.payload.user.bio,
+        twitterScreenName: obj.payload.user.twitterScreenName,
+        mediumMemberAt: obj.payload.user.mediumMemberAt,
+        type: obj.payload.user.type,
+        numberOfPostsPublished: obj.payload.userMeta.numberOfPostsPublished,
+        numberOfPostsInDraft: "",
+        numberOfPostsInSubmission: "",
+        numberOfPublications: "",
+        authorTags: obj.payload.userMeta.authorTags,
+      };
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
+
+  return userObj;
+}
