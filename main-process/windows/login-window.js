@@ -41,22 +41,28 @@ function loadValues(errorMessage) {
     log("login-window/existing-token", { mediumToken });
     loginWindow.webContents.send("login-token", mediumToken);
   }
+  let userEmail = defaultStore.get("user-email");
+  if (userEmail) {
+    log("login-window/existing-email", { userEmail });
+    loginWindow.webContents.send("login-email", userEmail);
+  }
   if (errorMessage) {
     log("login-window/existing-error", { errorMessage });
     loginWindow.webContents.send("login-error", errorMessage);
   }
 }
 
-ipcMain.on("login-submit", (e, mediumToken) => {
-  log("login-window/submit", mediumToken);
+ipcMain.on("login-submit", (e, mediumToken, userEmail) => {
+  log("login-window/submit", { mediumToken, userEmail });
   defaultStore.set("medium-token", mediumToken);
+  defaultStore.set("user-email", userEmail);
   login().then(() => {
     showMainWindow();
     close();
   });
 });
 
-ipcMain.on("login-close", (e, mediumToken) => {
+ipcMain.on("login-close", () => {
   close();
 });
 
@@ -69,13 +75,15 @@ function close() {
 
 async function login() {
   let mediumToken = defaultStore.get("medium-token");
+  let userEmail = defaultStore.get("user-email");
   log("login-window/login-medium-user", { mediumToken });
   let mediumUser = await getMediumUser(mediumToken);
   defaultStore.set("medium-user", mediumUser);
-  log("login-window/login-the-desk-app-user", { mediumUser });
-  let theDeskAppUser = await getTheDeskAppUser(mediumUser);
-  defaultStore.set("thedeskapp-user", theDeskAppUser);
-  log("login-window/login-success", { theDeskAppUser, mediumUser, mediumToken });
+  log("login-window/login-the-desk-app-user", { mediumUser, userEmail });
+  let theDeskAppUser = await getTheDeskAppUser(mediumUser, userEmail);
+  defaultStore.set("desk-user", theDeskAppUser);
+  defaultStore.set("desk-type", theDeskAppUser.deskType);
+  log("login-window/login-success", { theDeskAppUser, mediumUser, mediumToken, userEmail });
 }
 
 function getMediumUser(mediumToken) {
@@ -103,35 +111,22 @@ function getMediumUser(mediumToken) {
   });
 }
 
-function getTheDeskAppUser(mediumUser) {
+function getTheDeskAppUser(mediumUser, userEmail) {
   return new Promise((resolve, reject) => {
     axios
       .get(
         "https://thedeskfunctions.azurewebsites.net/api/v2/user/" +
-          mediumUser.id +
-          "/" +
           mediumUser.username +
+          "/" +
+          userEmail +
           "?code=9bafK2KAjsBONebLekGF0a80YletTdredAJCgRmV8oCqrwlzhlCfMg=="
       )
       .then(function (response) {
-        if (
-          response.data.deskType &&
-          (response.data.deskType === "writer" ||
-            response.data.deskType === "editor" ||
-            response.data.deskType === "admin")
-        ) {
-          log("login-window/get-the-desk-app-user/" + response.data.deskType, { response: response.data });
-          defaultStore.set("desk-type", response.data.deskType);
-          resolve(response.data);
-        } else {
-          log("login-window/get-the-desk-app-user/invalid-desk-type", { response: response.data });
-          showLoginWindow("<button class='btn btn-warning' id='signup'>Request access to private beta</button>");
-          reject();
-        }
+        resolve(response.data);
       })
       .catch((e) => {
         log("login-window/get-the-desk-app-user/error", { error: e && e.code, mediumUser });
-        console.error("error in reading The Desk App User", e && e.code, mediumUser.username);
+        console.error("Error in reading The Desk App User", e);
         showLoginWindow("Something went wrong");
       });
   });
@@ -140,8 +135,10 @@ function getTheDeskAppUser(mediumUser) {
 function logout() {
   log("login-window/logout");
   defaultStore.delete("medium-token");
+  defaultStore.delete("user-email");
   defaultStore.delete("medium-user");
-  defaultStore.delete("thedeskapp-user");
+  defaultStore.delete("desk-user");
+  defaultStore.delete("desk-type");
   app.exit(0);
 }
 

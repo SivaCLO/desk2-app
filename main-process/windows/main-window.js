@@ -12,7 +12,6 @@ function getMainWindow() {
 
 function showMainWindow() {
   if (!mainWindow) {
-    if (!defaultStore.get("thedeskapp-user")) return;
     log("main-window/show", {
       "app-version": app.getVersion(),
       "os-platform": os.platform(),

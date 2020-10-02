@@ -25,15 +25,17 @@ app.on("ready", () => {
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
 
+  if (!debug) {
+    checkForUpdates();
+  }
+
   const mediumToken = defaultStore.get("medium-token");
-  if (!mediumToken) {
+  const userEmail = defaultStore.get("user-email");
+  if (!mediumToken || !userEmail) {
     showLoginWindow();
   } else {
     login().then(() => {
       showMainWindow();
-      if (!debug) {
-        checkForUpdates();
-      }
     });
   }
 });
