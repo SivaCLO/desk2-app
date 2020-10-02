@@ -7,7 +7,7 @@ fetchData();
 
 async function fetchData() {
   let userObj,
-    postObj,
+    posts = [],
     pageNo = 1;
 
   if (userObj === undefined) {
@@ -15,14 +15,31 @@ async function fetchData() {
     userObj = fetchedData;
   }
 
-  if (postObj === undefined) {
-    let fetchedData = await fetchPostDetails(
-      "https://medium.com/_/api/users/" + userObj.userId + "/profile/stream" + "?page=" + pageNo
-    );
-    console.log("fetchPostDetails -> fetchData -> fetchedData", fetchedData);
+  if (posts.length === 0) {
+    let fetchedData = await fetchPostDetails("https://medium.com/@sivaragavan?format=json");
+    // console.log("fetchData -> fetchedData", fetchedData);
+    fetchedData.forEach((index) => {
+      // console.log(index);
+      posts.push(index);
+    });
+    console.log("1 fetchData -> posts", posts);
   }
 
-  // console.log("fetchData -> userObj", userObj);
+  for (let i = 0; i <= 10; i++) {
+    if (posts.length !== 0) {
+      let fetchedData = await fetchPostDetails(
+        "https://medium.com/_/api/users/" + userObj.userId + "/profile/stream" + "?page=" + i + 1
+      );
+      // console.log("fetchData -> fetchedData", fetchedData);
+      fetchedData.forEach((index) => {
+        // console.log(index);
+        posts.push(index);
+      });
+      console.log("2 fetchData -> posts", posts);
+    }
+  }
+  console.log("final fetchData -> posts", posts);
+  console.log("final length fetchData -> posts", posts.length);
 }
 
 async function fetchUserDetails(url) {
