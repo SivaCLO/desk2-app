@@ -7,7 +7,11 @@ document.getElementById("submit").addEventListener("click", function () {
   let token = document.getElementById("token").value;
   let email = document.getElementById("email").value;
   if (token && email) {
-    ipcRenderer.send("login-submit", token, email);
+    if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
+      ipcRenderer.send("login-submit", token, email);
+    } else {
+      document.getElementById("error-msg").innerHTML = "Please enter a valid email";
+    }
   } else {
     document.getElementById("error-msg").innerHTML = "Please enter a token and email";
   }
