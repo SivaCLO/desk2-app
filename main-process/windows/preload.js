@@ -6,14 +6,23 @@ const moment = require("moment");
 fetchData();
 
 async function fetchData() {
-  let userObj, postObj;
+  let userObj,
+    postObj,
+    pageNo = 1;
 
   if (userObj === undefined) {
     let fetchedData = await fetchUserDetails("https://medium.com/@sivaragavan?format=json");
     userObj = fetchedData;
   }
 
-  console.log("fetchData -> userObj", userObj);
+  if (postObj === undefined) {
+    let fetchedData = await fetchPostDetails(
+      "https://medium.com/_/api/users/" + userObj.userId + "/profile/stream" + "?page=" + pageNo
+    );
+    console.log("fetchPostDetails -> fetchData -> fetchedData", fetchedData);
+  }
+
+  // console.log("fetchData -> userObj", userObj);
 }
 
 async function fetchUserDetails(url) {
@@ -48,4 +57,47 @@ async function fetchUserDetails(url) {
     });
 
   return userObj;
+}
+
+async function fetchPostDetails(url) {
+  let data,
+    obj,
+    currentMonth = moment(new Date()).format("M"),
+    currentYear = moment(new Date()).format("YYYY"),
+    postDetails;
+  await axios
+    .get(url)
+    .then(function (response) {
+      data = response.data.replace("])}while(1);</x>", "");
+      obj = JSON.parse(data);
+      Posts = obj.payload.references.Post;
+      postDetails = fetchListOfPosts(Posts, currentMonth, currentYear);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  return postDetails;
+}
+
+function fetchListOfPosts(Posts, currentMonth, currentYear) {
+  let postDetails,
+    result = {};
+  listOfPosts = [];
+  Object.keys(Posts).forEach((key) => {
+    result[key] = Posts[key];
+
+    if (currentYear - 1 <= moment(Posts[key].latestPublishedAt).format("YYYY")) {
+      if (currentMonth <= moment(Posts[key].latestPublishedAt).format("M")) {
+        postDetails = {
+          id: Posts[key].id,
+          title: Posts[key].title,
+          firstPublishedAt: Posts[key].firstPublishedAt,
+          latestPublishedAt: moment(Posts[key].latestPublishedAt).format("DD MMMM YYYY"),
+        };
+      }
+    }
+    listOfPosts.push(postDetails);
+  });
+  // console.log("fetchListOfPosts -> listOfPosts", listOfPosts);
+  return listOfPosts;
 }
