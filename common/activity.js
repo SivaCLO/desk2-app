@@ -3,7 +3,6 @@ const { defaultStore } = require("./store");
 
 function log(activityCode, activityData) {
   let mediumUser = defaultStore.get("medium-user");
-  let debug = defaultStore.get("debug");
   axios
     .post(
       (defaultStore.get("debug")
