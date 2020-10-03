@@ -41,6 +41,16 @@ app.on("ready", () => {
 });
 
 app.on("activate", () => {
+  log("main-process/app/activate", {
+    "app-version": app.getVersion(),
+    "os-platform": os.platform(),
+    "os-release": os.release(),
+  });
+
+  if (!debug) {
+    checkForUpdates();
+  }
+
   login().then(() => {
     showMainWindow();
   });
