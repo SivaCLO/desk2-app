@@ -8,7 +8,7 @@ function log(activityCode, activityData) {
       (defaultStore.get("debug")
         ? "http://localhost:7071/api/activity110/"
         : "https://desk11.azurewebsites.net/api/activity110/") +
-        (mediumUser ? mediumUser.username : "") +
+        (mediumUser ? mediumUser.username : "desk") +
         "?code=4fURG4n98ibd01Ovg37QE/nSe1canZCtooZl4Syn0OcLazvppagc6w==",
       {
         activityCode,
