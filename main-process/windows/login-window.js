@@ -76,7 +76,7 @@ function close() {
 async function login() {
   let mediumToken = defaultStore.get("medium-token");
   let userEmail = defaultStore.get("user-email");
-  log("login-window/login-medium-user", { mediumToken });
+  log("login-window/login-medium-user", { mediumToken, userEmail });
   let mediumUser = await getMediumUser(mediumToken);
   defaultStore.set("medium-user", mediumUser);
   log("login-window/login-the-desk-app-user", { mediumUser, userEmail });
@@ -114,12 +114,15 @@ function getMediumUser(mediumToken) {
 function getTheDeskAppUser(mediumUser, userEmail) {
   return new Promise((resolve, reject) => {
     axios
-      .get(
-        "https://thedeskfunctions.azurewebsites.net/api/v2/user/" +
+      .post(
+        (defaultStore.get("debug")
+          ? "http://localhost:7071/api/user110/"
+          : "https://desk11.azurewebsites.net/api/user110/") +
           mediumUser.username +
-          "/" +
-          userEmail +
-          "?code=9bafK2KAjsBONebLekGF0a80YletTdredAJCgRmV8oCqrwlzhlCfMg=="
+          "?code=o2GyI90ptVXum9C7zZYz4CGy5foWcDMkhzONF2aV0skbfTerrVuD6Q==",
+        {
+          userEmail,
+        }
       )
       .then(function (response) {
         resolve(response.data);
