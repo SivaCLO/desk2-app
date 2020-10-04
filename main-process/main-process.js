@@ -13,9 +13,9 @@ if (process.mas) app.setName("Desk for Medium.com");
 
 app.on("ready", () => {
   log("main-process/app/ready", {
-    "app-version": app.getVersion(),
-    "os-platform": os.platform(),
-    "os-release": os.release(),
+    appVersion: app.getVersion(),
+    osPlatform: os.platform(),
+    osRelease: os.release(),
   });
 
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
@@ -41,11 +41,7 @@ app.on("ready", () => {
 });
 
 app.on("activate", () => {
-  log("main-process/app/activate", {
-    "app-version": app.getVersion(),
-    "os-platform": os.platform(),
-    "os-release": os.release(),
-  });
+  log("main-process/app/activate");
 
   if (!debug) {
     checkForUpdates();

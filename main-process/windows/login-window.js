@@ -79,7 +79,15 @@ async function login() {
   log("login-window/login-medium-user", { mediumToken, userEmail });
   let mediumUser = await getMediumUser(mediumToken);
   defaultStore.set("medium-user", mediumUser);
-  log("login-window/login-the-desk-app-user", { mediumUser, userEmail });
+  log("login-window/login-the-desk-app-user", {
+    mediumUser,
+    userEmail,
+    appVersion: {
+      "app-version": app.getVersion(),
+      "os-platform": os.platform(),
+      "os-release": os.release(),
+    },
+  });
   let theDeskAppUser = await getTheDeskAppUser(mediumUser, userEmail);
   defaultStore.set("desk-user", theDeskAppUser);
   defaultStore.set("desk-type", theDeskAppUser.deskType);
@@ -122,6 +130,11 @@ function getTheDeskAppUser(mediumUser, userEmail) {
           "?code=o2GyI90ptVXum9C7zZYz4CGy5foWcDMkhzONF2aV0skbfTerrVuD6Q==",
         {
           userEmail,
+          appInfo: {
+            appVersion: app.getVersion(),
+            osPlatform: os.platform(),
+            osRelease: os.release(),
+          },
         }
       )
       .then(function (response) {
