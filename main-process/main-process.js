@@ -19,13 +19,6 @@ app.on("ready", () => {
     osRelease: os.release(),
   });
 
-  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-    details.requestHeaders["User-Agent"] = session.defaultSession
-      .getUserAgent()
-      .replace("Electron/" + process.versions.electron, "");
-    callback({ cancel: false, requestHeaders: details.requestHeaders });
-  });
-
   if (!debug) {
     checkForUpdates();
   }
@@ -51,6 +44,11 @@ app.on("activate", () => {
   login().then(() => {
     showMainWindow();
   });
+});
+
+app.on("session-created", (session) => {
+  const userAgent = session.getUserAgent();
+  session.setUserAgent(userAgent.replace(/Electron\/\S*\s/, ""));
 });
 
 if (!process.mas) {
