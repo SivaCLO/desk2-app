@@ -106,3 +106,18 @@
   color: var(--color-44);
   text-decoration: none;
 }
+
+.update-notifier {
+  position: absolute;
+  top: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-33);
+  color: var(--color-88);
+  border: none;
+  border-radius: 3px;
+}
+
+.update-notifier:hover {
+  background-color: var(--color-accent);
+}
