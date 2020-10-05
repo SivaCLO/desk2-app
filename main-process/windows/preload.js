@@ -7,8 +7,7 @@ fetchData();
 
 async function fetchData() {
   let userObj,
-    posts = [],
-    pageNo = 1;
+    posts = [];
 
   if (userObj === undefined) {
     let fetchedData = await fetchUserDetails("https://medium.com/@sivaragavan?format=json");
@@ -17,29 +16,25 @@ async function fetchData() {
 
   if (posts.length === 0) {
     let fetchedData = await fetchPostDetails("https://medium.com/@sivaragavan?format=json");
-    // console.log("fetchData -> fetchedData", fetchedData);
     fetchedData.forEach((index) => {
-      // console.log(index);
       posts.push(index);
     });
-    console.log("1 fetchData -> posts", posts);
   }
 
   for (let i = 0; i <= 10; i++) {
     if (posts.length !== 0) {
       let fetchedData = await fetchPostDetails(
-        "https://medium.com/_/api/users/" + userObj.userId + "/profile/stream" + "?page=" + i + 1
+        "https://medium.com/_/api/users/" + userObj.userId + "/profile/stream" + "?page=" + (i + 1)
       );
-      // console.log("fetchData -> fetchedData", fetchedData);
       fetchedData.forEach((index) => {
-        // console.log(index);
         posts.push(index);
       });
-      console.log("2 fetchData -> posts", posts);
     }
   }
-  console.log("final fetchData -> posts", posts);
-  console.log("final length fetchData -> posts", posts.length);
+
+  // console.log("final fetchData -> posts", posts);
+  // console.log("final length fetchData -> posts", posts.length);
+  removeDuplicates(posts);
 }
 
 async function fetchUserDetails(url) {
@@ -77,6 +72,8 @@ async function fetchUserDetails(url) {
 }
 
 async function fetchPostDetails(url) {
+  console.log("fetchPostDetails -> url", url);
+
   let data,
     obj,
     currentMonth = moment(new Date()).format("M"),
@@ -88,6 +85,8 @@ async function fetchPostDetails(url) {
       data = response.data.replace("])}while(1);</x>", "");
       obj = JSON.parse(data);
       Posts = obj.payload.references.Post;
+      pageLink = obj.payload.paging.path;
+      nextPageNo = obj.payload.paging.next.page;
       postDetails = fetchListOfPosts(Posts, currentMonth, currentYear);
     })
     .catch(function (error) {
@@ -115,6 +114,14 @@ function fetchListOfPosts(Posts, currentMonth, currentYear) {
     }
     listOfPosts.push(postDetails);
   });
-  // console.log("fetchListOfPosts -> listOfPosts", listOfPosts);
   return listOfPosts;
+}
+
+function removeDuplicates(posts) {
+  jsonObject = posts.map(JSON.stringify);
+  console.log(jsonObject);
+
+  uniqueSet = new Set(jsonObject);
+  uniqueArray = Array.from(uniqueSet).map(JSON.parse);
+  console.log(uniqueArray);
 }
