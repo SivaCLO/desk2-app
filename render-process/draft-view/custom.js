@@ -13,6 +13,30 @@ window.addEventListener("load", () => {
   }, 500);
 
   document.body.addEventListener("click", (event) => {
+    console.log("event", event.target.dataset.action);
+    console.log("event dataset", event.target.dataset);
+    console.log("event innerText", event.target.innerText);
+
+    if (event.target.innerText === "Publish") {
+      console.log("Publish button clicked");
+    }
+
+    if (event.target.innerText === "Publish now") {
+      console.log("Publish now button clicked");
+    }
+
+    if (event.target.innerText === "Submit") {
+      console.log("Submit button clicked");
+    }
+
+    if (event.target.innerText === "Submit to publication") {
+      console.log("Submit to publication button clicked");
+    }
+
+    if (event.target.innerText === "Select and continue") {
+      console.log("Select and continue button clicked");
+    }
+
     if (
       event.target.dataset.action === "save-draft-collection" ||
       event.target.dataset.action === "overlay-confirm" ||
