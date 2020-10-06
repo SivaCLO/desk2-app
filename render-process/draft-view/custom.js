@@ -55,6 +55,8 @@ window.addEventListener("load", () => {
       }, 500);
     }
   });
+
+  checkContent();
 });
 
 function hideMeta() {
@@ -73,4 +75,28 @@ function hideMeta() {
 
   let jsDoneButton = document.getElementsByClassName("js-doneButton").item(0);
   if (jsDoneButton) jsDoneButton.style.display = "none";
+}
+
+function checkContent() {
+  var a = document.querySelectorAll("article").item(0).children;
+  var b = document.getElementsByClassName("section-content").item(0).children.item(0);
+  console.log("a", a);
+
+  if (a.item(0).querySelectorAll("h1, h2, h3, h4, h5, h6").item(0).tagName === "H3") {
+    console.log("title found");
+  } else {
+    console.log("no title found");
+  }
+
+  if (a.item(0).querySelectorAll("h1, h2, h3, h4, h5, h6").item(1).tagName === "H4") {
+    console.log("sub-title found");
+  } else {
+    console.log("no sub-title found");
+  }
+
+  if (b.innerHTML) {
+    var str = b.innerHTML;
+    var count = (str.match(/is/g) || []).length;
+    console.log("checkContent -> count links found as text in article", count);
+  }
 }
