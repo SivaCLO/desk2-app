@@ -1,14 +1,15 @@
-const { app, session, ipcMain } = require("electron");
+const { app } = require("electron");
 const os = require("os");
 const { log } = require("../common/activity");
 const { checkForUpdates } = require("./system/updater");
 const { showMainWindow, getMainWindow } = require("./windows/main-window");
-const { showLoginWindow, login } = require("./windows/login-window");
+const { showSetupWindow } = require("./windows/setup-window");
+const { signinMain } = require("../common/signin");
 const { defaultStore } = require("../common/store");
 const debug = /--debug/.test(process.argv[2]);
 
 defaultStore.set("debug", debug);
-defaultStore.set("app-version", app.getVersion());
+defaultStore.set("appVersion", app.getVersion());
 
 if (process.mas) app.setName("Desk for Medium.com");
 
@@ -23,12 +24,10 @@ app.on("ready", () => {
     checkForUpdates();
   }
 
-  const mediumToken = defaultStore.get("medium-token");
-  const userEmail = defaultStore.get("user-email");
-  if (!mediumToken || !userEmail) {
-    showLoginWindow();
+  if (!defaultStore.get("setupComplete")) {
+    showSetupWindow();
   } else {
-    login().then(() => {
+    signinMain().then(() => {
       showMainWindow();
     });
   }
@@ -41,9 +40,13 @@ app.on("activate", () => {
     checkForUpdates();
   }
 
-  login().then(() => {
-    showMainWindow();
-  });
+  if (!defaultStore.get("setupComplete")) {
+    showSetupWindow();
+  } else {
+    signinMain().then(() => {
+      showMainWindow();
+    });
+  }
 });
 
 app.on("session-created", (session) => {

@@ -2,14 +2,14 @@ const axios = require("axios");
 const { defaultStore } = require("./store");
 
 function log(activityCode, activityData) {
-  let mediumUser = defaultStore.get("medium-user");
+  let deskUserId = defaultStore.get("deskUserId");
   axios
     .post(
-      (defaultStore.get("debug")
-        ? "http://localhost:7071/api/activity110/"
-        : "https://desk11.azurewebsites.net/api/activity110/") +
-        (mediumUser ? mediumUser.username : "desk") +
-        "?code=4fURG4n98ibd01Ovg37QE/nSe1canZCtooZl4Syn0OcLazvppagc6w==",
+      defaultStore.get("debug")
+        ? `http://localhost:7071/api/v1.2/activity/`
+        : `https://desk11.azurewebsites.net/api/v1.2/activity/${
+            deskUserId || "anonymous"
+          }?code=kWmv4FSbAyDaUI1wEchMzUof8FrOgJMVG5hG/kQ2aLAPi7iis/HB4g==`,
       {
         activityCode,
         activityData,

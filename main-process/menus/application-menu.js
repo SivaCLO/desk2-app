@@ -1,5 +1,5 @@
 const { Menu, app, shell, ipcMain } = require("electron");
-const { logout } = require("../windows/login-window");
+const { resetApp } = require("../windows/setup-window");
 const { getMainWindow } = require("../windows/main-window");
 const { toggleShortcutsWindow } = require("../windows/shortcuts-window");
 const { showQuicklinksWindow } = require("../windows/quicklinks-window");
@@ -33,7 +33,7 @@ let template = [
         label: "Sign out",
         click() {
           log("application-menu/file/signout");
-          logout();
+          resetApp();
         },
       },
     ],
@@ -387,7 +387,7 @@ if (process.platform === "darwin") {
   addUpdateMenuItems(template[0].submenu, 1);
 }
 
-if (/--debug/.test(process.argv[2]) || defaultStore.get("desk-type") === "admin") {
+if (/--debug/.test(process.argv[2]) || defaultStore.get("deskType") === "admin") {
   template[template.length - 2].submenu.push(
     {
       type: "separator",

@@ -23,14 +23,14 @@ autoUpdater.on("error", (err) => {
 
 autoUpdater.on("update-downloaded", (info) => {
   log("updater/update-downloaded", { version: info.version, downloadedFile: info.downloadedFile });
-  defaultStore.set("update-downloaded", info.version);
+  defaultStore.set("updateDownloaded", info.version);
   getMainWindow().webContents.send("notify-update");
 });
 
 ipcMain.on("restart-update", () => {
   log("updater/quit-install", {
-    appVersion: defaultStore.get("app-version"),
-    downloadedVersion: defaultStore.get("update-downloaded"),
+    appVersion: defaultStore.get("appVersion"),
+    downloadedVersion: defaultStore.get("updateDownloaded"),
   });
   autoUpdater.quitAndInstall();
 });

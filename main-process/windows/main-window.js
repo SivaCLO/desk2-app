@@ -12,7 +12,6 @@ function getMainWindow() {
 
 function showMainWindow() {
   if (!mainWindow) {
-    if (!defaultStore.get("desk-user")) return;
     log("main-window/show");
     const mainWindowPosition = defaultStore.get("mainWindowPosition") || { width: 1140, height: 840 };
     const windowOptions = {

@@ -40,28 +40,31 @@ function showImportDialog() {
             return;
           }
 
-          let mediumToken = defaultStore.get("medium-token");
-          let mediumUser = defaultStore.get("medium-user");
-          axios({
-            method: "post",
-            url: `https://api.medium.com/v1/users/${mediumUser.id}/posts`,
-            headers: {
-              "content-type": "application/json",
-              Authorization: `Bearer ${mediumToken}`,
-            },
-            data: {
-              title: "",
-              contentFormat: "markdown",
-              content: content,
-              publishStatus: "draft",
-            },
-          })
+          let mediumTokens = defaultStore.get("mediumToken");
+          let mediumUser = defaultStore.get("mediumUser");
+          axios
+            .post(
+              `https://api.medium.com/v1/users/${mediumUser.id}/posts`,
+              {
+                title: "",
+                contentFormat: "markdown",
+                content: content,
+                publishStatus: "draft",
+              },
+              {
+                headers: {
+                  Authorization: `${mediumTokens.token_type} ${mediumTokens.access_token}`,
+                },
+              }
+            )
+
             .then(function (postResponse) {
-              log("import-draft-dialog/complete", { url: postResponse.data.data.url });
+              log("import-draft-dialog/success", { url: postResponse.data.data.url });
               getMainWindow().webContents.send("new_tab", postResponse.data.data.url);
             })
             .catch(function (error) {
-              console.error(error);
+              log("import-draft-dialog/error", { error, mediumTokens, mediumUser });
+              console.error("Error in showImportDialog", error);
             });
         });
       }
