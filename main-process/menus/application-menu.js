@@ -1,5 +1,4 @@
 const { Menu, app, shell, ipcMain } = require("electron");
-const { showEmailWindow } = require("../windows/email-window");
 const { logout } = require("../windows/login-window");
 const { getMainWindow } = require("../windows/main-window");
 const { toggleShortcutsWindow } = require("../windows/shortcuts-window");
@@ -30,13 +29,6 @@ let template = [
         },
       },
       { type: "separator" },
-      {
-        label: "Sign in with email",
-        click() {
-          log("application-menu/file/email-signin");
-          showEmailWindow();
-        },
-      },
       {
         label: "Sign out",
         click() {
