@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../assets/css/variables.css" />
+    <link rel="stylesheet" href="../../assets/css/global.css" />
+    <link rel="stylesheet" href="../../assets/css/setup.css" />
+  </head>
+  <body style="-webkit-app-region: drag;">
+    <div class="container text-center">
+      <div class="row h-100">
+        <div class="col-8 m-auto">
+          <section id="content">
+            <h2>
+              You are all set up.
+            </h2>
+            <div class="row mt-5">
+              <div class="col-2 text-right pr-2">
+                <svg class="bi" width="20" height="20">
+                  <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#check-circle-fill" />
+                </svg>
+              </div>
+              <div class="col-10 text-left pl-2">
+                <h4>You are logged in as <span>@</span><span id="username"></span></h4>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-2 text-right pr-2">
+                <svg class="bi" width="20" height="20">
+                  <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#check-circle-fill" />
+                </svg>
+              </div>
+              <div class="col-10 text-left pl-2">
+                <h4>Your monthly goal is set to <span id="goal"></span> <span>Stories</span></h4>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-2 text-right pr-2">
+                <svg class="bi" width="20" height="20">
+                  <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#check-circle-fill" />
+                </svg>
+              </div>
+              <div class="col-10 text-left pl-2">
+                <h4>Your email is <span id="email"></span></h4>
+              </div>
+            </div>
+            <h4 class="mt-5">
+              Next, we will take you into the Desk app<!-- and show you how the app can help you achieve your writing goal. -->
+            </h4>
+            <button class="btn mt-5" id="continue">
+              Ok, Lets go
+            </button>
+          </section>
+          <section id="loading" hidden>
+            <img width="35px" src="https://thumbs.gfycat.com/CorruptOldfashionedGuineapig-small.gif" />
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      require("bootstrap");
+      const path = require("path");
+      const { updateFlags } = require("../../common/users");
+      const { ipcRenderer } = require("electron");
+      const { defaultStore } = require("../../common/store");
+
+      window.onload = function () {
+        document.getElementById("goal").innerText = defaultStore.get("deskSettings").monthlyGoal;
+        document.getElementById("email").innerText = defaultStore.get("deskSettings").userEmail;
+        document.getElementById("username").innerText = defaultStore.get("mediumUser").username;
+      };
+
+      document.getElementById("continue").addEventListener("click", function () {
+        document.getElementById("content").hidden = true;
+        document.getElementById("loading").hidden = false;
+        updateFlags("setupCompleted", true).then(() => {
+          ipcRenderer.send("setup-complete");
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -5,7 +5,6 @@ const axios = require("axios");
 const os = require("os");
 
 function callUserUpdate(deskUserId, data) {
-  log("signin/callUserUpdate", { deskUserId, data });
   return new Promise((resolve, reject) => {
     axios
       .post(
@@ -18,7 +17,7 @@ function callUserUpdate(deskUserId, data) {
         resolve(response.data);
       })
       .catch((e) => {
-        log("signin/call-user-update/error", { e, deskUserId, data });
+        log("users/call-user-update/error", { e, data });
         console.error("Error in userUpdate", e);
         reject(e);
       });
@@ -28,10 +27,11 @@ function callUserUpdate(deskUserId, data) {
 async function updateSettings(key, value) {
   let settings = defaultStore.get("deskSettings");
   settings[key] = value;
+  defaultStore.set("deskSettings", settings);
 
   await callUserUpdate(defaultStore.get("deskUserId"), { settings });
 
-  log("users/update-success", { settings });
+  log("users/settings-update-success", { settings });
 }
 
 async function updateFlags(key, value) {
@@ -40,7 +40,7 @@ async function updateFlags(key, value) {
 
   await callUserUpdate(defaultStore.get("deskUserId"), { flags });
 
-  log("users/update-success", { flags });
+  log("users/flags-update-success", { flags });
 }
 
 module.exports = { updateSettings, updateFlags };

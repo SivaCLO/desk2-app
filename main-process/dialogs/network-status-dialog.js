@@ -22,7 +22,7 @@ ipcMain.on("network-status", (event, data) => {
         .showMessageBox(getMainWindow(), options)
         .then((response) => {
           if (response.response === 0) {
-            app.exit(0);
+            app.exit();
           }
         })
         .catch((err) => {
@@ -43,11 +43,7 @@ ipcMain.on("network-status", (event, data) => {
 
       dialog
         .showMessageBox(getMainWindow(), options)
-        .then((response) => {
-          if (response.response === 1) {
-            app.exit(0);
-          }
-        })
+        .then((response) => {})
         .catch((err) => {
           console.error(err);
         });

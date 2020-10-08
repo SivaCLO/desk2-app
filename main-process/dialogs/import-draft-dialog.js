@@ -29,11 +29,7 @@ function showImportDialog() {
             log("import-draft-dialog/error", { path: file.filePaths[0], err });
             dialog
               .showMessageBox(getMainWindow(), options)
-              .then((response) => {
-                if (response.response === 1) {
-                  app.exit(0);
-                }
-              })
+              .then((response) => {})
               .catch((err) => {
                 console.error(err);
               });

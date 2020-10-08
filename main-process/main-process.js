@@ -24,7 +24,7 @@ app.on("ready", () => {
     checkForUpdates();
   }
 
-  if (!defaultStore.get("setupComplete")) {
+  if (!defaultStore.get("deskFlags") || !defaultStore.get("deskFlags")["setupCompleted"]) {
     showSetupWindow();
   } else {
     signinMain().then(() => {
@@ -40,7 +40,7 @@ app.on("activate", () => {
     checkForUpdates();
   }
 
-  if (!defaultStore.get("setupComplete")) {
+  if (!defaultStore.get("deskFlags") || !defaultStore.get("deskFlags")["setupCompleted"]) {
     showSetupWindow();
   } else {
     signinMain().then(() => {

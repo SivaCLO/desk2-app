@@ -1,10 +1,10 @@
 const { Menu, app, shell, ipcMain } = require("electron");
-const { resetApp } = require("../windows/setup-window");
 const { getMainWindow } = require("../windows/main-window");
 const { toggleShortcutsWindow } = require("../windows/shortcuts-window");
 const { showQuicklinksWindow } = require("../windows/quicklinks-window");
 const { showImportDialog } = require("../dialogs/import-draft-dialog");
 const { defaultStore } = require("../../common/store");
+const { signOut } = require("../../common/reset");
 const { log } = require("../../common/activity");
 let zenMode = false;
 
@@ -32,8 +32,8 @@ let template = [
       {
         label: "Sign out",
         click() {
-          log("application-menu/file/signout");
-          resetApp();
+          log("application-menu/file/sign-out");
+          signOut();
         },
       },
     ],
@@ -237,17 +237,6 @@ let template = [
         },
       },
       {
-        label: "Reset and Close App",
-        click: (item, focusedWindow) => {
-          log("application-menu/window/reset-close-app");
-          if (focusedWindow) {
-            focusedWindow.webContents.session.clearCache().then();
-            focusedWindow.webContents.session.clearStorageData().then();
-            app.exit(0);
-          }
-        },
-      },
-      {
         label: "Toggle Full Screen",
         accelerator: (() => {
           if (process.platform === "darwin") {
@@ -367,7 +356,7 @@ if (process.platform === "darwin") {
         accelerator: "Command+Q",
         click: () => {
           log("application-menu/app/quit");
-          app.exit(0);
+          app.quit();
         },
       },
     ],

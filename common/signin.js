@@ -1,4 +1,3 @@
-const { app } = require("electron");
 const { defaultStore } = require("./store");
 const { log } = require("./activity");
 const axios = require("axios");
@@ -12,7 +11,7 @@ function callSigninCreate() {
         `https://desk11.azurewebsites.net/api/v1.2/signins?code=5TD8xmd2nnZp2vZJweMiEoF0w/DVyPXvRTBBfNxY/mQZLOEeSUEzOg==`,
         {
           appInfo: {
-            appVersion: app.getVersion(),
+            appVersion: defaultStore.get("appVersion"),
             osPlatform: os.platform(),
             osRelease: os.release(),
             debug: defaultStore.get("debug"),
@@ -61,7 +60,7 @@ function callSigninUser(mediumUser) {
         {
           mediumUser,
           appInfo: {
-            appVersion: app.getVersion(),
+            appVersion: defaultStore.get("appVersion"),
             osPlatform: os.platform(),
             osRelease: os.release(),
           },
@@ -92,7 +91,7 @@ function callMediumMe(mediumTokens) {
         resolve(response.data.data);
       })
       .catch((e) => {
-        log("signin/medium-me/error", { e, mediumToken });
+        log("signin/medium-me/error", { e, mediumTokens });
         console.error("Error in mediumMe", e);
         reject(e);
       });
@@ -100,12 +99,13 @@ function callMediumMe(mediumTokens) {
 }
 
 async function signinStart() {
-  let signId = await callSigninCreate();
-  log("signin/signin-start-success", { signId });
-  return signId;
+  let data = await callSigninCreate();
+  defaultStore.set("signinId", data.signinId);
 }
 
-async function signinSetup(signinId) {
+async function signinSetup() {
+  let signinId = defaultStore.get("signinId");
+
   let signData = await callSigninRead(signinId);
   defaultStore.set("mediumTokens", signData.mediumTokens);
   defaultStore.set("mediumUser", signData.mediumUser);
@@ -116,7 +116,7 @@ async function signinSetup(signinId) {
   defaultStore.set("deskSettings", deskUserData.settings);
   defaultStore.set("deskFlags", deskUserData.flags);
 
-  log("signin/signin-setup-success", { deskUserData });
+  log("signin/signin-setup-success", { deskUserData, mediumUser: signData.mediumUser });
 }
 
 async function signinMain() {
@@ -132,7 +132,7 @@ async function signinMain() {
   defaultStore.set("deskSettings", deskUserData.settings);
   defaultStore.set("deskFlags", deskUserData.flags);
 
-  log("signin/signin-main-success", { deskUserData });
+  log("signin/signin-main-success", { deskUserData, mediumUser });
 }
 
 module.exports = { signinStart, signinSetup, signinMain };

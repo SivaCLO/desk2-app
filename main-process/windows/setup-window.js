@@ -1,19 +1,19 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
-const { defaultStore } = require("../../common/store");
 const { log } = require("../../common/activity");
+const { signinSetup } = require("../../common/signin");
+const { defaultStore } = require("../../common/store");
 const { showMainWindow } = require("./main-window");
 const os = require("os");
-const fs = require("fs-extra");
 
 let setupWindow = null;
 
-function showSetupWindow(errorMessage) {
+function showSetupWindow() {
   log("setup-window/show");
   if (!setupWindow) {
     setupWindow = new BrowserWindow({
-      width: 600,
-      height: 800,
+      width: 678,
+      height: 695,
       frame: os.platform() === "linux",
       autoHideMenuBar: os.platform() === "linux",
       resizable: false,
@@ -24,43 +24,32 @@ function showSetupWindow(errorMessage) {
         enableRemoteModule: true,
       },
     });
-    setupWindow.loadURL(path.join("file://", __dirname, "../../render-process/setup/setup.html")).then(() => {
-      loadValues(errorMessage);
+    setupWindow.loadURL(path.join("file://", __dirname, "../../render-process/setup/welcome.html")).then();
+
+    setupWindow.webContents.on("will-redirect", (e, url) => {
+      if (url.startsWith("https://medium.com/m/oauth/authorize") && url.includes("source=login")) {
+        e.preventDefault();
+        let urls = url.split("&source");
+        setupWindow.loadURL(urls[0]).then();
+      }
     });
+
+    setupWindow.webContents.on("did-navigate", (e, url) => {
+      if (url.startsWith("https://desk11.azurewebsites.net")) {
+        signinSetup().then(() => {
+          setupWindow.loadURL(path.join("file://", __dirname, "../../render-process/setup/goal.html")).then();
+        });
+      }
+    });
+
     setupWindow.on("closed", () => {
       setupWindow = null;
     });
-  } else {
-    loadValues(errorMessage);
   }
 }
 
-function loadValues(errorMessage) {
-  let mediumToken = defaultStore.get("medium-token");
-  if (mediumToken) {
-    log("setup-window/existing-token", { mediumToken });
-    setupWindow.webContents.send("login-token", mediumToken);
-  }
-  let userEmail = defaultStore.get("user-email");
-  if (userEmail) {
-    log("setup-window/existing-email", { userEmail });
-    setupWindow.webContents.send("login-email", userEmail);
-  }
-  if (errorMessage) {
-    log("setup-window/existing-error", { errorMessage });
-    setupWindow.webContents.send("login-error", errorMessage);
-  }
-}
-
-ipcMain.on("login-submit", (e, mediumToken, userEmail) => {
-  log("setup-window/submit", { mediumToken, userEmail });
-  login().then(() => {
-    showMainWindow();
-    close();
-  });
-});
-
-ipcMain.on("login-close", () => {
+ipcMain.on("setup-complete", (e) => {
+  showMainWindow();
   close();
 });
 
@@ -71,14 +60,4 @@ function close() {
   }
 }
 
-function resetApp() {
-  log("setup-window/reset-app");
-  defaultStore.clear();
-  const getAppPath = path.join(app.getPath("appData"), app.name);
-  fs.unlink(getAppPath, () => {
-    app.relaunch();
-    app.exit(0);
-  });
-}
-
-module.exports = { showSetupWindow, resetApp };
+module.exports = { showSetupWindow };

@@ -1,0 +1,77 @@
+h2 {
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 32px;
+  color: rgb(8, 8, 8);
+}
+
+h4 {
+  font-family: "Lucida Sans", Geneva, Arial, sans-serif;
+  letter-spacing: 0.25px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 24px;
+  color: rgb(41, 41, 41);
+}
+
+h4 span {
+  font-family: "Lucida Sans", Geneva, Arial, sans-serif;
+  letter-spacing: 0.25px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 24px;
+  color: var(--color-accent-dark);
+}
+
+h5 {
+  font-family: "Lucida Sans", Geneva, Arial, sans-serif;
+  letter-spacing: 0.5px;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 24px;
+  color: rgb(41, 41, 41);
+}
+
+.btn {
+  background-color: rgb(25, 25, 25);
+  color: rgb(225, 225, 225);
+  font-family: "Lucida Sans", Geneva, Arial, sans-serif;
+  letter-spacing: 0.5px;
+  font-size: 13px;
+  font-weight: 100;
+  line-height: 24px;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: rgb(25, 25, 25);
+  color: rgb(225, 225, 225);
+}
+
+input {
+  font-family: "Lucida Sans", Geneva, Arial, sans-serif;
+  letter-spacing: 0.25px;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 24px;
+  color: rgb(41, 41, 41);
+  text-align: center;
+  width: 250px;
+}
+
+.slider.slider-horizontal .slider-track {
+  height: 0;
+  top: 76%;
+  border-top: 0.5px solid var(--color-55);
+}
+
+.slider.slider-horizontal .slider-tick,
+.slider.slider-horizontal .slider-handle {
+  background-image: none;
+  background-color: var(--color-accent);
+}
+
+svg {
+  color: var(--color-accent);
+}
