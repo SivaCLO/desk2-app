@@ -1,4 +1,5 @@
 console.log("Running Custom JS from the Desk app...");
+const { ipcRenderer } = require("electron");
 
 window.addEventListener("load", () => {
   hideMeta();
@@ -95,6 +96,10 @@ function checkContent() {
   }
 
   if (b.innerHTML) {
+    ipcRenderer.send("guidelines/spellcheck", {
+      text: b.innerText,
+    });
+
     var str = b.innerHTML;
     var count = (str.match(/is/g) || []).length;
     console.log("checkContent -> count links found as text in article", count);
