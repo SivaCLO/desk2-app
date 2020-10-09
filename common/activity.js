@@ -2,7 +2,7 @@ const axios = require("axios");
 const { defaultStore } = require("./store");
 
 function log(activityCode, activityData) {
-  let deskUserId = defaultStore.get("deskUserId") || "anonymous";
+  let deskUserId = defaultStore.get("deskUserId") || "setup";
   axios
     .post(
       defaultStore.get("debug")
