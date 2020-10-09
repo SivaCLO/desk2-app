@@ -4,7 +4,7 @@ const { toggleShortcutsWindow } = require("../windows/shortcuts-window");
 const { showQuicklinksWindow } = require("../windows/quicklinks-window");
 const { showImportDialog } = require("../dialogs/import-draft-dialog");
 const { defaultStore } = require("../../common/store");
-const { signOut } = require("../../common/reset");
+const { signout } = require("../../common/signout");
 const { log } = require("../../common/activity");
 let zenMode = false;
 
@@ -33,7 +33,7 @@ let template = [
         label: "Sign out",
         click() {
           log("application-menu/file/sign-out");
-          signOut();
+          signout();
         },
       },
     ],

@@ -2,8 +2,8 @@ const { app, session } = require("electron");
 const { defaultStore } = require("./store");
 const { log } = require("./activity");
 
-function signOut() {
-  log("reset/sign-out");
+function signout() {
+  log("signout/signout");
   session.defaultSession.clearCache().then(() => {
     session.defaultSession.clearStorageData().then(() => {
       defaultStore.clear();
@@ -12,4 +12,4 @@ function signOut() {
   });
 }
 
-module.exports = { signOut };
+module.exports = { signout };
