@@ -80,11 +80,13 @@ function hideMeta() {
 
 function checkContent() {
   var a = document.getElementsByClassName("section-content").item(0).children.item(0).children;
+
   if (a.item(0).tagName === "H3") {
     console.log("title found");
   } else {
     console.log("no title found");
   }
+
   if (a.item(1).tagName === "H4") {
     console.log("sub-title found");
   } else {
@@ -98,44 +100,53 @@ function checkContent() {
   }
 
   for (let i = 1; i <= Object.keys(a).length; i++) {
+    //mediaCheck
+    if (a.item(i - 1).tagName === "FIGURE") {
+      console.log("Media found");
+    }
+
     if (a[i - 1].innerText.includes("http")) {
       console.log("String contains hyperlink");
     } else {
+      //spellCheck
       ipcRenderer.send("guidelines-spellCheck", {
         id: i - 1,
         text: encodeURI(a[i - 1].innerText),
       });
     }
   }
+
+  ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
+    var elemId;
+    console.log("data", data);
+
+    elemId = data.id;
+    console.log("data.suggestions.length", data.suggestions.length);
+    data.suggestions.map((index) => {
+      // setCursor(index.offset, a, elemId);
+      setCursor(27, a, elemId);
+      index.suggestions.map((index) => {
+        console.log("suggesstion(s)", index.suggestion);
+      });
+    });
+  });
 }
 
-ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
-  console.log("data", data);
-  console.log("guideline-spellcheck-suggestion");
-});
+function setCursor(pos, element, elemId) {
+  console.log("executing focus");
 
-function setCursor(pos) {
-  var tag = document.getElementById("editable");
+  var node = element.item(elemId);
+  console.log("setCursor -> node", node);
 
-  // Creates range object
-  var setpos = document.createRange();
+  node.focus();
+  var textNode = node.firstChild;
+  var range = document.createRange();
 
-  // Creates object for selection
-  var set = window.getSelection();
-
-  // Set start position of range
-  setpos.setStart(tag.childNodes[0], pos);
-
-  // Collapse range within its boundary points
-  // Returns boolean
-  setpos.collapse(true);
-
-  // Remove all ranges set
-  set.removeAllRanges();
-
-  // Add range with respect to range object.
-  set.addRange(setpos);
-
-  // Set cursor on focus
-  tag.focus();
+  console.log("end location", node.innerText.indexOf(" ", pos));
+  // insert caret after the 10th character say - pos
+  range.setStart(textNode, pos);
+  range.setEnd(textNode, node.innerText.indexOf(" ", pos));
+  var sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
 }

@@ -3,7 +3,9 @@ const { getMainWindow } = require("../windows/main-window");
 const { ipcMain } = require("electron");
 
 ipcMain.on("guidelines-spellCheck", (event, data) => {
-  spellCheck(data.id, data.text);
+  if (data.text !== undefined && data.text !== null && data.text !== "") {
+    spellCheck(data.id, data.text);
+  }
 });
 
 ipcMain.on("guidelines-brokenLinkCheck", (event, data) => {
