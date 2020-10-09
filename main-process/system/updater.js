@@ -32,7 +32,9 @@ ipcMain.on("restart-update", () => {
     currentVersion: defaultStore.get("deskVersion"),
     downloadedVersion: defaultStore.get("downloadedVersion"),
   });
-  autoUpdater.quitAndInstall();
+  setImmediate(() => {
+    autoUpdater.quitAndInstall();
+  });
 });
 
 module.exports = { checkForUpdates };
