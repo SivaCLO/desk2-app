@@ -24,7 +24,7 @@ autoUpdater.on("error", (err) => {
 autoUpdater.on("update-downloaded", (info) => {
   log("updater/update-downloaded", { version: info.version, downloadedFile: info.downloadedFile });
   defaultStore.set("downloadedVersion", info.version);
-  getMainWindow().webContents && getMainWindow().webContents.send("notify-update");
+  getMainWindow() && getMainWindow().webContents.send("notify-update");
 });
 
 ipcMain.on("restart-update", () => {
