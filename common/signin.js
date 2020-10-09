@@ -1,5 +1,6 @@
 const { defaultStore } = require("./store");
 const { log } = require("./activity");
+const { signout } = require("./signout");
 const axios = require("axios");
 const os = require("os");
 
@@ -101,6 +102,9 @@ function callMediumMe(mediumTokens) {
       .catch((e) => {
         log("signin/call-medium-me/error", { e, mediumTokens });
         console.error(e);
+        if (e && e.response.status === 401) {
+          signout();
+        }
         reject(e);
       });
   });
