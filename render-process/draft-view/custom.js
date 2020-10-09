@@ -91,13 +91,51 @@ function checkContent() {
     console.log("no sub-title found");
   }
 
+  if (window.location.href) {
+    ipcRenderer.send("guidelines-brokenLinkCheck", {
+      url: window.location.href,
+    });
+  }
+
   for (let i = 1; i <= Object.keys(a).length; i++) {
     if (a[i - 1].innerText.includes("http")) {
       console.log("String contains hyperlink");
     } else {
-      ipcRenderer.send("guidelines-spellcheck", {
+      ipcRenderer.send("guidelines-spellCheck", {
+        id: i - 1,
         text: encodeURI(a[i - 1].innerText),
       });
     }
   }
+}
+
+ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
+  console.log("data", data);
+  console.log("guideline-spellcheck-suggestion");
+});
+
+function setCursor(pos) {
+  var tag = document.getElementById("editable");
+
+  // Creates range object
+  var setpos = document.createRange();
+
+  // Creates object for selection
+  var set = window.getSelection();
+
+  // Set start position of range
+  setpos.setStart(tag.childNodes[0], pos);
+
+  // Collapse range within its boundary points
+  // Returns boolean
+  setpos.collapse(true);
+
+  // Remove all ranges set
+  set.removeAllRanges();
+
+  // Add range with respect to range object.
+  set.addRange(setpos);
+
+  // Set cursor on focus
+  tag.focus();
 }

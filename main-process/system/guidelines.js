@@ -1,14 +1,16 @@
 const axios = require("axios");
+const { getMainWindow } = require("../windows/main-window");
 const { ipcMain } = require("electron");
 
-ipcMain.on("guidelines-spellcheck", (event, data) => {
-  spellCheck(data.text);
+ipcMain.on("guidelines-spellCheck", (event, data) => {
+  spellCheck(data.id, data.text);
 });
 
-function spellCheck(articleContent) {
-  console.log("spellCheck -> articleContent", articleContent);
-  console.log("Executing Spell Check");
+ipcMain.on("guidelines-brokenLinkCheck", (event, data) => {
+  brokenLinkCheck(data.url);
+});
 
+async function spellCheck(id, articleContent) {
   const headers = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
@@ -21,8 +23,9 @@ function spellCheck(articleContent) {
     })
     .then((response) => {
       if (Object.keys(response.data.flaggedTokens).length !== 0) {
-        console.log("Suggestion Available...!");
-        console.log("spellCheck -> response", response.data.flaggedTokens);
+        getMainWindow()
+          .getBrowserView()
+          .webContents.send("guideline-spellcheck-suggestion", { id: id, suggestions: response.data.flaggedTokens });
       } else {
         console.log("No Suggestion Available...!");
       }
@@ -30,6 +33,10 @@ function spellCheck(articleContent) {
     .catch((error) => {
       console.log("spellCheck -> error", error);
     });
+}
+
+function brokenLinkCheck(baseUrl) {
+  console.log("brokenLinkCheck -> baseUrl", baseUrl);
 }
 
 module.exports = { spellCheck };
