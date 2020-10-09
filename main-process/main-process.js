@@ -9,15 +9,16 @@ const { defaultStore } = require("../common/store");
 const debug = /--debug/.test(process.argv[2]);
 
 defaultStore.set("debug", debug);
-defaultStore.set("appVersion", app.getVersion());
+defaultStore.set("deskVersion", app.getVersion());
 
 if (process.mas) app.setName("Desk for Medium.com");
 
 app.on("ready", () => {
   log("main-process/app/ready", {
-    appVersion: app.getVersion(),
+    deskVersion: app.getVersion(),
     osPlatform: os.platform(),
     osRelease: os.release(),
+    debug,
   });
 
   if (!debug) {

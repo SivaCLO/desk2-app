@@ -36,7 +36,7 @@ function showImportDialog() {
             return;
           }
 
-          let mediumTokens = defaultStore.get("mediumToken");
+          let mediumTokens = defaultStore.get("mediumTokens");
           let mediumUser = defaultStore.get("mediumUser");
           axios
             .post(
