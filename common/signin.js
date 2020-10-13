@@ -14,6 +14,7 @@ function callSigninCreate() {
             deskVersion: defaultStore.get("deskVersion"),
             osPlatform: os.platform(),
             osRelease: os.release(),
+            macAddress: defaultStore.get("macAddress"),
             debug: defaultStore.get("debug"),
           },
         }
@@ -65,6 +66,7 @@ function callSigninDesk(mediumUser) {
             deskVersion: defaultStore.get("deskVersion"),
             osPlatform: os.platform(),
             osRelease: os.release(),
+            macAddress: defaultStore.get("macAddress"),
             debug: defaultStore.get("debug"),
           },
         }

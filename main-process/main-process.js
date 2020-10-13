@@ -7,9 +7,14 @@ const { showSetupWindow } = require("./windows/setup-window");
 const { signinMain } = require("../common/signin");
 const { defaultStore } = require("../common/store");
 const debug = /--debug/.test(process.argv[2]);
+const macAddress = require("node-macaddress");
 
 defaultStore.set("debug", debug);
 defaultStore.set("deskVersion", app.getVersion());
+
+macAddress.one(function (err, address) {
+  macAddress && defaultStore.set("macAddress", address);
+});
 
 if (process.mas) app.setName("Desk for Medium.com");
 
@@ -18,6 +23,7 @@ app.on("ready", () => {
     deskVersion: app.getVersion(),
     osPlatform: os.platform(),
     osRelease: os.release(),
+    macAddress: defaultStore.get("macAddress"),
     debug,
   });
 
