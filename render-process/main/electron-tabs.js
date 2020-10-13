@@ -369,7 +369,7 @@ class Tab extends EventEmitter {
     this.view.browserView.setBounds({
       x: 0,
       y: 82,
-      width: Remote.getCurrentWindow().getContentBounds().width,
+      width: Remote.getCurrentWindow().getContentBounds().width - 250,
       height: Remote.getCurrentWindow().getContentBounds().height - 80,
     });
     this.view.browserView.webContents.focus();

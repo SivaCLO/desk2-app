@@ -62,7 +62,7 @@ function showMainWindow() {
         mainWindow.getBrowserView().setBounds({
           x: 0,
           y: 82,
-          width: mainWindow.getContentBounds().width,
+          width: mainWindow.getContentBounds().width - 250,
           height: mainWindow.getContentBounds().height - 80,
         });
       mainWindow.webContents.send("tab-padding", process.platform === "darwin" && !mainWindow.isFullScreen());
