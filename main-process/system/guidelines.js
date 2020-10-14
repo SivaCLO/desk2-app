@@ -12,6 +12,14 @@ ipcMain.on("guidelines-brokenLinkCheck", (event, data) => {
   brokenLinkCheck(data.url);
 });
 
+ipcMain.on("guideline-setCursor", (event, data) => {
+  console.log("data", data);
+
+  getMainWindow().getBrowserView().webContents.send("guideline-message", {
+    data,
+  });
+});
+
 async function spellCheck(id, articleContent) {
   const headers = {
     "Content-Type": "application/json",
@@ -28,6 +36,10 @@ async function spellCheck(id, articleContent) {
         getMainWindow()
           .getBrowserView()
           .webContents.send("guideline-spellcheck-suggestion", { id: id, suggestions: response.data.flaggedTokens });
+        getMainWindow().webContents.send("guideline-spellcheck-suggestion", {
+          id: id,
+          suggestions: response.data.flaggedTokens,
+        });
       } else {
         console.log("No Suggestion Available...!");
       }

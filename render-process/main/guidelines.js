@@ -1,32 +1,50 @@
 const { defaultStore } = require("../../common/store");
+const { ipcRenderer } = require("electron");
 
-var result = defaultStore.get("spellCheckSuggesstion");
-console.log("result", result);
+ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
+  if (data) {
+    // console.log("div id", data.id);
+    data.suggestions.map((index) => {
+      // console.log("index", index);
+      // console.log("position", index.offset);
+      index.suggestions.map((i) => {
+        // console.log("i", i);
+        // console.log("i", i.suggestion);
 
-if (result) {
-  console.log("div id", result.id);
-  result.suggestions.map((index) => {
-    console.log("index", index);
-    console.log("position", index.offset);
-    index.suggestions.map((i) => {
-      console.log("i", i);
-      console.log("i", i.suggestion);
+        var span = document.createElement("span");
+        var node = document.createTextNode(i.suggestion);
+        span.className = "badge badge-primary mr-1 scs";
+        span.id = index.offset;
+        span.style.cursor = "pointer";
+        span.appendChild(node);
+        var element = document.getElementById("suggestions");
+        element.appendChild(span);
+        span.addEventListener("click", () => {
+          let divId = data.id;
+          let misspelledWordPosition = index.offset;
+          let correctWordSuggestion = i;
 
-      var span = document.createElement("span");
-      var node = document.createTextNode(i.suggestion);
-      span.className = "badge badge-primary mr-1 scs";
-      span.id = index.offset;
-      span.style.cursor = "pointer";
-      span.appendChild(node);
-      var element = document.getElementById("suggestions");
-      element.appendChild(span);
-      span.addEventListener("click", () => {
-        setCursor(index.offset);
+          setCursor(divId, misspelledWordPosition, correctWordSuggestion);
+        });
       });
     });
-  });
+  }
+});
+
+function setCursor(divId, misspelledWordPosition, correctWordSuggestion) {
+  ipcRenderer.send("guideline-setCursor", { divId, correctWordSuggestion, misspelledWordPosition });
 }
 
-function setCursor(pos, element, elemId) {
-  console.log("executing focus");
-}
+// var elemId;
+// console.log("data", data);
+// defaultStore.set("spellCheckSuggesstion", data);
+
+// elemId = data.id;
+// console.log("data.suggestions.length", data.suggestions.length);
+// data.suggestions.map((index) => {
+//   // setCursor(index.offset, a, elemId);
+//   setCursor(27, a, elemId);
+//   index.suggestions.map((index) => {
+//     console.log("suggesstion(s)", index.suggestion);
+//   });
+// });

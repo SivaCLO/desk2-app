@@ -126,11 +126,17 @@ function checkContent() {
     console.log("data.suggestions.length", data.suggestions.length);
     data.suggestions.map((index) => {
       // setCursor(index.offset, a, elemId);
-      setCursor(27, a, elemId);
+      // setCursor(27, a, elemId);
+      console.log("checkContent -> elemId", elemId);
       index.suggestions.map((index) => {
         console.log("suggesstion(s)", index.suggestion);
       });
     });
+  });
+
+  ipcRenderer.on("guideline-message", (event, data) => {
+    console.log("data", data);
+    // setCursor(misspelledWordPosition, a, data.divId);
   });
 }
 
