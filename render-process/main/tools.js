@@ -65,6 +65,29 @@ function handleAction(event) {
   } else if (action === "quicklinks") {
     log("tools/quicklinks");
     ipcRenderer.send("open-quicklinks-window");
+  } else if (action === "guideline-checker") {
+    log("tools/guideline-checker");
+    var a = document.getElementById("guideline");
+    if (a.style.display === "") {
+      a.style.display = "none";
+    } else {
+      a.style.display = "";
+      if (document.getElementById("spellCheck").checked) {
+        console.log("Execute Spell Check");
+      }
+
+      if (document.getElementById("titleCheck").checked) {
+        console.log("Execute Title Check");
+      }
+
+      if (document.getElementById("subTitleCheck").checked) {
+        console.log("Execute Sub Title Check");
+      }
+
+      if (document.getElementById("imageCheck").checked) {
+        console.log("Execute Image Check");
+      }
+    }
   }
 
   // Draft Tools

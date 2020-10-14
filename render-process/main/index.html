@@ -165,7 +165,7 @@
             <button
               id="guideline-checker"
               type="button"
-              class="medium-action ham"
+              class="medium-action"
               data-action="guideline-checker"
               data-tooltip="GuideLine Checker"
             >
@@ -226,7 +226,7 @@
 
     <button type="button" class="update-notifier" id="update-notifier" hidden>Restart to update</button>
 
-    <div id="guideline" class="float-right" style="width: 355px; margin-top: 35px;">
+    <div id="guideline" class="float-right" style="width: 355px; margin-top: 35px; display: none;">
       <div class="row-12">
         <div class="container" style="background-color: var(--color-16); color: white; height: 47px;">
           <div class="row align-self-center">
@@ -244,7 +244,7 @@
         <div class="container">
           <div class="row">
             <div class="col-2">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0rem;" />
+              <input type="checkbox" class="form-check-input" id="titleCheck" style="margin-left: 0rem;" checked />
             </div>
             <div class="col-9" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
               Title Check
@@ -252,7 +252,7 @@
           </div>
           <div class="row">
             <div class="col-2">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0rem;" />
+              <input type="checkbox" class="form-check-input" id="subTitleCheck" style="margin-left: 0rem;" checked />
             </div>
             <div class="col-9" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
               Sub-Title Check
@@ -260,7 +260,7 @@
           </div>
           <div class="row">
             <div class="col-2">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0rem;" />
+              <input type="checkbox" class="form-check-input" id="imageCheck" style="margin-left: 0rem;" checked />
             </div>
             <div class="col-9" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
               Image Check
@@ -271,15 +271,16 @@
         <div class="container">
           <div class="row">
             <div class="col-2">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0rem;" />
+              <input type="checkbox" class="form-check-input" id="spellCheck" style="margin-left: 0rem;" checked />
             </div>
             <div class="col-9" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
-              Spell Check
+              <span>Spell Check</span>
+              <div id="suggestions"></div>
             </div>
           </div>
           <div class="row">
             <div class="col-2">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0rem;" />
+              <input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0rem;" checked />
             </div>
             <div class="col-9" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
               Word break Check
@@ -287,7 +288,7 @@
           </div>
           <div class="row">
             <div class="col-2">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0rem;" />
+              <input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0rem;" checked />
             </div>
             <div class="col-9" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
               Slang Check
@@ -295,7 +296,7 @@
           </div>
           <div class="row">
             <div class="col-2">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0rem;" />
+              <input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0rem;" checked />
             </div>
             <div class="col-9" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
               Names Check
@@ -303,7 +304,7 @@
           </div>
           <div class="row">
             <div class="col-2">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0rem;" />
+              <input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0rem;" checked />
             </div>
             <div class="col-9" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
               Homonyms Check
@@ -333,7 +334,7 @@
         </div>
         <hr />
         <div class="container d-flex justify-content-center">
-          <button type="button" class="btn btn-outline-secondary mr-3">Re-run</button>
+          <button type="button" class="btn btn-outline-secondary mr-3" onclick="guidelines()">Re-run</button>
           <button type="button" class="btn btn-outline-secondary">Publish</button>
         </div>
       </div>
@@ -349,6 +350,7 @@
       require("./wincontrols");
       require("../ex-links");
       require("../normalize-shortcuts");
+      require("./guidelines");
     </script>
   </body>
 </html>

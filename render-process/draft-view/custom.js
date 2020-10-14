@@ -1,5 +1,6 @@
 console.log("Running Custom JS from the Desk app...");
 const { ipcRenderer } = require("electron");
+const { defaultStore } = require("../../common/store");
 
 window.addEventListener("load", () => {
   hideMeta();
@@ -119,6 +120,7 @@ function checkContent() {
   ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
     var elemId;
     console.log("data", data);
+    defaultStore.set("spellCheckSuggesstion", data);
 
     elemId = data.id;
     console.log("data.suggestions.length", data.suggestions.length);
