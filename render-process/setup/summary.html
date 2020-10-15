@@ -62,13 +62,13 @@
     <script>
       require("bootstrap");
       const path = require("path");
-      const { updateFlags } = require("../../common/desk");
+      const { getSettings, updateFlags } = require("../../common/desk");
       const { ipcRenderer } = require("electron");
       const { defaultStore } = require("../../common/store");
 
       window.onload = function () {
-        document.getElementById("goal").innerText = defaultStore.get("deskSettings").monthlyGoal;
-        document.getElementById("email").innerText = defaultStore.get("deskSettings").userEmail;
+        document.getElementById("goal").innerText = getSettings("monthlyGoal");
+        document.getElementById("email").innerText = getSettings("userEmail");
         document.getElementById("username").innerText = defaultStore.get("mediumUser").username;
       };
 
