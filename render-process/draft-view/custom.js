@@ -135,8 +135,7 @@ function checkContent() {
   });
 
   ipcRenderer.on("guideline-message", (event, data) => {
-    console.log("data", data);
-    // setCursor(misspelledWordPosition, a, data.divId);
+    setCursor(data.data.misspelledWordPosition, a, data.data.divId);
   });
 }
 

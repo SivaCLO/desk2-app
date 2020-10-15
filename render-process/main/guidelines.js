@@ -23,7 +23,6 @@ ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
           let divId = data.id;
           let misspelledWordPosition = index.offset;
           let correctWordSuggestion = i;
-
           setCursor(divId, misspelledWordPosition, correctWordSuggestion);
         });
       });
@@ -34,17 +33,3 @@ ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
 function setCursor(divId, misspelledWordPosition, correctWordSuggestion) {
   ipcRenderer.send("guideline-setCursor", { divId, correctWordSuggestion, misspelledWordPosition });
 }
-
-// var elemId;
-// console.log("data", data);
-// defaultStore.set("spellCheckSuggesstion", data);
-
-// elemId = data.id;
-// console.log("data.suggestions.length", data.suggestions.length);
-// data.suggestions.map((index) => {
-//   // setCursor(index.offset, a, elemId);
-//   setCursor(27, a, elemId);
-//   index.suggestions.map((index) => {
-//     console.log("suggesstion(s)", index.suggestion);
-//   });
-// });
