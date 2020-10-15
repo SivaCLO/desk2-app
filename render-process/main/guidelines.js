@@ -14,16 +14,18 @@ ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
         var span = document.createElement("span");
         var node = document.createTextNode(i.suggestion);
         span.className = "badge badge-primary mr-1 scs";
-        span.id = index.offset;
+        span.id = data.id + "_" + index.offset;
         span.style.cursor = "pointer";
         span.appendChild(node);
         var element = document.getElementById("suggestions");
         element.appendChild(span);
         span.addEventListener("click", () => {
-          let divId = data.id;
-          let misspelledWordPosition = index.offset;
-          let correctWordSuggestion = i;
-          setCursor(divId, misspelledWordPosition, correctWordSuggestion);
+          setCursor(data.id, index.offset, i);
+        });
+        span.addEventListener("contextmenu", (e) => {
+          clearSelection();
+          let id = e.target.id.split("_");
+          replaceWord(id[0], id[1], e.target.innerText, index.token);
         });
       });
     });
@@ -32,4 +34,17 @@ ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
 
 function setCursor(divId, misspelledWordPosition, correctWordSuggestion) {
   ipcRenderer.send("guideline-setCursor", { divId, correctWordSuggestion, misspelledWordPosition });
+}
+
+function replaceWord(divId, misspelledWordPosition, correctWordSuggestion, misspelledWord) {
+  ipcRenderer.send("guideline-replaceWord", { divId, misspelledWordPosition, correctWordSuggestion, misspelledWord });
+}
+
+function clearSelection() {
+  if (document.selection && document.selection.empty) {
+    document.selection.empty();
+  } else if (window.getSelection) {
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+  }
 }

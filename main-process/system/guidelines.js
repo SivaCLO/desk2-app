@@ -20,6 +20,12 @@ ipcMain.on("guideline-setCursor", (event, data) => {
   });
 });
 
+ipcMain.on("guideline-replaceWord", (event, data) => {
+  getMainWindow().getBrowserView().webContents.send("guideline-replace-message", {
+    data,
+  });
+});
+
 async function spellCheck(id, articleContent) {
   const headers = {
     "Content-Type": "application/json",

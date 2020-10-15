@@ -137,6 +137,16 @@ function checkContent() {
   ipcRenderer.on("guideline-message", (event, data) => {
     setCursor(data.data.misspelledWordPosition, a, data.data.divId);
   });
+
+  ipcRenderer.on("guideline-replace-message", (event, data) => {
+    replaceWord(
+      data.data.misspelledWordPosition,
+      a,
+      data.data.divId,
+      data.data.correctWordSuggestion,
+      data.data.misspelledWord
+    );
+  });
 }
 
 function setCursor(pos, element, elemId) {
@@ -156,4 +166,10 @@ function setCursor(pos, element, elemId) {
   var sel = window.getSelection();
   sel.removeAllRanges();
   sel.addRange(range);
+}
+
+function replaceWord(pos, element, elemId, correctWord, misspelledWord) {
+  var node = element.item(elemId).innerText;
+  var replaced = node.replace(misspelledWord, correctWord);
+  element.item(elemId).innerText = replaced;
 }
