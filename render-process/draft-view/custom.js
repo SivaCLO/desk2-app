@@ -125,8 +125,6 @@ function checkContent() {
     elemId = data.id;
     console.log("data.suggestions.length", data.suggestions.length);
     data.suggestions.map((index) => {
-      // setCursor(index.offset, a, elemId);
-      // setCursor(27, a, elemId);
       console.log("checkContent -> elemId", elemId);
       index.suggestions.map((index) => {
         console.log("suggesstion(s)", index.suggestion);
@@ -153,13 +151,12 @@ function setCursor(pos, element, elemId) {
   console.log("executing focus");
 
   var node = element.item(elemId);
-  console.log("setCursor -> node", node);
+  node.scrollIntoView();
 
   node.focus();
   var textNode = node.firstChild;
   var range = document.createRange();
 
-  console.log("end location", node.innerText.indexOf(" ", pos));
   // insert caret after the 10th character say - pos
   range.setStart(textNode, pos);
   range.setEnd(textNode, node.innerText.indexOf(" ", pos));
