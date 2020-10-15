@@ -32,13 +32,24 @@ async function updateSettings(key, value) {
   log("desk/update-settings-success", { settings });
 }
 
+function getSettings(key) {
+  let settings = defaultStore.get("deskSettings") || {};
+  return settings[key];
+}
+
 async function updateFlags(key, value) {
   let flags = defaultStore.get("deskFlags");
   flags[key] = value;
+  defaultStore.set("deskFlags", flags);
 
   await callDeskUpdate(defaultStore.get("deskId"), { flags });
 
   log("desk/update-flags-success", { flags });
 }
 
-module.exports = { updateSettings, updateFlags };
+function getFlags(key) {
+  let flags = defaultStore.get("deskFlags") || {};
+  return flags[key];
+}
+
+module.exports = { getSettings, updateSettings, getFlags, updateFlags };

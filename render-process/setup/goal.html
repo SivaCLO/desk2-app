@@ -53,14 +53,12 @@
       require("bootstrap");
       const Slider = require("bootstrap-slider");
       const path = require("path");
-      const { defaultStore } = require("../../common/store");
-      const { updateSettings } = require("../../common/desk");
+      const { getSettings, updateSettings } = require("../../common/desk");
       let goalSlider;
 
       window.onload = function () {
         goalSlider = new Slider("#monthlyGoal", {});
-        defaultStore.get("deskSettings").monthlyGoal &&
-          goalSlider.setValue(defaultStore.get("deskSettings").monthlyGoal);
+        getSettings("monthlyGoal") && goalSlider.setValue(getSettings("monthlyGoal"));
         document.getElementById("targetStories").innerText = goalSlider.getValue();
         goalSlider.on("change", () => {
           document.getElementById("targetStories").innerText = goalSlider.getValue();
