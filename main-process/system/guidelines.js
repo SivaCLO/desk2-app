@@ -26,6 +26,15 @@ ipcMain.on("guideline-replaceWord", (event, data) => {
   });
 });
 
+ipcMain.on("guideline-re-run", (event) => {
+  console.log("guideline-re-run");
+  getMainWindow().getBrowserView().webContents.send("re-run");
+});
+
+ipcMain.on("publish", (event) => {
+  getMainWindow().getBrowserView().webContents.send("publish");
+});
+
 async function spellCheck(id, articleContent) {
   const headers = {
     "Content-Type": "application/json",

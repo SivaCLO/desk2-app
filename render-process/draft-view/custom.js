@@ -79,6 +79,15 @@ function hideMeta() {
   if (jsDoneButton) jsDoneButton.style.display = "none";
 }
 
+ipcRenderer.on("re-run", (event) => {
+  console.log("checkContent");
+  checkContent();
+});
+
+ipcRenderer.on("publish", (event) => {
+  console.log("publish");
+});
+
 function checkContent() {
   var a = document.getElementsByClassName("section-content").item(0).children.item(0).children;
 
@@ -119,9 +128,6 @@ function checkContent() {
 
   ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
     var elemId;
-    console.log("data", data);
-    defaultStore.set("spellCheckSuggesstion", data);
-
     elemId = data.id;
     console.log("data.suggestions.length", data.suggestions.length);
     data.suggestions.map((index) => {
