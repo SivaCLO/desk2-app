@@ -65,6 +65,12 @@ class DeskTab {
   };
 
   activateTools = () => {
+    this.tab.setIcon(
+      null,
+      null,
+      this.isDraft ? `<use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#pencil-square"/>` : null
+    );
+
     if (this.isDesk) {
       document.getElementById("desk-tools").classList.add("active");
       document.getElementById("draft-tools").classList.remove("active");

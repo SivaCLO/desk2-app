@@ -112,6 +112,22 @@
   opacity: 0.4;
 }
 
+.etabs-tab-icon svg {
+  max-width: 16px;
+  max-height: 16px;
+  padding-right: 2px;
+  color: var(--color-accent-light);
+  opacity: 0.4;
+}
+
+.etabs-tab:hover .etabs-tab-icon svg {
+  opacity: 1;
+}
+
+.etabs-tab.active .etabs-tab-icon svg {
+  opacity: 1;
+}
+
 .etabs-tab:hover .etabs-tab-icon img {
   opacity: 1;
 }
@@ -122,6 +138,7 @@
 
 .etabs-tab-title {
   display: inline-block;
+  padding-top: 2px;
   margin-left: 4px;
   overflow: hidden;
   white-space: nowrap;

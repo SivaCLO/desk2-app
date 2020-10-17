@@ -196,9 +196,9 @@ class Tab extends EventEmitter {
     this.icon = args.icon;
     this.closable = args.closable !== false;
     this.tabElements = {};
+    TabPrivate.initTab.bind(this)();
     this.url = args.url;
     this.view = new DeskTab(this.url, this, tabGroup);
-    TabPrivate.initTab.bind(this)();
     if (args.visible !== false) {
       this.show();
     }
@@ -243,7 +243,7 @@ class Tab extends EventEmitter {
     return this.badge;
   }
 
-  setIcon(iconURL, icon) {
+  setIcon(iconURL, icon, iconSVG) {
     if (this.isClosed) return;
     this.iconURL = iconURL;
     this.icon = icon;
@@ -254,6 +254,12 @@ class Tab extends EventEmitter {
     } else if (icon) {
       span.innerHTML = `<i class="${icon}"></i>`;
       this.emit("icon-changed", icon, this);
+    } else if (iconSVG) {
+      span.innerHTML = `<svg class="bi">${iconSVG}</svg>`;
+      this.emit("icon-changed", iconSVG, this);
+    } else {
+      span.innerHTML = ``;
+      this.emit("icon-changed", null, this);
     }
 
     return this;
