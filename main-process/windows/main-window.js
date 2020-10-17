@@ -31,7 +31,7 @@ function showMainWindow() {
     };
 
     mainWindow = new BrowserWindow(windowOptions);
-    mainWindow.loadURL(path.join("file://", __dirname, "../../render-process/main/index.html"));
+    mainWindow.loadURL(path.join("file://", __dirname, "../../render-process/main/tabs.html"));
     mainWindow.on("resize", () => {
       resizeWindow();
     });
@@ -91,10 +91,20 @@ function showMainWindow() {
         mainWindow.webContents.send("restore_tabs", tempTabs);
         defaultStore.set("tabs", []);
         tempTabs = null;
+      } else {
+        mainWindow.webContents.send("new_tab");
       }
     });
   }
 }
+
+function closeMainWindow() {
+  mainWindow.close();
+}
+
+ipcMain.on("close-main-window", () => {
+  closeMainWindow();
+});
 
 ipcMain.on("save-tab", (e, tab) => {
   log("main-window/save-tab", { tab });
@@ -117,4 +127,4 @@ ipcMain.on("delete-tab", (e, tabs) => {
   }
 });
 
-module.exports = { showMainWindow, getMainWindow };
+module.exports = { showMainWindow, getMainWindow, closeMainWindow };

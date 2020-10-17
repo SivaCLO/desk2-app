@@ -13,11 +13,19 @@ let template = [
     label: "File",
     submenu: [
       {
-        label: "New Story",
+        label: "New Tab",
         accelerator: "CmdOrCtrl+N",
         click() {
-          log("application-menu/file/new-story");
+          log("application-menu/file/new-tab");
           getMainWindow() && getMainWindow().webContents.send("new_tab");
+        },
+      },
+      {
+        label: "New Story",
+        accelerator: "CmdOrCtrl+Shift+N",
+        click() {
+          log("application-menu/file/new-story");
+          getMainWindow() && getMainWindow().webContents.send("new_tab", "https://medium.com/new-story");
         },
       },
       {
@@ -91,45 +99,28 @@ let template = [
     label: "View",
     submenu: [
       {
-        label: "Open Drafts",
-        accelerator: "CmdOrCtrl+D",
+        label: "Go Back",
+        accelerator: "CmdOrCtrl+Left",
         click() {
-          log("application-menu/view/open-drafts");
-          getMainWindow() && getMainWindow().webContents.send("load-medium-link");
+          log("application-menu/view/back");
+          getMainWindow() && getMainWindow().getBrowserView() && getMainWindow().getBrowserView().webContents.goBack();
         },
       },
       {
-        type: "separator",
-      },
-      {
-        label: "Next Story",
-        accelerator: "Ctrl+Tab",
+        label: "Go Forward",
+        accelerator: "CmdOrCtrl+Right",
         click() {
-          log("application-menu/view/next-story");
-          getMainWindow() && getMainWindow().webContents.send("next-tab");
+          log("application-menu/view/forward");
+          getMainWindow() &&
+            getMainWindow().getBrowserView() &&
+            getMainWindow().getBrowserView().webContents.goForward();
         },
       },
       {
-        label: "Previous Story",
-        accelerator: "Ctrl+Shift+Tab",
-        click() {
-          log("application-menu/view/previous-story");
-          getMainWindow() && getMainWindow().webContents.send("previous-tab");
-        },
-      },
-      {
-        label: "Close Story",
-        accelerator: "CmdOrCtrl+W",
-        click() {
-          log("application-menu/view/close-story");
-          getMainWindow() && getMainWindow().webContents.send("close-tab");
-        },
-      },
-      {
-        label: "Reload Story",
+        label: "Reload Tab",
         accelerator: "CmdOrCtrl+R",
         click: (item, focusedWindow) => {
-          log("application-menu/view/reload-story");
+          log("application-menu/view/reload");
           if (focusedWindow) {
             // on reload, start fresh and close any old
             // open secondary windows
@@ -142,7 +133,34 @@ let template = [
         },
       },
       {
-        label: "Reopen Last Closed Story",
+        type: "separator",
+      },
+      {
+        label: "Next Tab",
+        accelerator: "Ctrl+Tab",
+        click() {
+          log("application-menu/view/next");
+          getMainWindow() && getMainWindow().webContents.send("next-tab");
+        },
+      },
+      {
+        label: "Previous Tab",
+        accelerator: "Ctrl+Shift+Tab",
+        click() {
+          log("application-menu/view/previous");
+          getMainWindow() && getMainWindow().webContents.send("previous-tab");
+        },
+      },
+      {
+        label: "Close Tab",
+        accelerator: "CmdOrCtrl+W",
+        click() {
+          log("application-menu/view/close");
+          getMainWindow() && getMainWindow().webContents.send("close-tab");
+        },
+      },
+      {
+        label: "Reopen Last Closed Tab",
         accelerator: "CmdOrCtrl+Shift+T",
         click() {
           log("application-menu/view/reopen-last-closed-story");
@@ -195,25 +213,6 @@ let template = [
           getMainWindow() && getMainWindow().webContents.send("exit-zen-mode");
         },
       },
-      {
-        type: "separator",
-      },
-      {
-        label: "Show Keyboard Shortcuts",
-        accelerator: process.platform !== "linux" ? "CmdOrCtrl+/" : "Ctrl+H",
-        click: () => {
-          log("application-menu/view/show-shortcuts");
-          toggleShortcutsWindow();
-        },
-      },
-      {
-        label: "Show Quick Links",
-        accelerator: "CmdOrCtrl+.",
-        click() {
-          log("application-menu/view/quicklinks");
-          showQuicklinksWindow();
-        },
-      },
     ],
   },
   {
@@ -224,17 +223,6 @@ let template = [
         label: "Minimize Window",
         accelerator: "CmdOrCtrl+M",
         role: "minimize",
-      },
-      {
-        label: "Reload Window",
-        accelerator: "CmdOrCtrl+Shift+R",
-        click: (item, focusedWindow) => {
-          log("application-menu/window/reload-window");
-          if (focusedWindow) {
-            focusedWindow.reload();
-            defaultStore.set("tabs", []);
-          }
-        },
       },
       {
         label: "Toggle Full Screen",
@@ -284,30 +272,6 @@ function addUpdateMenuItems(items, position) {
     {
       label: `Version ${version}`,
       enabled: false,
-    },
-    {
-      label: "Checking for Update",
-      enabled: false,
-      key: "checkingForUpdate",
-    },
-    {
-      label: "Check for Update",
-      visible: false,
-      key: "checkForUpdate",
-      click: () => {
-        log("application-menu/app/check-for-update");
-        require("electron-updater").autoUpdater.checkForUpdates();
-      },
-    },
-    {
-      label: "Restart and Install Update",
-      enabled: true,
-      visible: false,
-      key: "restartToUpdate",
-      click: () => {
-        log("application-menu/app/restart-for-update");
-        require("electron-updater").autoUpdater.quitAndInstall();
-      },
     },
   ];
 
@@ -361,17 +325,6 @@ if (process.platform === "darwin") {
       },
     ],
   });
-
-  // Window menu.
-  template[3].submenu.push(
-    {
-      type: "separator",
-    },
-    {
-      label: "Bring All to Front",
-      role: "front",
-    }
-  );
 
   addUpdateMenuItems(template[0].submenu, 1);
 }

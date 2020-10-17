@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Your Medium Dashboard</title>
+    <title>Start Page</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../../assets/css/variables.css" />
     <link rel="stylesheet" href="../../assets/css/global.css" />
+    <link rel="stylesheet" href="../../assets/css/start.css" />
   </head>
   <body>
     <div class="container text-center">
@@ -20,7 +21,7 @@
               goal in the desk app.
             </h4>
             <button class="btn mt-5" id="continue">
-              <a href="http://medium.com/me/stories">Drafts</a>
+              <a href="#" data-action="open-all-drafts">All Drafts</a>
             </button>
           </section>
           <section id="loading" hidden>
@@ -32,6 +33,7 @@
 
     <script>
       require("bootstrap");
+      require("./start");
     </script>
   </body>
 </html>

@@ -1,8 +1,7 @@
 const EventEmitter = require("events");
 const Remote = require("electron").remote;
 const { ipcRenderer } = require("electron");
-const MediumView = require("../medium-view/medium-view");
-const DraftView = require("../draft-view/draft-view");
+const DeskTab = require("./desk-tab");
 const { log } = require("../../common/activity");
 const FindInPage = require("electron-find").FindInPage;
 let findInPage = null;
@@ -55,9 +54,9 @@ class TabGroup extends EventEmitter {
 
   resizeTabs() {
     let windowWidth = Remote.getCurrentWindow().getBounds().width;
-    let numberOfTabs = this.tabs.length - 1;
+    let numberOfTabs = this.tabs.length;
     if (numberOfTabs > 0) {
-      let maxWidth = (windowWidth - 250) / numberOfTabs;
+      let maxWidth = (windowWidth - 115) / numberOfTabs;
       if (maxWidth < 120) {
         this.setTabWidth(maxWidth);
       } else {
@@ -67,11 +66,9 @@ class TabGroup extends EventEmitter {
   }
 
   setTabWidth(width) {
-    var all = document.getElementsByClassName("etabs-tab");
-    for (var i = 0; i < all.length; i++) {
-      if (i > 0) {
-        all[i].style.width = width + "px";
-      }
+    let all = document.getElementsByClassName("etabs-tab");
+    for (let i = 0; i < all.length; i++) {
+      all[i].style.width = width + "px";
     }
   }
 
@@ -197,16 +194,10 @@ class Tab extends EventEmitter {
     this.badge = args.badge;
     this.iconURL = args.iconURL;
     this.icon = args.icon;
-    this.closable = args.closable === false ? false : true;
+    this.closable = args.closable !== false;
     this.tabElements = {};
     this.url = args.url;
-    this.viewType = args.viewType;
-    if (this.viewType === "draft") {
-      this.view = new DraftView(this.url, this, tabGroup);
-    } else {
-      this.view = new MediumView(this, tabGroup);
-    }
-    this.tools = this.viewType + "-tools";
+    this.view = new DeskTab(this.url, this, tabGroup);
     TabPrivate.initTab.bind(this)();
     if (args.visible !== false) {
       this.show();
@@ -219,28 +210,9 @@ class Tab extends EventEmitter {
   setTitle(title) {
     if (this.isClosed) return;
     let span = this.tabElements.title;
-    if (title !== "") {
-      title = title.replace(/ – Medium/, "");
-      title = title.replace(/^Editing /, "");
-      if (this.viewType === "draft") {
-        span.innerHTML = title;
-        span.title = title;
-        span.classList.remove("hidden");
-        let toolTitle = document.getElementById(this.tools + "-title");
-        if (this.view.browserView.webContents.getURL().endsWith("/edit")) {
-          toolTitle.innerHTML = this.view.browserView.webContents.getURL();
-        } else if (this.view.browserView.webContents.getURL().endsWith("/new-story")) {
-          toolTitle.innerHTML = "Start typing to create a new story";
-        } else {
-          toolTitle.innerHTML = "";
-        }
-      } else {
-        let toolTitle = document.getElementById(this.tools + "-title");
-        toolTitle.innerHTML = title;
-      }
-    } else {
-      span.classList.add("hidden");
-    }
+    span.innerHTML = title;
+    span.title = title;
+    span.classList.remove("hidden");
     this.title = title;
     this.emit("title-changed", title, this);
     return this;
@@ -354,18 +326,11 @@ class Tab extends EventEmitter {
     TabGroupPrivate.setActiveTab.bind(this.tabGroup)(this);
     this.tab.classList.add("active");
 
-    // Activate Tools
-    let toolbars = document.getElementsByClassName("toolbar");
-    Array.prototype.forEach.call(toolbars, (toolbar) => {
-      if (toolbar.id === this.tools) {
-        toolbar.classList.add("active");
-      } else {
-        toolbar.classList.remove("active");
-      }
-    });
+    this.view.activateTools();
 
     // Activate View
     Remote.getCurrentWindow().setBrowserView(this.view.browserView);
+
     this.view.browserView.setBounds({
       x: 0,
       y: 82,
@@ -373,7 +338,6 @@ class Tab extends EventEmitter {
       height: Remote.getCurrentWindow().getContentBounds().height - 80,
     });
     this.view.browserView.webContents.focus();
-    this.setTitle(this.view.browserView.webContents.getTitle());
 
     this.emit("active", this);
     destroyFindInPage();
@@ -432,10 +396,16 @@ class Tab extends EventEmitter {
       this.tabGroup.closedTabs.push(this.url);
     }
     ipcRenderer.send("delete-tab", { id: this.id });
+
     let activeTab = this.tabGroup.getActiveTab();
     TabGroupPrivate.removeTab.bind(tabGroup)(this, true);
 
     this.emit("close", this);
+
+    if (this.tabGroup.tabs.length === 0) {
+      ipcRenderer.send("close-main-window");
+    }
+
     this.tabGroup.resizeTabs();
     if (activeTab.id === this.id) {
       TabGroupPrivate.activateRecentTab.bind(tabGroup)();

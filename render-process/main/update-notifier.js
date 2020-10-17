@@ -9,8 +9,6 @@ const notifyUpdate = () => {
     compareVersion(defaultStore.get("downloadedVersion"), defaultStore.get("deskVersion")) === 1
   ) {
     document.getElementById("update-notifier").hidden = false;
-    document.getElementById("medium-tools-title").hidden = true;
-    document.getElementById("draft-tools-title").hidden = true;
   }
 };
 

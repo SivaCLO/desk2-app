@@ -3,6 +3,7 @@ const { ipcRenderer } = require("electron");
 const Remote = require("electron").remote;
 const { log } = require("../../common/activity");
 const os = require("os");
+const path = require("path");
 let zenMode = false;
 
 const ElectronTabs = new TabGroup({
@@ -10,62 +11,24 @@ const ElectronTabs = new TabGroup({
     title: "Loading...",
     visible: true,
     active: true,
-    viewType: "draft",
+    url: path.join("file://", __dirname, "start.html"),
   },
 });
 
-ElectronTabs.addTab({
-  title: "",
-  iconURL: "../../assets/img/medium-transparent.svg",
-  visible: true,
-  active: true,
-  viewType: "medium",
-  closable: false,
-});
-
 newTab = function (url, ready) {
+  url = url || path.join("file://", __dirname, "start.html");
   ElectronTabs.addTab({
     title: "Loading...",
     visible: true,
     active: true,
-    viewType: "draft",
-    url: url,
-    ready: ready,
+    url,
+    ready,
   });
 };
-
-checkAndActivateTab = function (url) {
-  let tabAvailable = null;
-  ElectronTabs.getTabs().map((tempTab) => {
-    if (url.includes(tempTab.view.browserView.webContents.getURL())) {
-      tabAvailable = tempTab;
-    }
-  });
-  if (tabAvailable) {
-    ElectronTabs.getTab(tabAvailable.id).activate();
-    return true;
-  } else {
-    return false;
-  }
-};
-
-loadMediumLink = function (url) {
-  ElectronTabs.getTab(0).activate();
-  if (!url) {
-    ElectronTabs.getTab(0).view.browserView.webContents.loadURL("https://medium.com/me/stories/drafts").then();
-  } else {
-    ElectronTabs.getTab(0).view.browserView.webContents.loadURL(url);
-  }
-};
-
-ipcRenderer.on("load-medium-link", (event, url) => {
-  loadMediumLink(url);
-  exitZenMode();
-});
 
 ipcRenderer.on("new_tab", (event, url) => {
-  newTab(url);
   exitZenMode();
+  newTab(url);
 });
 
 ipcRenderer.on("restore_tabs", (event, tabs) => {
@@ -84,28 +47,24 @@ ipcRenderer.on("exit-zen-mode", (e, args) => {
 });
 
 ipcRenderer.on("next-tab", (e, args) => {
-  ElectronTabs.getNextTab().activate();
   exitZenMode();
+  ElectronTabs.getNextTab().activate();
 });
 
 ipcRenderer.on("previous-tab", (e, args) => {
-  ElectronTabs.getPreviousTab().activate();
   exitZenMode();
+  ElectronTabs.getPreviousTab().activate();
 });
 
 ipcRenderer.on("close-tab", (e, args) => {
-  if (ElectronTabs.getActiveTab().id !== 0) {
-    ElectronTabs.getActiveTab().close();
-  }
   exitZenMode();
+  ElectronTabs.getActiveTab().close();
 });
 
 ipcRenderer.on("open-previously-closed-tab", (e, args) => {
-  let url = ElectronTabs.closedTabs.pop();
-  if (url && !checkAndActivateTab(url)) {
-    newTab(url);
-  }
   exitZenMode();
+  let url = ElectronTabs.closedTabs.pop();
+  url && newTab(url);
 });
 
 ipcRenderer.on("tab-padding", (event, on) => {
@@ -130,12 +89,14 @@ ipcRenderer.on("reset-zoom", (e, args) => {
 });
 
 function enterZenMode() {
-  if (ElectronTabs.getActiveTab().viewType !== "medium" && !zenMode) {
+  if (!zenMode) {
     log("tabs/zen-mode-on");
     Remote.getCurrentWindow().setFullScreen(true);
     document.getElementById("tabs").classList.remove("visible");
     document.getElementById("wincontrol").classList.remove("visible");
+    document.getElementById("desk-tools").classList.remove("active");
     document.getElementById("draft-tools").classList.remove("active");
+    document.getElementById("medium-tools").classList.remove("active");
     document.getElementById("zen-tools").classList.add("active");
     ipcRenderer.send("zen-mode-on");
     zenMode = true;
@@ -143,11 +104,11 @@ function enterZenMode() {
 }
 
 function exitZenMode() {
-  if (ElectronTabs.getActiveTab().viewType !== "medium" && zenMode) {
+  if (zenMode) {
     log("tabs/zen-mode-off");
     Remote.getCurrentWindow().setFullScreen(false);
     document.getElementById("zen-tools").classList.remove("active");
-    document.getElementById("draft-tools").classList.add("active");
+    ElectronTabs.getActiveTab().view.activateTools();
     if (os.platform() === "win32") {
       document.getElementById("wincontrol").classList.add("visible");
     }
@@ -176,9 +137,7 @@ function resetZoom() {
 
 module.exports = {
   ElectronTabs,
-  loadMediumLink,
   newTab,
-  checkAndActivateTab,
   enterZenMode,
   exitZenMode,
   zoomOut,
