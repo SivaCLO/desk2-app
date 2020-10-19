@@ -1,6 +1,7 @@
 const { ipcRenderer } = require("electron");
 const Remote = require("electron").remote;
 const { log } = require("../../common/activity");
+const { callDraftJson } = require("../../common/undocumented");
 
 class DeskTab {
   constructor(url, tab, tabs) {
@@ -47,6 +48,7 @@ class DeskTab {
       if (title) {
         title = title.replace(/ – Medium/, "");
         title = title.replace(/^Editing /, "");
+        title = title.replace(/^untitled story/, "Untitled");
       }
       this.tab.setTitle(title);
     });
@@ -60,7 +62,13 @@ class DeskTab {
     this.isDesk = this.url.startsWith("file:");
     this.isDraft = this.url.split("?")[0].endsWith("/edit") || this.url.split("?")[0].endsWith("/new-story");
 
-    this.activateTools();
+    this.activateTab();
+
+    this.tab.setIcon(
+      null,
+      null,
+      this.isDraft ? `<use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#pencil-square"/>` : null
+    );
 
     ipcRenderer.send("save-tab", {
       id: this.tab.id,
@@ -68,12 +76,18 @@ class DeskTab {
     });
   };
 
-  activateTools = () => {
-    this.tab.setIcon(
-      null,
-      null,
-      this.isDraft ? `<use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#pencil-square"/>` : null
-    );
+  activateTab = () => {
+    if (this.url.split("?")[0].endsWith("/edit")) {
+      callDraftJson(this.url.split("?")[0]).then((data) => {
+        if (data) {
+          let title = data.payload.value.title || "Untitled";
+          this.tab.setTitle(title);
+        }
+      });
+    }
+
+    console.log("Activate Tab");
+
     if (this.isDesk) {
       document.getElementById("desk-tools").classList.add("active");
       document.getElementById("draft-tools").classList.remove("active");

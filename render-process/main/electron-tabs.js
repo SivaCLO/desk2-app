@@ -332,7 +332,7 @@ class Tab extends EventEmitter {
     TabGroupPrivate.setActiveTab.bind(this.tabGroup)(this);
     this.tab.classList.add("active");
 
-    this.view.activateTools();
+    this.view.activateTab();
 
     // Activate View
     Remote.getCurrentWindow().setBrowserView(this.view.browserView);

@@ -108,7 +108,7 @@ function exitZenMode() {
     log("tabs/zen-mode-off");
     Remote.getCurrentWindow().setFullScreen(false);
     document.getElementById("zen-tools").classList.remove("active");
-    ElectronTabs.getActiveTab().view.activateTools();
+    ElectronTabs.getActiveTab().view.activateTab();
     if (os.platform() === "win32") {
       document.getElementById("wincontrol").classList.add("visible");
     }
