@@ -1,7 +1,5 @@
 const { Menu, app, shell, ipcMain } = require("electron");
 const { getMainWindow } = require("../windows/main-window");
-const { toggleShortcutsWindow } = require("../windows/shortcuts-window");
-const { showQuicklinksWindow } = require("../windows/quicklinks-window");
 const { showImportDialog } = require("../dialogs/import-draft-dialog");
 const { defaultStore } = require("../../common/store");
 const { signout } = require("../../common/signout");
@@ -329,7 +327,7 @@ if (process.platform === "darwin") {
   addUpdateMenuItems(template[0].submenu, 1);
 }
 
-if (/--debug/.test(process.argv[2]) || defaultStore.get("deskType") === "admin") {
+if (defaultStore.get("debug") || defaultStore.get("deskType") === "admin") {
   template[template.length - 2].submenu.push(
     {
       type: "separator",
