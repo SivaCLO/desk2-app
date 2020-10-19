@@ -129,6 +129,7 @@ async function signinSetup() {
   defaultStore.set("deskType", desk.type);
   defaultStore.set("deskSettings", desk.settings);
   defaultStore.set("deskFlags", desk.flags);
+  defaultStore.set("deskDrafts", desk.drafts);
 
   log("signin/signin-setup-success", { mediumUser: signData.mediumUser, desk });
 }
@@ -145,6 +146,7 @@ async function signinMain() {
   defaultStore.set("deskType", desk.type);
   defaultStore.set("deskSettings", desk.settings);
   defaultStore.set("deskFlags", desk.flags);
+  defaultStore.set("deskDrafts", desk.drafts);
 
   log("signin/signin-main-success", { mediumUser, desk });
 }

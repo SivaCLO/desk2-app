@@ -6,7 +6,7 @@ const { showMainWindow, getMainWindow } = require("./windows/main-window");
 const { showSetupWindow } = require("./windows/setup-window");
 const { signinMain } = require("../common/signin");
 const { defaultStore } = require("../common/store");
-const { getFlags } = require("../common/desk");
+const { getFlag } = require("../common/desk");
 const debug = /--debug/.test(process.argv[2]);
 const macAddress = require("node-macaddress");
 
@@ -32,7 +32,7 @@ app.on("ready", () => {
     checkForUpdates();
   }
 
-  if (!getFlags("setupCompleted")) {
+  if (!getFlag("setupCompleted")) {
     showSetupWindow();
   } else {
     signinMain().then(() => {
@@ -48,7 +48,7 @@ app.on("activate", () => {
     checkForUpdates();
   }
 
-  if (!defaultStore.get("deskFlags") || !defaultStore.get("deskFlags")["setupCompleted"]) {
+  if (!getFlag("setupCompleted")) {
     showSetupWindow();
   } else {
     signinMain().then(() => {

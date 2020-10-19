@@ -62,20 +62,20 @@
     <script>
       require("bootstrap");
       const path = require("path");
-      const { getSettings, updateFlags } = require("../../common/desk");
+      const { getSetting, updateFlag } = require("../../common/desk");
       const { ipcRenderer } = require("electron");
       const { defaultStore } = require("../../common/store");
 
       window.onload = function () {
-        document.getElementById("goal").innerText = getSettings("monthlyGoal");
-        document.getElementById("email").innerText = getSettings("userEmail");
+        document.getElementById("goal").innerText = getSetting("monthlyGoal");
+        document.getElementById("email").innerText = getSetting("userEmail");
         document.getElementById("username").innerText = defaultStore.get("mediumUser").username;
       };
 
       document.getElementById("continue").addEventListener("click", function () {
         document.getElementById("content").hidden = true;
         document.getElementById("loading").hidden = false;
-        updateFlags("setupCompleted", true).then(() => {
+        updateFlag("setupCompleted", true).then(() => {
           ipcRenderer.send("setup-complete");
         });
       });

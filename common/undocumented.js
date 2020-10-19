@@ -2,7 +2,7 @@ const { log } = require("./activity");
 const axios = require("axios");
 const path = require("path");
 
-function callDraftJson(draftURL) {
+function callMediumPost(draftURL) {
   return new Promise((resolve, reject) => {
     axios
       .get(path.join(draftURL, "?format=json"))
@@ -12,16 +12,16 @@ function callDraftJson(draftURL) {
           data = JSON.parse(data);
           resolve(data);
         } else {
-          log("undocumented/callDraftJson/error", { error: "Response data empty" });
+          log("undocumented/callMediumPost/error", { error: "Response data empty" });
           reject();
         }
       })
       .catch((e) => {
-        log("undocumented/callDraftJson/error", { e });
+        log("undocumented/callMediumPost/error", { e });
         console.error(e);
         reject(e);
       });
   });
 }
 
-module.exports = { callDraftJson };
+module.exports = { callMediumPost };

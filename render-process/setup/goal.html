@@ -53,12 +53,12 @@
       require("bootstrap");
       const Slider = require("bootstrap-slider");
       const path = require("path");
-      const { getSettings, updateSettings } = require("../../common/desk");
+      const { getSetting, updateSetting } = require("../../common/desk");
       let goalSlider;
 
       window.onload = function () {
         goalSlider = new Slider("#monthlyGoal", {});
-        getSettings("monthlyGoal") && goalSlider.setValue(getSettings("monthlyGoal"));
+        getSetting("monthlyGoal") && goalSlider.setValue(getSetting("monthlyGoal"));
         document.getElementById("targetStories").innerText = goalSlider.getValue();
         goalSlider.on("change", () => {
           document.getElementById("targetStories").innerText = goalSlider.getValue();
@@ -68,7 +68,7 @@
       document.getElementById("continue").addEventListener("click", function () {
         document.getElementById("content").hidden = true;
         document.getElementById("loading").hidden = false;
-        updateSettings("monthlyGoal", goalSlider.getValue()).then(() => {
+        updateSetting("monthlyGoal", goalSlider.getValue()).then(() => {
           window.location = path.join("file://", __dirname, "../../render-process/setup/email.html");
         });
       });
