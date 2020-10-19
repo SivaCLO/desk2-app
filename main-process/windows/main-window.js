@@ -107,7 +107,6 @@ ipcMain.on("close-main-window", () => {
 });
 
 ipcMain.on("save-tab", (e, tab) => {
-  log("main-window/save-tab", { tab });
   let tempTabs = defaultStore.get("tabs");
   if (tempTabs && tempTabs.length > 0) {
     let tempTabs = defaultStore.get("tabs");
@@ -119,7 +118,6 @@ ipcMain.on("save-tab", (e, tab) => {
 });
 
 ipcMain.on("delete-tab", (e, tabs) => {
-  log("main-window/delete-tab", { tabs });
   let tempTabs = defaultStore.get("tabs");
   if (tempTabs) {
     let filteredTabs = tempTabs.filter((t) => t.id !== tabs.id);

@@ -86,8 +86,6 @@ class DeskTab {
       });
     }
 
-    console.log("Activate Tab");
-
     if (this.isDesk) {
       document.getElementById("desk-tools").classList.add("active");
       document.getElementById("draft-tools").classList.remove("active");
