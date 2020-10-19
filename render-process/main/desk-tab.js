@@ -50,6 +50,10 @@ class DeskTab {
       }
       this.tab.setTitle(title);
     });
+
+    this.browserView.webContents.on("context-menu", (event, params) => {
+      ipcRenderer.send("show-context-menu", params.x, params.y, params.selectionText, params.linkURL);
+    });
   }
 
   handleNavigation = () => {
@@ -70,7 +74,6 @@ class DeskTab {
       null,
       this.isDraft ? `<use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#pencil-square"/>` : null
     );
-
     if (this.isDesk) {
       document.getElementById("desk-tools").classList.add("active");
       document.getElementById("draft-tools").classList.remove("active");
