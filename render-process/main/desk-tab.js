@@ -1,7 +1,7 @@
 const { ipcRenderer } = require("electron");
 const Remote = require("electron").remote;
 const { log } = require("../../common/activity");
-const { getDrafts, updateDraft } = require("../../common/desk");
+const { updateDraft } = require("../../common/desk");
 const { callMediumPost } = require("../../common/undocumented");
 
 class DeskTab {
@@ -73,8 +73,6 @@ class DeskTab {
     this.draftId = this.url.split("?")[0].endsWith("/edit") ? this.url.split("/")[4] : null;
     this.isNew = this.url.split("?")[0].endsWith("/new-story");
 
-    console.log(this.draftId);
-
     this.activateTab();
 
     this.tab.setIcon(
@@ -93,10 +91,7 @@ class DeskTab {
 
   activateTab = () => {
     if (this.draftId) {
-      let drafts = getDrafts();
-      drafts && drafts[this.draftId] && drafts[this.draftId]["openedTime"]
-        ? updateDraft(this.draftId, "lastOpenedTime", Date.now()).then()
-        : updateDraft(this.draftId, "openedTime", Date.now()).then();
+      updateDraft(this.draftId, "lastOpenedTime", Date.now()).then();
       callMediumPost(this.url.split("?")[0]).then((data) => {
         if (data) {
           let title = data.payload.value.title || "Untitled";

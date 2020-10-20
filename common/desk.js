@@ -55,6 +55,9 @@ function getFlag(key) {
 async function updateDraft(draftId, key, value) {
   let drafts = getDrafts();
   let draft = drafts[draftId] || {};
+  if (key === "lastOpenedTime" && !draft["openedTime"]) {
+    draft["openedTime"] = value;
+  }
   draft[key] = value;
   drafts[draftId] = draft;
   defaultStore.set("deskDrafts", drafts);
