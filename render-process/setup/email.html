@@ -60,7 +60,7 @@
           document.getElementById("loading").hidden = false;
           let email = document.getElementById("email").value;
           updateSetting("userEmail", String(email).toLowerCase()).then(() => {
-            window.location = path.join("file://", __dirname, "../../render-process/setup/summary.html");
+            window.location = "file://" + path.join(__dirname, "../../render-process/setup/summary.html");
           });
         });
       };

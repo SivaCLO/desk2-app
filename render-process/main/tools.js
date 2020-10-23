@@ -19,7 +19,7 @@ function handleAction(event) {
     log("tools/home");
     Remote.getCurrentWindow()
       .getBrowserView()
-      .webContents.loadURL(path.join("file://", __dirname, "start.html"))
+      .webContents.loadURL("file://" + path.join(__dirname, "start.html"))
       .then();
   } else if (action === "refresh") {
     log("tools/reload");

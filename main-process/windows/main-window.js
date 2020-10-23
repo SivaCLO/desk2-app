@@ -3,6 +3,7 @@ const os = require("os");
 const { defaultStore } = require("../../common/store");
 const path = require("path");
 const { log } = require("../../common/activity");
+const uuid = require("uuid");
 
 let mainWindow = null;
 
@@ -12,8 +13,8 @@ function getMainWindow() {
 
 function showMainWindow() {
   if (!mainWindow) {
-    log("main-window/show");
     const mainWindowPosition = defaultStore.get("mainWindowPosition") || { width: 1140, height: 840 };
+    log("main-window/show", { position: mainWindowPosition });
     const windowOptions = {
       x: mainWindowPosition.x,
       y: mainWindowPosition.y,
@@ -31,7 +32,7 @@ function showMainWindow() {
     };
 
     mainWindow = new BrowserWindow(windowOptions);
-    mainWindow.loadURL(path.join("file://", __dirname, "../../render-process/main/tabs.html"));
+    mainWindow.loadURL("file://" + path.join(__dirname, "../../render-process/main/tabs.html"));
     mainWindow.on("resize", () => {
       resizeWindow();
     });
@@ -80,12 +81,13 @@ function showMainWindow() {
     });
 
     mainWindow.webContents.on("did-finish-load", () => {
-      log("main-window/did-finish-load");
       resizeWindow();
     });
 
     mainWindow.webContents.once("did-finish-load", () => {
-      log("main-window/did-finish-load/once");
+      let sessionId = uuid.v4();
+      defaultStore.set("sessionId", sessionId);
+      log("main-window/new-session", { sessionId });
       let tempTabs = defaultStore.get("tabs");
       if (tempTabs && tempTabs.length > 0) {
         mainWindow.webContents.send("restore_tabs", tempTabs);

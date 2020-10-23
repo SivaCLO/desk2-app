@@ -57,7 +57,6 @@ function callMediumMe(mediumTokens) {
         },
       })
       .then(function (response) {
-        log("signin/callMediumMe", { mediumTokens, mediumUser: response.data.data });
         resolve(response.data.data);
       })
       .catch((e) => {
@@ -74,6 +73,7 @@ function callMediumMe(mediumTokens) {
 async function signinStart() {
   let data = await callSigninCreate();
   defaultStore.set("signinId", data.signinId);
+  log("signin/start", { signinId: data.signinId });
 }
 
 async function signinSetup() {
@@ -81,6 +81,8 @@ async function signinSetup() {
   let signinData = await callSigninRead(signinId);
   defaultStore.set("mediumTokens", signinData.mediumTokens);
   defaultStore.set("mediumUser", signinData.mediumUser);
+
+  log("signin/medium", { signinId, signinData });
 
   let mediumUserJSON = await callMediumUserJSON(signinData.mediumUser.url);
   defaultStore.set("mediumUserJSON", mediumUserJSON);

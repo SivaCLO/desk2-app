@@ -11,12 +11,13 @@ const ElectronTabs = new TabGroup({
     title: "Loading...",
     visible: true,
     active: true,
-    url: path.join("file://", __dirname, "start.html"),
+    url: "file://" + path.join(__dirname, "start.html"),
   },
 });
 
 newTab = function (url, ready) {
-  url = url || path.join("file://", __dirname, "start.html");
+  url = url || "file://" + path.join(__dirname, "start.html");
+
   ElectronTabs.addTab({
     title: "Loading...",
     visible: true,

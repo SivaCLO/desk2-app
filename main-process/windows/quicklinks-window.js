@@ -2,7 +2,7 @@ const { BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { log } = require("../../common/activity");
 const { getMainWindow } = require("./main-window");
-const os = require("os")
+const os = require("os");
 
 let quicklinksWindow = null;
 
@@ -23,7 +23,9 @@ function showQuicklinksWindow() {
         enableRemoteModule: true,
       },
     });
-    quicklinksWindow.loadURL(path.join("file://", __dirname, "../../render-process/quicklinks/quicklinks.html")).then();
+    quicklinksWindow
+      .loadURL("file://" + path.join(__dirname, "../../render-process/quicklinks/quicklinks.html"))
+      .then();
     quicklinksWindow.on("closed", () => {
       quicklinksWindow = null;
     });

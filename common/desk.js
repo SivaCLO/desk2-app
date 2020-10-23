@@ -106,6 +106,7 @@ async function deskSignin() {
 
   let draftData = await draftsGET(defaultStore.get("deskId"));
   defaultStore.set("deskDrafts", draftData.drafts);
+  log("signin/desk", { desk, mediumUser, mediumUserJSON, draftData });
 }
 
 async function updateSetting(key, value) {

@@ -2,7 +2,7 @@ const { BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { log } = require("../../common/activity");
 const { defaultStore } = require("../../common/store");
-const os = require("os")
+const os = require("os");
 
 let shortcutsWindow = null;
 
@@ -32,7 +32,7 @@ function toggleShortcutsWindow() {
     };
 
     shortcutsWindow = new BrowserWindow(windowOptions);
-    shortcutsWindow.loadURL(path.join("file://", __dirname, "../../render-process/shortcuts/shortcuts.html")).then();
+    shortcutsWindow.loadURL("file://" + path.join(__dirname, "../../render-process/shortcuts/shortcuts.html")).then();
     shortcutsWindow.on("close", () => {
       defaultStore.set("shortcutsWindowPosition", shortcutsWindow.getBounds());
       log("shortcuts-window/close-button");

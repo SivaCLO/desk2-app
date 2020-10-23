@@ -24,7 +24,7 @@ function showSetupWindow() {
         enableRemoteModule: true,
       },
     });
-    setupWindow.loadURL(path.join("file://", __dirname, "../../render-process/setup/welcome.html")).then();
+    setupWindow.loadURL("file://" + path.join(__dirname, "../../render-process/setup/welcome.html")).then();
 
     setupWindow.webContents.on("will-redirect", (e, url) => {
       if (url.startsWith("https://medium.com/m/oauth/authorize") && url.includes("source=login")) {
@@ -37,7 +37,7 @@ function showSetupWindow() {
     setupWindow.webContents.on("did-navigate", (e, url) => {
       if (url.startsWith("https://desk11.azurewebsites.net")) {
         signinSetup().then(() => {
-          setupWindow.loadURL(path.join("file://", __dirname, "../../render-process/setup/goal.html")).then();
+          setupWindow.loadURL("file://" + path.join(__dirname, "../../render-process/setup/goal.html")).then();
         });
       }
     });
@@ -54,7 +54,6 @@ ipcMain.on("setup-complete", (e) => {
 });
 
 function close() {
-  log("setup-window/close");
   if (setupWindow) {
     setupWindow.close();
   }

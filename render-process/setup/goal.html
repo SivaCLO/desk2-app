@@ -69,7 +69,7 @@
         document.getElementById("content").hidden = true;
         document.getElementById("loading").hidden = false;
         updateSetting("monthlyGoal", goalSlider.getValue()).then(() => {
-          window.location = path.join("file://", __dirname, "../../render-process/setup/email.html");
+          window.location = "file://" + path.join(__dirname, "../../render-process/setup/email.html");
         });
       });
     </script>

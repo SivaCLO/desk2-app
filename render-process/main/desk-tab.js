@@ -1,6 +1,7 @@
 const { ipcRenderer } = require("electron");
 const Remote = require("electron").remote;
 const { log } = require("../../common/activity");
+const { visit } = require("../../common/page");
 const { updateDraft } = require("../../common/desk");
 
 class DeskTab {
@@ -20,29 +21,23 @@ class DeskTab {
       },
     });
 
-    log("desk-tab/load-url", { url, tab: this.tab.id });
     this.handleNavigation();
     this.browserView.webContents.loadURL(url).then();
     this.browserView.webContents.on("did-navigate", () => {
-      this.url = this.browserView.webContents.getURL();
-      log("desk-tab/did-navigate", { url: this.url, tab: this.tab.id });
-      this.handleNavigation();
+      if (this.url !== this.browserView.webContents.getURL()) {
+        this.url = this.browserView.webContents.getURL();
+        this.handleNavigation();
+      }
     });
     this.browserView.webContents.on("did-navigate-in-page", () => {
-      this.url = this.browserView.webContents.getURL();
-      log("desk-tab/did-navigate-in-page", { url: this.url, tab: this.tab.id });
-      this.handleNavigation();
+      if (this.url !== this.browserView.webContents.getURL()) {
+        this.url = this.browserView.webContents.getURL();
+        this.handleNavigation();
+      }
     });
 
     this.browserView.webContents.on("dom-ready", (e) => {
       this.browserView.webContents.insertCSS("button:focus {outline:0 !important}");
-    });
-
-    this.browserView.webContents.on("new-window", (e, url) => {
-      log("desk-tab/new-window", { url, fromURL: this.browserView.webContents.getURL(), tab: this.tab.id });
-      e.preventDefault();
-      const { newTab } = require("./tabs");
-      newTab(url);
     });
 
     this.browserView.webContents.on("page-title-updated", (e, title) => {
@@ -57,9 +52,18 @@ class DeskTab {
     this.browserView.webContents.on("context-menu", (event, params) => {
       ipcRenderer.send("show-context-menu", params.x, params.y, params.selectionText, params.linkURL);
     });
+
+    this.browserView.webContents.on("new-window", (e, url) => {
+      log("desk-tab/new-window", { url, fromURL: this.browserView.webContents.getURL(), tab: this.tab.id });
+      e.preventDefault();
+      const { newTab } = require("./tabs");
+      newTab(url);
+    });
   }
 
   handleNavigation = () => {
+    visit(this.url, this.tab.id);
+
     this.isStart = this.url.startsWith("file:") && this.url.endsWith("start.html");
     this.draftId = this.url.split("?")[0].endsWith("/edit") ? this.url.split("/")[4] : null;
     this.isNew = this.url.split("?")[0].endsWith("/new-story");
@@ -81,7 +85,7 @@ class DeskTab {
   };
 
   activateTab = async () => {
-    if (this.tab.id === this.tabs.getActiveTab().id) {
+    if (this.tabs.getActiveTab() && this.tab.id === this.tabs.getActiveTab().id) {
       if (this.isStart) {
         document.getElementById("desk-tools").classList.add("active");
         document.getElementById("draft-tools").classList.remove("active");
