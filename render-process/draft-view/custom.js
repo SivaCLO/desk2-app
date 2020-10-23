@@ -208,7 +208,7 @@ function setCursor(pos, element, elemId) {
 
   // insert caret after the 10th character say - pos
   range.setStart(textNode, pos);
-  range.setEnd(textNode, node.innerText.indexOf(" ", pos));
+  range.setEnd(textNode, pos + 2);
   var sel = window.getSelection();
   sel.removeAllRanges();
   sel.addRange(range);
