@@ -2,7 +2,7 @@ const { Menu, app, shell, ipcMain } = require("electron");
 const { getMainWindow } = require("../windows/main-window");
 const { showImportDialog } = require("../dialogs/import-draft-dialog");
 const { defaultStore } = require("../../common/store");
-const { signout } = require("../../common/signout");
+const { deskSignout } = require("../../common/desk");
 const { log } = require("../../common/activity");
 let zenMode = false;
 
@@ -39,7 +39,7 @@ let template = [
         label: "Sign out",
         click() {
           log("application-menu/file/sign-out");
-          signout();
+          deskSignout();
         },
       },
     ],

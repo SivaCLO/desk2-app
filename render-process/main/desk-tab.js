@@ -2,14 +2,13 @@ const { ipcRenderer } = require("electron");
 const Remote = require("electron").remote;
 const { log } = require("../../common/activity");
 const { updateDraft } = require("../../common/desk");
-const { callMediumPost } = require("../../common/undocumented");
 
 class DeskTab {
   constructor(url, tab, tabs) {
     this.url = url;
     this.tab = tab;
     this.tabs = tabs;
-    this.isDesk = true;
+    this.isStart = true;
     this.isNew = false;
     this.draftId = null;
 
@@ -21,17 +20,17 @@ class DeskTab {
       },
     });
 
-    log("desk-tab/load-url", { url });
+    log("desk-tab/load-url", { url, tab: this.tab.id });
     this.handleNavigation();
     this.browserView.webContents.loadURL(url).then();
     this.browserView.webContents.on("did-navigate", () => {
       this.url = this.browserView.webContents.getURL();
-      log("desk-tab/did-navigate", { url: this.url });
+      log("desk-tab/did-navigate", { url: this.url, tab: this.tab.id });
       this.handleNavigation();
     });
     this.browserView.webContents.on("did-navigate-in-page", () => {
       this.url = this.browserView.webContents.getURL();
-      log("desk-tab/did-navigate-in-page", { url: this.url });
+      log("desk-tab/did-navigate-in-page", { url: this.url, tab: this.tab.id });
       this.handleNavigation();
     });
 
@@ -40,7 +39,7 @@ class DeskTab {
     });
 
     this.browserView.webContents.on("new-window", (e, url) => {
-      log("desk-tab/new-window", { url, fromURL: this.browserView.webContents.getURL() });
+      log("desk-tab/new-window", { url, fromURL: this.browserView.webContents.getURL(), tab: this.tab.id });
       e.preventDefault();
       const { newTab } = require("./tabs");
       newTab(url);
@@ -58,18 +57,10 @@ class DeskTab {
     this.browserView.webContents.on("context-menu", (event, params) => {
       ipcRenderer.send("show-context-menu", params.x, params.y, params.selectionText, params.linkURL);
     });
-
-    this.browserView.webContents.on("will-navigate", (e, url) => {
-      if (this.draftId) {
-        if (url.includes("postPublishedType") || url.includes("showDomainSetup=true")) {
-          updateDraft(this.draftId, "publishedTime", Date.now()).then();
-        }
-      }
-    });
   }
 
   handleNavigation = () => {
-    this.isDesk = this.url.startsWith("file:");
+    this.isStart = this.url.startsWith("file:") && this.url.endsWith("start.html");
     this.draftId = this.url.split("?")[0].endsWith("/edit") ? this.url.split("/")[4] : null;
     this.isNew = this.url.split("?")[0].endsWith("/new-story");
 
@@ -89,33 +80,33 @@ class DeskTab {
     });
   };
 
-  activateTab = () => {
-    if (this.draftId) {
-      updateDraft(this.draftId, "lastOpenedTime", Date.now()).then();
-      callMediumPost(this.url.split("?")[0]).then((data) => {
-        if (data) {
+  activateTab = async () => {
+    if (this.tab.id === this.tabs.getActiveTab().id) {
+      if (this.isStart) {
+        document.getElementById("desk-tools").classList.add("active");
+        document.getElementById("draft-tools").classList.remove("active");
+        document.getElementById("medium-tools").classList.remove("active");
+      } else if (this.draftId) {
+        let toolTitle = document.getElementById("draft-tools-title");
+        toolTitle.innerHTML = this.url.split("?")[0];
+        document.getElementById("desk-tools").classList.remove("active");
+        document.getElementById("draft-tools").classList.add("active");
+        document.getElementById("medium-tools").classList.remove("active");
+      } else {
+        let toolTitle = document.getElementById("medium-tools-title");
+        toolTitle.innerHTML = this.url.split("?")[0];
+        document.getElementById("desk-tools").classList.remove("active");
+        document.getElementById("draft-tools").classList.remove("active");
+        document.getElementById("medium-tools").classList.add("active");
+      }
+
+      if (this.draftId) {
+        let data = await updateDraft(this.draftId, this.url.split("?")[0]);
+        if (data && data.payload && data.payload.value) {
           let title = data.payload.value.title || "Untitled";
           this.tab.setTitle(title);
         }
-      });
-    }
-
-    if (this.isDesk) {
-      document.getElementById("desk-tools").classList.add("active");
-      document.getElementById("draft-tools").classList.remove("active");
-      document.getElementById("medium-tools").classList.remove("active");
-    } else if (this.draftId) {
-      let toolTitle = document.getElementById("draft-tools-title");
-      toolTitle.innerHTML = this.url.split("?")[0];
-      document.getElementById("desk-tools").classList.remove("active");
-      document.getElementById("draft-tools").classList.add("active");
-      document.getElementById("medium-tools").classList.remove("active");
-    } else {
-      let toolTitle = document.getElementById("medium-tools-title");
-      toolTitle.innerHTML = this.url.split("?")[0];
-      document.getElementById("desk-tools").classList.remove("active");
-      document.getElementById("draft-tools").classList.remove("active");
-      document.getElementById("medium-tools").classList.add("active");
+      }
     }
   };
 }

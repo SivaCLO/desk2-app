@@ -1,21 +1,42 @@
 const { log } = require("../../common/activity");
-const { getDrafts, getSetting } = require("../../common/desk");
+const { getDrafts, getSetting, updateDraft } = require("../../common/desk");
 
-window.onload = function () {
+document.body.addEventListener("click", (event) => {
+  if (event.target.dataset.action) {
+    handleAction(event);
+  }
+});
+
+refreshGoals = async () => {
+  updateGoalView();
+  for (let draft of getDrafts()) {
+    if (!draft.deleted && !draft.mediumPostJSON.value.firstPublishedAt) {
+      await updateDraft(draft.mediumPostJSON.value.id);
+    }
+  }
+  updateGoalView();
+};
+
+window.onload = refreshGoals;
+window.onfocus = refreshGoals;
+
+function updateGoalView() {
   let drafts = getDrafts();
   let currentMonth = new Date().getMonth();
   let currentYear = new Date().getFullYear();
-  let monthlyGoal = getSetting("monthlyGoal");
   let publishedCount = 0;
   let draftCount = 0;
+  let monthlyGoal = getSetting("monthlyGoal");
 
-  for (let draftId in drafts) {
-    if (drafts.hasOwnProperty(draftId) && drafts[draftId].publishedTime) {
-      let publishedTime = new Date(drafts[draftId].publishedTime);
-      if (publishedTime.getMonth() === currentMonth && publishedTime.getFullYear() === currentYear) publishedCount++;
-    } else if (drafts.hasOwnProperty(draftId) && drafts[draftId].lastOpenedTime) {
-      let lastOpenedTime = new Date(drafts[draftId].lastOpenedTime);
-      if (lastOpenedTime.getMonth() === currentMonth && lastOpenedTime.getFullYear() === currentYear) draftCount++;
+  for (let draft of drafts) {
+    if (!draft.deleted) {
+      if (draft.mediumPostJSON.value.firstPublishedAt) {
+        let publishedTime = new Date(draft.mediumPostJSON.value.firstPublishedAt);
+        if (publishedTime.getMonth() === currentMonth && publishedTime.getFullYear() === currentYear) publishedCount++;
+      } else if (draft.lastOpenedTime) {
+        let lastOpenedTime = new Date(draft.lastOpenedTime);
+        if (lastOpenedTime.getMonth() === currentMonth && lastOpenedTime.getFullYear() === currentYear) draftCount++;
+      }
     }
   }
 
@@ -26,17 +47,16 @@ window.onload = function () {
   document.getElementById("drafts").setAttribute("aria-valuenow", draftPercent);
   document.getElementById("drafts").setAttribute("style", "width:" + draftPercent + "%");
 
-  document.getElementById("progress-text").innerText =
-    (publishedCount > 1 ? publishedCount + " Stories, " : publishedCount > 0 ? "1 Story, " : "0 Stories, ") +
-    (draftCount > 1 ? draftCount + " Drafts" : draftCount > 0 ? "1 Draft" : "0 Drafts");
+  if (publishedCount > 0 || draftCount > 0) {
+    document.getElementById("progress-text").innerText =
+      (publishedCount > 1 ? publishedCount + " Stories" : publishedCount > 0 ? "1 Story" : "") +
+      (publishedCount > 0 && draftCount > 0 ? " + " : "") +
+      (draftCount > 1 ? draftCount + " Drafts" : draftCount > 0 ? "1 Draft" : "");
+  } else {
+    document.getElementById("progress-text").innerText = "No Stories";
+  }
   document.getElementById("target-text").innerText = monthlyGoal + " Stories";
-
-  document.body.addEventListener("click", (event) => {
-    if (event.target.dataset.action) {
-      handleAction(event);
-    }
-  });
-};
+}
 
 function handleAction(event) {
   let action = event.target.dataset.action;

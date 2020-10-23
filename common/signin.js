@@ -1,6 +1,7 @@
 const { defaultStore } = require("./store");
 const { log } = require("./activity");
-const { signout } = require("./signout");
+const { deskSignin, deskSignout } = require("./desk");
+const { callMediumUserJSON } = require("./undocumented");
 const axios = require("axios");
 const os = require("os");
 
@@ -20,7 +21,6 @@ function callSigninCreate() {
         }
       )
       .then(function (response) {
-        log("signin/callSigninCreate", { signinId: response.data.signinId });
         resolve(response.data);
       })
       .catch((e) => {
@@ -38,51 +38,10 @@ function callSigninRead(signinId) {
         `https://desk11.azurewebsites.net/api/v1.2/signins/${signinId}?code=zCDTbdP7PLrcmRPHffxDeqQ/fYnxjj4Ot/qgNl4wXgcTaMm75spLpw==`
       )
       .then(function (response) {
-        log("signin/callSigninRead", {
-          signinId,
-          mediumTokens: response.data.mediumTokens,
-          mediumUser: response.data.mediumUser,
-        });
         resolve(response.data);
       })
       .catch((e) => {
         log("signin/call-signin-read/error", { e, signinId });
-        console.error(e);
-        reject(e);
-      });
-  });
-}
-
-function callSigninDesk(mediumUser) {
-  return new Promise((resolve, reject) => {
-    axios
-      .post(
-        defaultStore.get("debug")
-          ? `http://localhost:7071/api/v1.2/signin/desk/${mediumUser.id}`
-          : `https://desk11.azurewebsites.net/api/v1.2/signin/desk/${mediumUser.id}?code=mgaNstSJulIcetsS3F/a0YLSwDkSYOyAM5ygBS8ZkXNJ7wRcoElg2A==`,
-        {
-          mediumUser,
-          version: {
-            deskVersion: defaultStore.get("deskVersion"),
-            osPlatform: os.platform(),
-            osRelease: os.release(),
-            macAddress: defaultStore.get("macAddress"),
-            debug: defaultStore.get("debug"),
-          },
-        }
-      )
-      .then(function (response) {
-        log("signin/callSigninDesk", {
-          mediumUser,
-          id: response.data.id,
-          type: response.data.type,
-          settings: response.data.settings,
-          flags: response.data.flags,
-        });
-        resolve(response.data);
-      })
-      .catch((e) => {
-        log("signin/call-signin-desk/error", { e, mediumUser });
         console.error(e);
         reject(e);
       });
@@ -105,7 +64,7 @@ function callMediumMe(mediumTokens) {
         log("signin/call-medium-me/error", { e, mediumTokens });
         console.error(e);
         if (e && e.response.status === 401) {
-          signout();
+          deskSignout();
         }
         reject(e);
       });
@@ -119,36 +78,26 @@ async function signinStart() {
 
 async function signinSetup() {
   let signinId = defaultStore.get("signinId");
+  let signinData = await callSigninRead(signinId);
+  defaultStore.set("mediumTokens", signinData.mediumTokens);
+  defaultStore.set("mediumUser", signinData.mediumUser);
 
-  let signData = await callSigninRead(signinId);
-  defaultStore.set("mediumTokens", signData.mediumTokens);
-  defaultStore.set("mediumUser", signData.mediumUser);
+  let mediumUserJSON = await callMediumUserJSON(signinData.mediumUser.url);
+  defaultStore.set("mediumUserJSON", mediumUserJSON);
 
-  let desk = await callSigninDesk(signData.mediumUser);
-  defaultStore.set("deskId", desk.id);
-  defaultStore.set("deskType", desk.type);
-  defaultStore.set("deskSettings", desk.settings);
-  defaultStore.set("deskFlags", desk.flags);
-  defaultStore.set("deskDrafts", desk.drafts);
-
-  log("signin/signin-setup-success", { mediumUser: signData.mediumUser, desk });
+  await deskSignin();
 }
 
 async function signinMain() {
-  let mediumTokens = defaultStore.get("mediumTokens");
-
   // TODO: Use Refresh token if this fails. Show Reset message if refresh fails too.
+  let mediumTokens = defaultStore.get("mediumTokens");
   let mediumUser = await callMediumMe(mediumTokens);
   defaultStore.set("mediumUser", mediumUser);
 
-  let desk = await callSigninDesk(mediumUser);
-  defaultStore.set("deskId", desk.id);
-  defaultStore.set("deskType", desk.type);
-  defaultStore.set("deskSettings", desk.settings);
-  defaultStore.set("deskFlags", desk.flags);
-  defaultStore.set("deskDrafts", desk.drafts);
+  let mediumUserJSON = await callMediumUserJSON(mediumUser.url);
+  defaultStore.set("mediumUserJSON", mediumUserJSON);
 
-  log("signin/signin-main-success", { mediumUser, desk });
+  await deskSignin();
 }
 
 module.exports = { signinStart, signinSetup, signinMain };
