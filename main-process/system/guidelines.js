@@ -4,7 +4,8 @@ const { ipcMain } = require("electron");
 
 ipcMain.on("guidelines-spellCheck", (event, data) => {
   if (data.text !== undefined && data.text !== null && data.text !== "") {
-    spellCheck(data.id, data.text);
+    let text = remove_linebreaks(decodeURI(data.text));
+    spellCheck(data.id, encodeURI(text));
   }
 });
 
@@ -55,7 +56,6 @@ ipcMain.on("publish", (event) => {
 });
 
 async function spellCheck(id, articleContent) {
-  articleContent = remove_linebreaks(decodeURI(articleContent));
   const headers = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
