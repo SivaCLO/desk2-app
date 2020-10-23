@@ -8,6 +8,25 @@ ipcMain.on("guidelines-spellCheck", (event, data) => {
   }
 });
 
+ipcMain.on("title", (event, data) => {
+  console.log("title data", data);
+  getMainWindow().webContents.send("guideline-title", { data });
+});
+
+ipcMain.on("subTitle", (event, data) => {
+  console.log("sub-title data", data);
+  getMainWindow().webContents.send("guideline-sub-title", {
+    data,
+  });
+});
+
+ipcMain.on("image", (event, data) => {
+  console.log("sub-title data", data);
+  getMainWindow().webContents.send("guideline-image", {
+    data,
+  });
+});
+
 ipcMain.on("guidelines-brokenLinkCheck", (event, data) => {
   brokenLinkCheck(data.url);
 });
@@ -36,6 +55,7 @@ ipcMain.on("publish", (event) => {
 });
 
 async function spellCheck(id, articleContent) {
+  articleContent = remove_linebreaks(decodeURI(articleContent));
   const headers = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
@@ -48,9 +68,12 @@ async function spellCheck(id, articleContent) {
     })
     .then((response) => {
       if (Object.keys(response.data.flaggedTokens).length !== 0) {
+        //to draft view custom.js
         getMainWindow()
           .getBrowserView()
           .webContents.send("guideline-spellcheck-suggestion", { id: id, suggestions: response.data.flaggedTokens });
+
+        //to index.html
         getMainWindow().webContents.send("guideline-spellcheck-suggestion", {
           id: id,
           suggestions: response.data.flaggedTokens,
@@ -66,6 +89,10 @@ async function spellCheck(id, articleContent) {
 
 function brokenLinkCheck(baseUrl) {
   console.log("brokenLinkCheck -> baseUrl", baseUrl);
+}
+
+function remove_linebreaks(str) {
+  return str.replace(/[\r\n]+/gm, "");
 }
 
 module.exports = { spellCheck };

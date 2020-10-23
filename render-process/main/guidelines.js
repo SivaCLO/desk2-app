@@ -34,6 +34,33 @@ ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
   }
 });
 
+ipcRenderer.on("guideline-title", (event, data) => {
+  console.log("data", data);
+  if (data.data.icon !== "tick") {
+    document.getElementById(data.data.id).children.item(2).children.tick.remove();
+  } else {
+    document.getElementById(data.data.id).children.item(2).children.wrong.remove();
+  }
+});
+
+ipcRenderer.on("guideline-sub-title", (event, data) => {
+  console.log("data", data);
+  if (data.data.icon !== "tick") {
+    document.getElementById(data.data.id).children.item(2).children.tick.remove();
+  } else {
+    document.getElementById(data.data.id).children.item(2).children.wrong.remove();
+  }
+});
+
+ipcRenderer.on("guideline-image", (event, data) => {
+  console.log("data", data);
+  if (data.data.icon !== "tick") {
+    document.getElementById(data.data.id).children.item(2).children.tick.remove();
+  } else {
+    document.getElementById(data.data.id).children.item(2).children.wrong.remove();
+  }
+});
+
 function setCursor(divId, misspelledWordPosition, correctWordSuggestion) {
   ipcRenderer.send("guideline-setCursor", { divId, correctWordSuggestion, misspelledWordPosition });
 }

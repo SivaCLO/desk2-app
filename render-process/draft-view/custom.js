@@ -89,18 +89,23 @@ ipcRenderer.on("publish", (event) => {
 });
 
 function checkContent() {
+  var mediaCount = 0;
   var a = document.getElementsByClassName("section-content").item(0).children.item(0).children;
 
   if (a.item(0).tagName === "H3") {
     console.log("title found");
+    ipcRenderer.send("title", { icon: "tick", id: "titleCheckRow" });
   } else {
     console.log("no title found");
+    ipcRenderer.send("title", { icon: "wrong", id: "titleCheckRow" });
   }
 
   if (a.item(1).tagName === "H4") {
+    ipcRenderer.send("subTitle", { icon: "tick", id: "subTitleCheckRow" });
     console.log("sub-title found");
   } else {
     console.log("no sub-title found");
+    ipcRenderer.send("subTitle", { icon: "wrong", id: "subTitleCheckRow" });
   }
 
   if (window.location.href) {
@@ -113,17 +118,20 @@ function checkContent() {
     //mediaCheck
     if (a.item(i - 1).tagName === "FIGURE") {
       console.log("Media found");
+      mediaCount++;
     }
 
-    if (a[i - 1].innerText.includes("http")) {
-      console.log("String contains hyperlink");
-    } else {
-      //spellCheck
-      ipcRenderer.send("guidelines-spellCheck", {
-        id: i - 1,
-        text: encodeURI(a[i - 1].innerText),
-      });
-    }
+    //spellCheck
+    ipcRenderer.send("guidelines-spellCheck", {
+      id: i - 1,
+      text: encodeURI(a[i - 1].innerText),
+    });
+  }
+
+  if (mediaCount !== 0) {
+    ipcRenderer.send("image", { icon: "tick", id: "imageCheckRow" });
+  } else {
+    ipcRenderer.send("image", { icon: "wrong", id: "imageCheckRow" });
   }
 
   ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {

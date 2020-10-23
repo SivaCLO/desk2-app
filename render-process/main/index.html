@@ -242,33 +242,66 @@
       </div>
       <div class="row-12">
         <div class="container">
-          <div class="row">
+          <div class="row" id="titleCheckRow">
             <div class="col-2">
               <input type="checkbox" class="form-check-input" id="titleCheck" style="margin-left: 0rem;" checked />
             </div>
-            <div class="col-9" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
+            <div class="col-7" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
               Title Check
             </div>
+            <div class="col-2">
+              <svg id="tick" class="bi text-success" width="18" height="18" fill="green">
+                <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#check-circle-fill" />
+              </svg>
+              <svg id="wrong" class="bi text-danger" width="18" height="18" fill="green">
+                <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#x-circle-fill" />
+              </svg>
+            </div>
           </div>
-          <div class="row">
+          <div class="row" id="subTitleCheckRow">
             <div class="col-2">
               <input type="checkbox" class="form-check-input" id="subTitleCheck" style="margin-left: 0rem;" checked />
             </div>
-            <div class="col-9" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
+            <div class="col-7" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
               Sub-Title Check
             </div>
+            <div class="col-2">
+              <svg id="tick" class="bi text-success" width="18" height="18" fill="green">
+                <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#check-circle-fill" />
+              </svg>
+              <svg id="wrong" class="bi text-danger" width="18" height="18" fill="green">
+                <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#x-circle-fill" />
+              </svg>
+            </div>
           </div>
-          <div class="row">
+          <div class="row" id="imageCheckRow">
             <div class="col-2">
               <input type="checkbox" class="form-check-input" id="imageCheck" style="margin-left: 0rem;" checked />
             </div>
-            <div class="col-9" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
+            <div class="col-7" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
               Image Check
+            </div>
+            <div class="col-2">
+              <svg id="tick" class="bi text-success" width="18" height="18" fill="green">
+                <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#check-circle-fill" />
+              </svg>
+              <svg id="wrong" class="bi text-danger" width="18" height="18" fill="green">
+                <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#x-circle-fill" />
+              </svg>
             </div>
           </div>
         </div>
         <hr />
         <div class="container">
+          <div class="row">
+            <div class="col-2">
+              <input type="checkbox" class="form-check-input" id="contentCheck" style="margin-left: 0rem;" checked />
+            </div>
+            <div class="col-9" style="text-transform: capitalize; margin-top: 1.25px; font-weight: 200;">
+              <span>Content Check</span>
+              <div id="contents"></div>
+            </div>
+          </div>
           <div class="row">
             <div class="col-2">
               <input type="checkbox" class="form-check-input" id="spellCheck" style="margin-left: 0rem;" checked />
