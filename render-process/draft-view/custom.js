@@ -1,6 +1,5 @@
 console.log("Running Custom JS from the Desk app...");
 const { ipcRenderer } = require("electron");
-const { defaultStore } = require("../../common/store");
 
 window.addEventListener("load", () => {
   hideMeta();
@@ -121,11 +120,14 @@ function checkContent() {
       mediaCount++;
     }
 
-    //spellCheck
-    ipcRenderer.send("guidelines-spellCheck", {
-      id: i - 1,
-      text: encodeURI(a[i - 1].innerText),
-    });
+    if (a[i - 1].innerHTML !== "<br>") {
+      console.log("a[i - 1].innerText", a[i - 1].innerText);
+      //spellCheck
+      ipcRenderer.send("guidelines-spellCheck", {
+        id: i - 1,
+        text: encodeURI(a[i - 1].innerText),
+      });
+    }
   }
 
   if (mediaCount !== 0) {
@@ -162,13 +164,46 @@ function checkContent() {
 }
 
 function setCursor(pos, element, elemId) {
+  let sum = 0,
+    cNode = "",
+    cLength = [];
+  console.log("setCursor -> cNode", cNode);
+  console.log("setCursor -> pos", pos);
   console.log("executing focus");
 
   var node = element.item(elemId);
   node.scrollIntoView();
 
   node.focus();
-  var textNode = node.firstChild;
+
+  for (let i = 0; i < node.childNodes.length; i++) {
+    if (node.childNodes.item(i).length !== undefined) {
+      console.log(node.childNodes.item(i).length);
+      cLength.push(node.childNodes.item(i).length);
+      sum = sum + node.childNodes.item(i).length;
+    } else {
+      console.log(node.childNodes.item(i).innerText.length);
+      cLength.push(node.childNodes.item(i).innerText.length);
+      sum = sum + node.childNodes.item(i).innerText.length;
+    }
+    console.log("sum", sum);
+    if (sum > pos) {
+      if (cNode === "") {
+        console.log("child element", i);
+        cNode = i;
+      }
+    }
+    console.log("setCursor -> cNode", cNode);
+  }
+
+  console.log("setCursor -> cLength", cLength);
+  for (i = 0; i < cNode; i++) {
+    console.log("cLength[i]", cLength[i]);
+    pos = pos - cLength[i];
+  }
+  var textNode = node.childNodes.item(cNode);
+  console.log("setCursor -> textNode", textNode);
+
   var range = document.createRange();
 
   // insert caret after the 10th character say - pos
