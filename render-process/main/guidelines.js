@@ -20,10 +20,19 @@ ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
           span.appendChild(node);
           var element = document.getElementById("suggestions");
           element.appendChild(span);
+
+          //left mouse click
           span.addEventListener("click", () => {
             setCursor(data.id, index.offset, i);
           });
+
+          //right mouse click
           span.addEventListener("contextmenu", (e) => {
+            var elemId = "[id='" + e.target.id + "']";
+            var elem = document.querySelectorAll(elemId);
+            for (let i = 0; i < elem.length; i++) {
+              elem.item(i).remove();
+            }
             clearSelection();
             let id = e.target.id.split("_");
             replaceWord(id[0], id[1], e.target.innerText, index.token);
