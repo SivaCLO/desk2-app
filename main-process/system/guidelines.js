@@ -51,7 +51,7 @@ ipcMain.on("guideline-re-run", (event) => {
   getMainWindow().getBrowserView().webContents.send("re-run");
 });
 
-ipcMain.on("publish", (event) => {
+ipcMain.on("guideline-publish", (event) => {
   getMainWindow().getBrowserView().webContents.send("publish");
 });
 

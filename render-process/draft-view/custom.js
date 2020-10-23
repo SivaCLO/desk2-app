@@ -84,7 +84,8 @@ ipcRenderer.on("re-run", (event) => {
 });
 
 ipcRenderer.on("publish", (event) => {
-  console.log("publish");
+  var a = document.querySelectorAll("[data-action='show-prepublish']");
+  a.item(0).click();
 });
 
 function checkContent() {
