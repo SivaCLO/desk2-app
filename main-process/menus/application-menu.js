@@ -207,13 +207,6 @@ let template = [
         type: "separator",
       },
       {
-        label: "Desk Bot",
-        accelerator: "CmdOrCtrl+Shift+D",
-        click() {
-          log("application-menu/view/deskbot");
-        },
-      },
-      {
         label: "Show Keyboard Shortcuts",
         accelerator: process.platform !== "linux" ? "CmdOrCtrl+/" : "Ctrl+H",
         click: () => {

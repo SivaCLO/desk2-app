@@ -14,10 +14,6 @@ window.addEventListener("load", () => {
   }, 500);
 
   document.body.addEventListener("click", (event) => {
-    console.log("event", event.target.dataset.action);
-    console.log("event dataset", event.target.dataset);
-    console.log("event innerText", event.target.innerText);
-
     if (event.target.innerText === "Publish") {
       console.log("Publish button clicked");
     }
@@ -79,7 +75,6 @@ function hideMeta() {
 }
 
 ipcRenderer.on("re-run", (event) => {
-  console.log("checkContent");
   checkContent();
 });
 
@@ -93,18 +88,14 @@ function checkContent() {
   var a = document.getElementsByClassName("section-content").item(0).children.item(0).children;
 
   if (a.item(0).tagName === "H3") {
-    console.log("title found");
     ipcRenderer.send("title", { icon: "tick", id: "titleCheckRow" });
   } else {
-    console.log("no title found");
     ipcRenderer.send("title", { icon: "wrong", id: "titleCheckRow" });
   }
 
   if (a.item(1).tagName === "H4") {
     ipcRenderer.send("subTitle", { icon: "tick", id: "subTitleCheckRow" });
-    console.log("sub-title found");
   } else {
-    console.log("no sub-title found");
     ipcRenderer.send("subTitle", { icon: "wrong", id: "subTitleCheckRow" });
   }
 
@@ -117,12 +108,10 @@ function checkContent() {
   for (let i = 1; i <= Object.keys(a).length; i++) {
     //mediaCheck
     if (a.item(i - 1).tagName === "FIGURE") {
-      console.log("Media found");
       mediaCount++;
     }
 
     if (a[i - 1].innerHTML !== "<br>") {
-      console.log("a[i - 1].innerText", a[i - 1].innerText);
       //spellCheck
       ipcRenderer.send("guidelines-spellCheck", {
         id: i - 1,
@@ -140,9 +129,7 @@ function checkContent() {
   ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
     var elemId;
     elemId = data.id;
-    console.log("data.suggestions.length", data.suggestions.length);
     data.suggestions.map((index) => {
-      console.log("checkContent -> elemId", elemId);
       index.suggestions.map((index) => {
         console.log("suggesstion(s)", index.suggestion);
       });
@@ -168,10 +155,6 @@ function setCursor(pos, element, elemId) {
   let sum = 0,
     cNode = "",
     cLength = [];
-  console.log("setCursor -> cNode", cNode);
-  console.log("setCursor -> pos", pos);
-  console.log("executing focus");
-
   var node = element.item(elemId);
   node.scrollIntoView();
 
@@ -179,32 +162,23 @@ function setCursor(pos, element, elemId) {
 
   for (let i = 0; i < node.childNodes.length; i++) {
     if (node.childNodes.item(i).length !== undefined) {
-      console.log(node.childNodes.item(i).length);
       cLength.push(node.childNodes.item(i).length);
       sum = sum + node.childNodes.item(i).length;
     } else {
-      console.log(node.childNodes.item(i).innerText.length);
       cLength.push(node.childNodes.item(i).innerText.length);
       sum = sum + node.childNodes.item(i).innerText.length;
     }
-    console.log("sum", sum);
     if (sum > pos) {
       if (cNode === "") {
-        console.log("child element", i);
         cNode = i;
       }
     }
-    console.log("setCursor -> cNode", cNode);
   }
 
-  console.log("setCursor -> cLength", cLength);
   for (i = 0; i < cNode; i++) {
-    console.log("cLength[i]", cLength[i]);
     pos = pos - cLength[i];
   }
   var textNode = node.childNodes.item(cNode);
-  console.log("setCursor -> textNode", textNode);
-
   var range = document.createRange();
 
   // insert caret after the 10th character say - pos
