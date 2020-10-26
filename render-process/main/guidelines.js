@@ -4,14 +4,8 @@ ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
   // clearSpellCheckSuggestions();
   if (document.getElementById("spellCheck").checked) {
     if (data) {
-      // console.log("div id", data.id);
       data.suggestions.map((index) => {
-        // console.log("index", index);
-        // console.log("position", index.offset);
         index.suggestions.map((i) => {
-          // console.log("i", i);
-          // console.log("i", i.suggestion);
-
           var span = document.createElement("span");
           var node = document.createTextNode(i.suggestion);
           span.className = "badge badge-primary mr-1 scs";
@@ -44,7 +38,6 @@ ipcRenderer.on("guideline-spellcheck-suggestion", (event, data) => {
 });
 
 ipcRenderer.on("guideline-title", (event, data) => {
-  console.log("data", data);
   if (data.data.icon !== "tick") {
     if (document.getElementById(data.data.id).children.item(2).children.tick !== undefined)
       document.getElementById(data.data.id).children.item(2).children.tick.remove();
@@ -55,7 +48,6 @@ ipcRenderer.on("guideline-title", (event, data) => {
 });
 
 ipcRenderer.on("guideline-sub-title", (event, data) => {
-  console.log("data", data);
   if (data.data.icon !== "tick") {
     if (document.getElementById(data.data.id).children.item(2).children.tick !== undefined)
       document.getElementById(data.data.id).children.item(2).children.tick.remove();
@@ -66,7 +58,6 @@ ipcRenderer.on("guideline-sub-title", (event, data) => {
 });
 
 ipcRenderer.on("guideline-image", (event, data) => {
-  console.log("data", data);
   if (data.data.icon !== "tick") {
     if (document.getElementById(data.data.id).children.item(2).children.tick !== undefined)
       document.getElementById(data.data.id).children.item(2).children.tick.remove();
@@ -85,7 +76,6 @@ function replaceWord(divId, misspelledWordPosition, correctWordSuggestion, missp
 }
 
 document.getElementById("re-run").addEventListener("click", () => {
-  console.log("guideline-re-run");
   ipcRenderer.send("guideline-re-run");
 });
 

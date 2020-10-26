@@ -10,19 +10,16 @@ ipcMain.on("guidelines-spellCheck", (event, data) => {
 });
 
 ipcMain.on("title", (event, data) => {
-  console.log("title data", data);
   getMainWindow().webContents.send("guideline-title", { data });
 });
 
 ipcMain.on("subTitle", (event, data) => {
-  console.log("sub-title data", data);
   getMainWindow().webContents.send("guideline-sub-title", {
     data,
   });
 });
 
 ipcMain.on("image", (event, data) => {
-  console.log("sub-title data", data);
   getMainWindow().webContents.send("guideline-image", {
     data,
   });
@@ -33,8 +30,6 @@ ipcMain.on("guidelines-brokenLinkCheck", (event, data) => {
 });
 
 ipcMain.on("guideline-setCursor", (event, data) => {
-  console.log("data", data);
-
   getMainWindow().getBrowserView().webContents.send("guideline-message", {
     data,
   });
@@ -47,7 +42,6 @@ ipcMain.on("guideline-replaceWord", (event, data) => {
 });
 
 ipcMain.on("guideline-re-run", (event) => {
-  console.log("guideline-re-run");
   getMainWindow().getBrowserView().webContents.send("re-run");
 });
 
