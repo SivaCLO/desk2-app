@@ -1,5 +1,7 @@
 console.log("Preload File executed successfully...");
 const { ipcRenderer } = require("electron");
+console.log("Desk Preload Executing Successfully.");
+const { deskSignout } = require("../../common/desk");
 
 ipcRenderer.on("insert-screeshot-into-draft", (e, content) => {
   const contents = new Uint8Array(content.content.content);
@@ -18,4 +20,13 @@ ipcRenderer.on("insert-screeshot-into-draft", (e, content) => {
   });
 
   document.execCommand("paste");
+});
+
+window.addEventListener("load", () => {
+  document.body.addEventListener("click", (event) => {
+    if (event.target.innerText === "Sign out") {
+      ipcRenderer.send("signOut");
+      deskSignout();
+    }
+  });
 });
