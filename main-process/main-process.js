@@ -1,4 +1,4 @@
-const { app } = require("electron");
+const { app, ipcMain } = require("electron");
 const os = require("os");
 const { log } = require("../common/activity");
 const { checkForUpdates } = require("./system/updater");
@@ -6,7 +6,7 @@ const { showMainWindow, getMainWindow } = require("./windows/main-window");
 const { showSetupWindow } = require("./windows/setup-window");
 const { signinMain } = require("../common/signin");
 const { defaultStore } = require("../common/store");
-const { getFlag } = require("../common/desk");
+const { getFlag, deskSignout } = require("../common/desk");
 const debug = /--debug/.test(process.argv[2]);
 const macAddress = require("node-macaddress");
 
@@ -74,4 +74,8 @@ if (!process.mas) {
 
 app.on("window-all-closed", () => {
   app.quit();
+});
+
+ipcMain.on("signOut", (event) => {
+  deskSignout();
 });
