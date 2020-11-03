@@ -53,20 +53,20 @@ async function getFrequent() {
   let hideLinks = [
     "https://medium.com/new-story",
     "https://medium.com/me/stories/drafts",
-    "https://medium.com/me/publications",
+    "https://medium.com/me/stories/public",
     "https://medium.com",
     "https://" + defaultStore.get("mediumUser").username + ".medium.com",
     "https://medium.com/@" + defaultStore.get("mediumUser").username,
-    "https://medium.com/me/stories/public",
     "https://medium.com/me/stats",
     "https://medium.com/me/design",
     "https://medium.com/me/settings",
+    "https://medium.com/me/publications",
   ];
 
   for (let page of pages) {
     let currUrl = page.url.split("?")[0];
     if (currUrl.endsWith("/")) currUrl = currUrl.substr(0, currUrl.length - 1);
-    if (!hideLinks.includes(currUrl) && !currUrl.endsWith("/edit")) {
+    if (!hideLinks.includes(currUrl) && !(currUrl.startsWith("https://medium.com/p") && currUrl.endsWith("/edit"))) {
       let currPage = uniquePages[currUrl] || { url: currUrl, title: currUrl, count: 0 };
       if (page.title) {
         currPage.title = page.title;

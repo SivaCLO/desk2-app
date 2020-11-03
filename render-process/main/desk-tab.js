@@ -38,6 +38,20 @@ class DeskTab {
       }
     });
 
+    this.browserView.webContents.on("will-navigate", (event, url) => {
+      const fromURL = this.browserView.webContents.getURL();
+      const { checkAndActivateTab } = require("../main/tabs");
+      if (url.startsWith("https://medium.com/p") && url.split("?")[0].endsWith("/edit")) {
+        if (checkAndActivateTab(url)) {
+          if (this.isStart) {
+            this.tab.close();
+          } else {
+            this.browserView.webContents.loadURL(fromURL);
+          }
+        }
+      }
+    });
+
     this.browserView.webContents.on("dom-ready", (e) => {
       this.browserView.webContents.insertCSS("button:focus {outline:0 !important}");
     });
@@ -77,7 +91,10 @@ class DeskTab {
 
   handleNavigation = () => {
     this.isStart = this.url.startsWith("file:") && this.url.endsWith("start.html");
-    this.draftId = this.url.split("?")[0].endsWith("/edit") ? this.url.split("/")[4] : null;
+    this.draftId =
+      this.url.startsWith("https://medium.com/p") && this.url.split("?")[0].endsWith("/edit")
+        ? this.url.split("/")[4]
+        : null;
     this.isNew = this.url.split("?")[0].endsWith("/new-story");
 
     this.activateTab();

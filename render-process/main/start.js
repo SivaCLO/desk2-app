@@ -3,7 +3,6 @@ const { getFrequent } = require("../../common/page");
 const { getDrafts, getSetting, updateDraft } = require("../../common/desk");
 
 document.body.addEventListener("click", (event) => {
-  console.log(event.target.href);
   if (event.target.href) {
     event.preventDefault();
     handleLinks(event);
@@ -28,7 +27,6 @@ window.onfocus = refresh;
 
 refreshDrafts = async () => {
   let drafts = getDrafts();
-  console.log(drafts);
   updateGoalView(drafts);
   updateDraftsView(drafts);
   for (let draft of drafts) {
@@ -107,8 +105,8 @@ updateDraftsView = (drafts) => {
       let div = document.createElement("div");
       div.classList.add("row");
       div.innerHTML = `
-        <a href="https://medium.com/p/${draft.mediumPostJSON.value.id}" class="col-12 link-title mt-3 font-weight-bold text-nowrap text-truncate">${draft.mediumPostJSON.value.title}</a>
-        <a href="https://medium.com/p/${draft.mediumPostJSON.value.id}" class="col-12 link text-nowrap text-truncate">https://medium.com/p/${draft.mediumPostJSON.value.id}</a>
+        <a href="https://medium.com/p/${draft.mediumPostJSON.value.id}/edit" class="col-12 link-title mt-3 font-weight-bold text-nowrap text-truncate">${draft.mediumPostJSON.value.title}</a>
+        <a href="https://medium.com/p/${draft.mediumPostJSON.value.id}/edit" class="col-12 link text-nowrap text-truncate">https://medium.com/p/${draft.mediumPostJSON.value.id}/edit</a>
       `;
       document.getElementById("recentDrafts").appendChild(div);
     }
