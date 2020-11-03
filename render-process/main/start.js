@@ -1,43 +1,22 @@
 const { log } = require("../../common/activity");
 const { getFrequent } = require("../../common/page");
+const { defaultStore } = require("../../common/store");
 const { getDrafts, getSetting, updateDraft } = require("../../common/desk");
 
 document.body.addEventListener("click", (event) => {
-  if (event.target.href) {
+  const origin = event.target.closest("a");
+  if (origin && origin.href) {
     event.preventDefault();
-    handleLinks(event);
+    handleLinks(origin.href);
   }
 });
 
-function handleLinks(event) {
-  let url = event.target.href;
+function handleLinks(url) {
   log("start/link-clicked");
   document.getElementById("content").hidden = true;
   document.getElementById("loading").hidden = false;
   window.location = url;
 }
-
-refresh = async () => {
-  refreshDrafts().then();
-  refreshFrequent().then();
-};
-
-window.onload = refresh;
-window.onfocus = refresh;
-
-refreshDrafts = async () => {
-  let drafts = getDrafts();
-  updateGoalView(drafts);
-  updateDraftsView(drafts);
-  for (let draft of drafts) {
-    if (!draft.deleted && !draft.mediumPostJSON.value.firstPublishedAt) {
-      await updateDraft(draft.mediumPostJSON.value.id);
-    }
-  }
-  drafts = getDrafts();
-  updateGoalView(drafts);
-  updateDraftsView(drafts);
-};
 
 function updateGoalView(drafts) {
   let currentMonth = new Date().getMonth();
@@ -68,15 +47,15 @@ function updateGoalView(drafts) {
   if (publishedCount > 0 || draftCount > 0) {
     document.getElementById("progress-text").innerHTML =
       (publishedCount > 1
-        ? publishedCount + " Stories Published <span class='text-success'>&#x2014;</span>"
+        ? publishedCount + " Published <span class='text-success'>&#x2014;</span>"
         : publishedCount > 0
-        ? "1 Story Published <span class='text-success'>&#x2014;</span>"
+        ? "1 Published <span class='text-success'>&#x2014;</span>"
         : "") +
       (publishedCount > 0 && draftCount > 0 ? "&nbsp;&nbsp;&nbsp;" : "") +
       (draftCount > 1
-        ? draftCount + " Drafts Created <span class='text-warning'>&#x2014;</span>"
+        ? draftCount + " Drafts <span class='text-warning'>&#x2014;</span>"
         : draftCount > 0
-        ? "1 Draft Created <span class='text-warning'>&#x2014;</span>"
+        ? "1 Draft <span class='text-warning'>&#x2014;</span>"
         : "");
   } else {
     document.getElementById("progress-text").innerText = "No Stories";
@@ -113,6 +92,20 @@ updateDraftsView = (drafts) => {
   }
 };
 
+refreshDrafts = async () => {
+  let drafts = getDrafts();
+  updateGoalView(drafts);
+  updateDraftsView(drafts);
+  for (let draft of drafts) {
+    if (!draft.deleted && !draft.mediumPostJSON.value.firstPublishedAt) {
+      await updateDraft(draft.mediumPostJSON.value.id);
+    }
+  }
+  drafts = getDrafts();
+  updateGoalView(drafts);
+  updateDraftsView(drafts);
+};
+
 refreshFrequent = async () => {
   let pages = await getFrequent();
   document.getElementById("frequentLinks").innerHTML = "";
@@ -136,3 +129,18 @@ refreshFrequent = async () => {
     document.getElementById("frequentLinks").appendChild(div);
   }
 };
+
+refresh = async () => {
+  let mediumUser = defaultStore.get("mediumUser");
+  let avatarEl = document.getElementById("avatar");
+  avatarEl.innerHTML = `<img src="${mediumUser.imageUrl}"/>`;
+  refreshDrafts().then();
+  refreshFrequent().then();
+};
+
+window.onload = refresh;
+window.onfocus = refresh;
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});

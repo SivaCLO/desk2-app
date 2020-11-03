@@ -51,16 +51,16 @@ async function getFrequent() {
   let pages = await pagesGET();
   let uniquePages = {};
   let hideLinks = [
+    "https://medium.com",
     "https://medium.com/new-story",
     "https://medium.com/me/stories/drafts",
     "https://medium.com/me/stories/public",
-    "https://medium.com",
-    "https://" + defaultStore.get("mediumUser").username + ".medium.com",
-    "https://medium.com/@" + defaultStore.get("mediumUser").username,
     "https://medium.com/me/stats",
     "https://medium.com/me/design",
     "https://medium.com/me/settings",
     "https://medium.com/me/publications",
+    "https://" + defaultStore.get("mediumUser").username + ".medium.com",
+    "https://medium.com/@" + defaultStore.get("mediumUser").username,
   ];
 
   for (let page of pages) {
