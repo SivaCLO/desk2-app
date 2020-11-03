@@ -40,13 +40,25 @@ class DeskTab {
       this.browserView.webContents.insertCSS("button:focus {outline:0 !important}");
     });
 
-    this.browserView.webContents.on("page-title-updated", (e, title) => {
+    this.browserView.webContents.on("page-title-updated", async (e, title) => {
       if (title) {
         title = title.replace(/ – Medium/, "");
         title = title.replace(/^Editing /, "");
         title = title.replace(/^untitled story/, "Untitled");
       }
       this.tab.setTitle(title);
+
+      if (!this.isStart) {
+        if (this.visitURL === this.url || (this.visitURL && this.visitURL.split("?source=")[0] === this.url)) {
+          if (title !== "Medium") this.visitId = await visit(this.url, title, this.tab.id, this.visitId);
+        } else {
+          this.visitURL = this.url;
+          this.visitId = await visit(this.url, title, this.tab.id, "new");
+        }
+      } else {
+        this.visitURL = null;
+        this.visitId = null;
+      }
     });
 
     this.browserView.webContents.on("context-menu", (event, params) => {
@@ -62,8 +74,6 @@ class DeskTab {
   }
 
   handleNavigation = () => {
-    visit(this.url, this.tab.id);
-
     this.isStart = this.url.startsWith("file:") && this.url.endsWith("start.html");
     this.draftId = this.url.split("?")[0].endsWith("/edit") ? this.url.split("/")[4] : null;
     this.isNew = this.url.split("?")[0].endsWith("/new-story");
@@ -105,7 +115,7 @@ class DeskTab {
       }
 
       if (this.draftId) {
-        let data = await updateDraft(this.draftId, this.url.split("?")[0]);
+        let data = await updateDraft(this.draftId, Date.now());
         if (data && data.payload && data.payload.value) {
           let title = data.payload.value.title || "Untitled";
           this.tab.setTitle(title);

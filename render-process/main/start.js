@@ -1,27 +1,47 @@
 const { log } = require("../../common/activity");
+const { getFrequent } = require("../../common/page");
 const { getDrafts, getSetting, updateDraft } = require("../../common/desk");
 
 document.body.addEventListener("click", (event) => {
-  if (event.target.dataset.action) {
-    handleAction(event);
+  console.log(event.target.href);
+  if (event.target.href) {
+    event.preventDefault();
+    handleLinks(event);
   }
 });
 
-refreshGoals = async () => {
-  updateGoalView();
-  for (let draft of getDrafts()) {
+function handleLinks(event) {
+  let url = event.target.href;
+  log("start/link-clicked");
+  document.getElementById("content").hidden = true;
+  document.getElementById("loading").hidden = false;
+  window.location = url;
+}
+
+refresh = async () => {
+  refreshDrafts().then();
+  refreshFrequent().then();
+};
+
+window.onload = refresh;
+window.onfocus = refresh;
+
+refreshDrafts = async () => {
+  let drafts = getDrafts();
+  console.log(drafts);
+  updateGoalView(drafts);
+  updateDraftsView(drafts);
+  for (let draft of drafts) {
     if (!draft.deleted && !draft.mediumPostJSON.value.firstPublishedAt) {
       await updateDraft(draft.mediumPostJSON.value.id);
     }
   }
-  updateGoalView();
+  drafts = getDrafts();
+  updateGoalView(drafts);
+  updateDraftsView(drafts);
 };
 
-window.onload = refreshGoals;
-window.onfocus = refreshGoals;
-
-function updateGoalView() {
-  let drafts = getDrafts();
+function updateGoalView(drafts) {
   let currentMonth = new Date().getMonth();
   let currentYear = new Date().getFullYear();
   let publishedCount = 0;
@@ -48,28 +68,73 @@ function updateGoalView() {
   document.getElementById("drafts").setAttribute("style", "width:" + draftPercent + "%");
 
   if (publishedCount > 0 || draftCount > 0) {
-    document.getElementById("progress-text").innerText =
-      (publishedCount > 1 ? publishedCount + " Stories" : publishedCount > 0 ? "1 Story" : "") +
-      (publishedCount > 0 && draftCount > 0 ? " + " : "") +
-      (draftCount > 1 ? draftCount + " Drafts" : draftCount > 0 ? "1 Draft" : "");
+    document.getElementById("progress-text").innerHTML =
+      (publishedCount > 1
+        ? publishedCount + " Stories Published <span class='text-success'>&#x2014;</span>"
+        : publishedCount > 0
+        ? "1 Story Published <span class='text-success'>&#x2014;</span>"
+        : "") +
+      (publishedCount > 0 && draftCount > 0 ? "&nbsp;&nbsp;&nbsp;" : "") +
+      (draftCount > 1
+        ? draftCount + " Drafts Created <span class='text-warning'>&#x2014;</span>"
+        : draftCount > 0
+        ? "1 Draft Created <span class='text-warning'>&#x2014;</span>"
+        : "");
   } else {
     document.getElementById("progress-text").innerText = "No Stories";
   }
   document.getElementById("target-text").innerText = monthlyGoal + " Stories";
 }
 
-function handleAction(event) {
-  let action = event.target.dataset.action;
+updateDraftsView = (drafts) => {
+  document.getElementById("recentDrafts").innerHTML = "";
 
-  if (action === "new-draft") {
-    log("start/new-draft");
-    document.getElementById("content").hidden = true;
-    document.getElementById("loading").hidden = false;
-    window.location = "https://medium.com/new-story";
-  } else if (action === "all-drafts") {
-    log("start/all-drafts");
-    document.getElementById("content").hidden = true;
-    document.getElementById("loading").hidden = false;
-    window.location = "https://medium.com/me/stories/drafts";
+  drafts = drafts.filter(function (a) {
+    return !a.deleted && !a.mediumPostJSON.value.firstPublishedAt;
+  });
+
+  drafts = drafts.sort(function (a, b) {
+    if (a.lastOpenedTime < b.lastOpenedTime) {
+      return 1;
+    } else if (a.lastOpenedTime > b.lastOpenedTime) {
+      return -1;
+    }
+    return 0;
+  });
+
+  for (let draft of drafts.slice(0, 5)) {
+    if (!draft.deleted && !draft.mediumPostJSON.value.firstPublishedAt) {
+      let div = document.createElement("div");
+      div.classList.add("row");
+      div.innerHTML = `
+        <a href="https://medium.com/p/${draft.mediumPostJSON.value.id}" class="col-12 link-title mt-3 font-weight-bold text-nowrap text-truncate">${draft.mediumPostJSON.value.title}</a>
+        <a href="https://medium.com/p/${draft.mediumPostJSON.value.id}" class="col-12 link text-nowrap text-truncate">https://medium.com/p/${draft.mediumPostJSON.value.id}</a>
+      `;
+      document.getElementById("recentDrafts").appendChild(div);
+    }
   }
-}
+};
+
+refreshFrequent = async () => {
+  let pages = await getFrequent();
+  document.getElementById("frequentLinks").innerHTML = "";
+
+  pages = pages.sort(function (a, b) {
+    if (a.count < b.count) {
+      return 1;
+    } else if (a.count > b.count) {
+      return -1;
+    }
+    return 0;
+  });
+
+  for (let page of pages.slice(0, 5)) {
+    let div = document.createElement("div");
+    div.classList.add("row");
+    div.innerHTML = `
+      <a href="${page.url}" class="col-12 link-title mt-3 font-weight-bold text-nowrap text-truncate">${page.title}</a>
+      <a href="${page.url}" class="col-12 link text-nowrap text-truncate">${page.url}</a>
+      `;
+    document.getElementById("frequentLinks").appendChild(div);
+  }
+};
