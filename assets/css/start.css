@@ -1,3 +1,48 @@
 .progress {
   height: 5px;
 }
+
+body {
+  overflow-y: scroll;
+  height: 100vh;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
+}
+
+#content {
+  max-width: 800px;
+  margin: auto;
+  padding-top: 2rem;
+}
+
+.card {
+  border: none;
+}
+
+h1 {
+  font-size: xx-large;
+}
+
+h5 {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-88);
+  width: 100%;
+}
+
+a:hover {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.link-title {
+  font-size: medium;
+}
+
+.link-title:hover + .link {
+  color: inherit;
+}
+
+.link {
+  color: var(--color-66);
+}

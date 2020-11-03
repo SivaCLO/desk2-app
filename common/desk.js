@@ -131,7 +131,7 @@ function getFlag(key) {
   return flags[key];
 }
 
-async function updateDraft(mediumPostId) {
+async function updateDraft(mediumPostId, lastOpenedTime) {
   let drafts = getDrafts();
   let draft = {};
   let draftIndex = -1;
@@ -142,7 +142,7 @@ async function updateDraft(mediumPostId) {
     }
   }
 
-  draft.lastOpenedTime = Date.now();
+  if (lastOpenedTime) draft.lastOpenedTime = lastOpenedTime;
   let data = await callMediumPostJSON(mediumPostId);
   if (data && data.success) {
     draft.mediumPostJSON = data.payload;
