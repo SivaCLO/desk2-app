@@ -1,3 +1,8 @@
+html,
+body {
+  height: 100%;
+}
+
 h2 {
   font-family: Georgia, Cambria, "Times New Roman", Times, serif;
   font-size: 28px;

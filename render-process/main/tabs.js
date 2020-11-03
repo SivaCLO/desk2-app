@@ -27,6 +27,21 @@ newTab = function (url, ready) {
   });
 };
 
+checkAndActivateTab = function (url) {
+  let tabAvailable = null;
+  ElectronTabs.getTabs().map((tempTab) => {
+    if (url.includes(tempTab.view.browserView.webContents.getURL())) {
+      tabAvailable = tempTab;
+    }
+  });
+  if (tabAvailable) {
+    ElectronTabs.getTab(tabAvailable.id).activate();
+    return true;
+  } else {
+    return false;
+  }
+};
+
 ipcRenderer.on("new_tab", (event, url) => {
   exitZenMode();
   newTab(url);
@@ -139,6 +154,7 @@ function resetZoom() {
 module.exports = {
   ElectronTabs,
   newTab,
+  checkAndActivateTab,
   enterZenMode,
   exitZenMode,
   zoomOut,
