@@ -11,32 +11,95 @@
   <body>
     <div class="container">
       <section id="content">
-        <div class="card">
-          <div class="card-body">
-            <div class="row pt-5 pb-2">
-              <div class="col-6">
+        <div class="row pt-4 pb-2">
+          <div class="col-4">
+            <div class="card">
+              <div class="card-body">
                 <h1>Your Desk</h1>
-              </div>
-              <div class="col-6 text-right m-auto">
-                <a class="btn btn-success mr-2" href="https://medium.com/new-story">New Draft</a>
-                <a class="btn btn-outline-success" href="https://medium.com/me/stories/drafts">All Drafts</a>
               </div>
             </div>
           </div>
-        </div>
-        <div class="row pt-4 pb-2">
-          <div class="col-12">
+          <div class="col-8">
             <div class="card">
               <div class="card-body">
-                <div id="quickLinks">
-                  <div class="quick-link" id="avatar"></div>
-                  <div class="quick-link"></div>
+                <div class="d-flex justify-content-between" id="quickLinks">
+                  <a
+                    class="quick-link-left"
+                    href="https://medium.com"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Medium Home"
+                  >
+                    <img src="../../assets/img/medium.svg" />
+                  </a>
+                  <a
+                    class="quick-link"
+                    href="https://medium.com/new-story"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="New Story"
+                  >
+                    <img src="../../node_modules/bootstrap-icons/icons/file-plus.svg" />
+                  </a>
+                  <a
+                    class="quick-link"
+                    href="https://medium.com/me/stories/drafts"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Your Stories"
+                  >
+                    <img src="../../node_modules/bootstrap-icons/icons/files.svg" />
+                  </a>
+                  <a
+                    class="quick-link"
+                    href="https://medium.com/me/stats"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Your Stats"
+                  >
+                    <img src="../../node_modules/bootstrap-icons/icons/bar-chart.svg" />
+                  </a>
+                  <a
+                    class="quick-link"
+                    href="https://medium.com/me/design"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Design"
+                  >
+                    <img src="../../node_modules/bootstrap-icons/icons/file-richtext.svg" />
+                  </a>
+                  <a
+                    class="quick-link"
+                    href="https://medium.com/me/settings"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Settings"
+                  >
+                    <img src="../../node_modules/bootstrap-icons/icons/gear.svg" />
+                  </a>
+                  <a
+                    class="quick-link"
+                    href="https://medium.com/me/publications"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Your Publications"
+                  >
+                    <img src="../../node_modules/bootstrap-icons/icons/grid.svg" />
+                  </a>
+                  <a
+                    class="quick-link-right"
+                    href="https://medium.com/me"
+                    id="avatar"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Your Profile"
+                  ></a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="row pt-5 pb-2">
+        <div class="row pt-5 pb-5">
           <div class="col-12">
             <div class="card">
               <div class="card-body">
@@ -62,18 +125,28 @@
                   ></div>
                 </div>
                 <div class="row mt-3">
-                  <div class="col-6 font-weight-bold text-left" id="progress-text"></div>
-                  <div class="col-6 font-weight-bold text-left text-right" id="target-text"></div>
-                </div>
-                <div class="row">
-                  <div class="col-6 text-left"><i>on your Desk this month</i></div>
-                  <div class="col-6 text-left text-right"><i>is your goal for the month</i></div>
+                  <div class="col-6 font-weight-bold text-left">
+                    <span
+                      id="progress-text"
+                      data-toggle="tooltip"
+                      data-placement="bottom"
+                      title="Your Progress on Desk"
+                    ></span>
+                  </div>
+                  <div class="col-6 font-weight-bold text-right">
+                    <span
+                      id="target-text"
+                      data-toggle="tooltip"
+                      data-placement="bottom"
+                      title="Your Monthly Goal"
+                    ></span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="row pt-4 pb-5 text-left">
+        <div class="row pt-5 pb-5 text-left">
           <div class="col-6">
             <div class="card">
               <div class="card-body">
@@ -102,6 +175,7 @@
     </div>
 
     <script>
+      window.$ = window.jQuery = require("jquery");
       require("bootstrap");
       require("./start");
     </script>

@@ -104,6 +104,8 @@ class DeskTab {
       null,
       this.isNew || this.draftId
         ? `<use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#pencil-square"/>`
+        : this.isStart
+        ? `<use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#house-door"/>`
         : null
     );
 

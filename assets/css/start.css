@@ -46,3 +46,22 @@ a:hover {
 .link {
   color: var(--color-66);
 }
+
+.quick-link img {
+  padding: 10px 10px;
+  height: 45px;
+  width: 45px;
+}
+
+.quick-link-left img {
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+}
+
+.quick-link-right img {
+  margin-top: 5px;
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+}
