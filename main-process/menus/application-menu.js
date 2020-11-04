@@ -91,6 +91,18 @@ let template = [
           getMainWindow() && getMainWindow().webContents.send("on-find");
         },
       },
+      {
+        type: "separator",
+      },
+      {
+        label: "Screen Shot",
+        accelerator: "CmdOrCtrl+Shift+Alt+S",
+        click: () => {
+          console.log("screenshot menu");
+          // log("application-menu/edit/find-in-page");
+          getMainWindow() && getMainWindow().webContents.send("screenshot");
+        },
+      },
     ],
   },
   {
