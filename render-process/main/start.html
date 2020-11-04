@@ -169,10 +169,17 @@
       </section>
     </div>
 
+    <div class="network-status" id="network-status"></div>
+    <button type="button" class="update-notifier" id="update-notifier" hidden>
+      New version ready to use | Restart now
+    </button>
+
     <script>
       window.$ = window.jQuery = require("jquery");
       require("bootstrap");
       require("./start");
+      require("./network-status");
+      require("./update-notifier");
     </script>
   </body>
 </html>

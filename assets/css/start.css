@@ -65,3 +65,29 @@ a:hover {
   height: 35px;
   width: 35px;
 }
+
+.update-notifier {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-accent);
+  color: var(--color-100);
+  border: none;
+  border-radius: 3px;
+  letter-spacing: 0.4px;
+}
+
+.update-notifier:hover {
+  background-color: var(--color-accent-dark);
+}
+
+.network-status {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 17px 24px;
+  color: red;
+  font-weight: 600;
+  font-size: medium;
+}

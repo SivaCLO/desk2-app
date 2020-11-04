@@ -195,12 +195,3 @@
 .etab-view {
   position: relative;
 }
-
-.network-status {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  margin: 7px 10px;
-  color: var(--color-accent-dark);
-  font-weight: 600;
-}
