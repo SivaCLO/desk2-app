@@ -66,21 +66,21 @@
         "dmg",
         "zip"
       ],
-      "icon": "assets/app-icon/thedesk.icns",
+      "icon": "assets/app-icon/app.icns",
       "entitlements": "assets/mac/entitlements.mac.plist",
       "entitlementsInherit": "assets/mac/entitlements.mac.inherit.plist",
       "gatekeeperAssess": false
     },
     "win": {
       "target": "nsis",
-      "icon": "assets/app-icon/thedesk.ico",
+      "icon": "assets/app-icon/app.ico",
       "certificateFile": "certs/win/thedesk.pfx",
       "certificatePassword": "CloveCrypto!11",
       "publisherName": "Clove Inc."
     },
     "linux": {
       "target": "AppImage",
-      "icon": "assets/app-icon/thedesk-512.png"
+      "icon": "assets/app-icon/app.png"
     },
     "publish": [
       {
