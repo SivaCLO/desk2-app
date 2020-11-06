@@ -248,14 +248,7 @@ let template = [
         label: "Contact Support",
         click: () => {
           log("application-menu/help/contact-support");
-          shell.openExternal("mailto:yourfriends@thedesk.co");
-        },
-      },
-      {
-        label: "Open TheDesk.co",
-        click: () => {
-          log("application-menu/help/open-thedesk-co");
-          shell.openExternal("http://thedesk.co");
+          shell.openExternal("mailto:support@cloveapps.com");
         },
       },
     ],
