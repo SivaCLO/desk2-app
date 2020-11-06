@@ -34,3 +34,4 @@ SELECT c.activityCode, c.activityData, TimestampToDateTime(c.activityTime) FROM 
 
 /* Published Stories */
 SELECT c.userName, c.activityData, TimestampToDateTime(c.activityTime) from c WHERE c.activityCode = "draft-view/publish" AND c.activityTime >= 1600352616000 ORDER BY c.activityTime
+SELECT c.activityData.fromURL, c.activityData.url FROM c WHERE c.activityCode = "draft-view/will-navigate" AND CONTAINS (c.activityData.url, "https://medium.com/@")
