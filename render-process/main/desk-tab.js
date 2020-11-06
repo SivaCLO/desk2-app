@@ -3,6 +3,7 @@ const Remote = require("electron").remote;
 const { log } = require("../../common/activity");
 const { visit } = require("../../common/page");
 const { updateDraft } = require("../../common/desk");
+const path = require("path");
 
 class DeskTab {
   constructor(url, tab, tabs) {
@@ -18,6 +19,7 @@ class DeskTab {
         allowRunningInsecureContent: true,
         nodeIntegration: true,
         spellcheck: false,
+        preload: path.join(__dirname, "desk-tab-preload.js"),
       },
     });
 
