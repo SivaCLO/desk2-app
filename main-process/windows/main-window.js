@@ -127,4 +127,8 @@ ipcMain.on("delete-tab", (e, tabs) => {
   }
 });
 
+ipcMain.on("insert-screenshot", (e, content) => {
+  getMainWindow().getBrowserView().webContents.send("insert-screeshot-into-draft", { content });
+});
+
 module.exports = { showMainWindow, getMainWindow, closeMainWindow };

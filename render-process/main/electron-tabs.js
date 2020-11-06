@@ -517,17 +517,19 @@ async function screenScreenshot() {
     let temp = await desktopCapturer.getSources(options);
     temp.forEach(function (source) {
       if (source.name) {
-        const screenshotPath = path.join("./", "screenshot.png");
+        const content = source.thumbnail.toPNG();
 
-        fs.writeFile(screenshotPath, source.thumbnail.toPNG(), "base64", function (error) {
-          if (error) return console.log(error);
-          shell.openExternal("file://" + screenshotPath);
-          const message = `Saved screenshot to: ${screenshotPath}`;
-          console.log("message", message);
-        });
+        ipcRenderer.send("insert-screenshot", { content });
+
+        //To save file locally
+
+        // fs.writeFile(path.join("./", "screenshot.png"), source.thumbnail.toPNG(), "base64", function (error) {
+        //   if (error) return console.log(error);
+        //   shell.openExternal("file://" + path.join("./", "screenshot.png"));
+        //   console.log("screenshot Saved");
+        // });
       }
     });
-    // });
   } catch (error) {
     console.log("screenScreenshot -> error", error);
   }
