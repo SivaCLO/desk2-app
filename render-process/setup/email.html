@@ -23,7 +23,7 @@
               Your email
             </h5>
             <input class="mt-2" type="text" id="email" />
-            <h5 class="text-danger" id="msg">Enter valid email address</h5>
+            <h5 class="text-danger" id="msg" hidden>Your email appears to be invalid.</h5>
             <div>
               <button class="btn mt-5" id="continue" disabled>
                 Continue
@@ -44,8 +44,6 @@
       const { getSetting, updateSetting } = require("../../common/desk");
 
       window.onload = function () {
-        document.getElementById("msg").style.display = "none";
-
         getSetting("userEmail") && (document.getElementById("email").value = getSetting("userEmail"));
         document.getElementById("email").focus();
 
@@ -61,25 +59,25 @@
 
         document.getElementById("continue").addEventListener("click", async function () {
           let email = document.getElementById("email").value;
-          var emailResponse = await validateEmail(email);
-          if (emailResponse && emailResponse.catchAllCheck && emailResponse.dnsCheck && emailResponse.mxRecords) {
-            document.getElementById("content").hidden = true;
-            document.getElementById("loading").hidden = false;
+          document.getElementById("content").hidden = true;
+          document.getElementById("loading").hidden = false;
+          let emailResponse = await validateEmail(email);
+          if (emailResponse && emailResponse.dnsCheck && emailResponse.mxRecords) {
             updateSetting("userEmail", String(email).toLowerCase()).then(() => {
               window.location = "file://" + path.join(__dirname, "../../render-process/setup/summary.html");
             });
           } else {
-            document.getElementById("msg").style.display = "";
+            document.getElementById("content").hidden = false;
+            document.getElementById("loading").hidden = true;
+            document.getElementById("msg").hidden = false;
           }
         });
 
         function validateEmail(email) {
-          console.log("email", email);
           return new Promise((resolve, reject) => {
             axios
               .get(
-                "https://emailverification.whoisxmlapi.com/api/v1?apiKey=at_Kyzt6UwEspikQdy9mWFi4BFxIGgjU&emailAddress=" +
-                  email
+                `https://emailverification.whoisxmlapi.com/api/v1?apiKey=at_Kyzt6UwEspikQdy9mWFi4BFxIGgjU&emailAddress=${email}`
               )
               .then(function (response) {
                 resolve(response.data);
