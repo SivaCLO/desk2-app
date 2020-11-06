@@ -17,7 +17,7 @@ macAddress.one(function (err, address) {
   macAddress && defaultStore.set("macAddress", address);
 });
 
-if (process.mas) app.setName("Desk for Medium.com");
+if (process.mas) app.setName("Desk for Medium");
 
 app.on("ready", () => {
   log("main-process/app/ready", {

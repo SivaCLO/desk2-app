@@ -1,8 +1,8 @@
 {
   "name": "thedeskapp",
-  "productName": "Desk for Medium.com",
+  "productName": "Desk for Medium",
   "version": "1.3.0",
-  "description": "Desktop App for Medium.com",
+  "description": "Desktop App for Medium",
   "repository": {
     "url": "https://github.com/thedeskco/thedeskapp"
   },
@@ -57,7 +57,7 @@
   },
   "build": {
     "appId": "co.thedesk.TheDeskApp",
-    "productName": "Desk for Medium.com",
+    "productName": "Desk for Medium",
     "mac": {
       "category": "public.app-category.productivity",
       "type": "distribution",
