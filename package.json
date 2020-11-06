@@ -1,11 +1,8 @@
 {
-  "name": "thedeskapp",
+  "name": "deskapp",
   "productName": "Desk for Medium",
   "version": "1.3.0",
   "description": "Desktop App for Medium",
-  "repository": {
-    "url": "https://github.com/thedeskco/thedeskapp"
-  },
   "license": "UNLICENSED",
   "private": true,
   "main": "main.js",
@@ -56,7 +53,7 @@
     "uuid": "^8.3.1"
   },
   "build": {
-    "appId": "co.thedesk.TheDeskApp",
+    "appId": "com.cloveapps.deskapp",
     "productName": "Desk for Medium",
     "mac": {
       "category": "public.app-category.productivity",
@@ -74,7 +71,7 @@
     "win": {
       "target": "nsis",
       "icon": "assets/app-icon/app.ico",
-      "certificateFile": "certs/win/thedesk.pfx",
+      "certificateFile": "certs/win/deskapp.pfx",
       "certificatePassword": "CloveCrypto!11",
       "publisherName": "Clove Inc."
     },
@@ -85,8 +82,8 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "thedeskco",
-        "repo": "thedeskapp-releases",
+        "owner": "cloveapps",
+        "repo": "deskapp-releases",
         "token": "c425bcee75779c0c29891512377033d2a2a9cbd8"
       }
     ],
