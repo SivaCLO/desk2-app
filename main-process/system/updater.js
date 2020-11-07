@@ -3,11 +3,14 @@ const { autoUpdater } = require("electron-updater");
 const { log } = require("../../common/activity");
 autoUpdater.logger = require("electron-log");
 const { defaultStore } = require("../../common/store");
-const { getMainWindow } = require("../windows/main-window");
 
 function checkForUpdates() {
-  autoUpdater.checkForUpdatesAndNotify().then();
+  if (!defaultStore.get("downloadedVersion")) autoUpdater.checkForUpdatesAndNotify().then();
 }
+
+ipcMain.on("check-update", () => {
+  checkForUpdates();
+});
 
 autoUpdater.on("checking-for-update", () => {
   log("updater/checking-for-update");
@@ -22,9 +25,10 @@ autoUpdater.on("error", (err) => {
 });
 
 autoUpdater.on("update-downloaded", (info) => {
-  log("updater/update-downloaded", { version: info.version, downloadedFile: info.downloadedFile });
-  defaultStore.set("downloadedVersion", info.version);
-  getMainWindow() && getMainWindow().webContents.send("notify-update");
+  if (info && info.version) {
+    log("updater/update-downloaded", { version: info.version, downloadedFile: info.downloadedFile });
+    defaultStore.set("downloadedVersion", info.version);
+  }
 });
 
 ipcMain.on("restart-update", () => {

@@ -70,7 +70,7 @@ a:hover {
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--color-accent);
+  background-color: var(--color-accent-dark);
   color: var(--color-100);
   border: none;
   border-radius: 3px;
@@ -78,7 +78,7 @@ a:hover {
 }
 
 .update-notifier:hover {
-  background-color: var(--color-accent-dark);
+  background-color: var(--color-accent);
 }
 
 .network-status {

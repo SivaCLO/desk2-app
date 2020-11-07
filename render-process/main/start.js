@@ -1,3 +1,4 @@
+const { ipcRenderer } = require("electron");
 const { log } = require("../../common/activity");
 const { getFrequent } = require("../../common/page");
 const { defaultStore } = require("../../common/store");
@@ -14,6 +15,7 @@ document.body.addEventListener("click", (event) => {
 function handleLinks(url) {
   log("start/link-clicked");
   document.getElementById("content").hidden = true;
+  document.getElementById("update-notifier").hidden = true;
   document.getElementById("loading").hidden = false;
   window.location = url;
 }
@@ -130,12 +132,23 @@ refreshFrequent = async () => {
   }
 };
 
+const refreshUpdate = () => {
+  if (defaultStore.get("downloadedVersion")) {
+    document.getElementById("update-notifier").hidden = false;
+    document.getElementById("update-notifier").addEventListener("click", () => {
+      ipcRenderer.send("restart-update");
+    });
+  }
+};
+
 refresh = async () => {
+  ipcRenderer.send("check-update");
   let mediumUser = defaultStore.get("mediumUser");
   let avatarEl = document.getElementById("avatar");
   avatarEl.innerHTML = `<img src="${mediumUser.imageUrl}"/>`;
   refreshDrafts().then();
   refreshFrequent().then();
+  refreshUpdate();
 };
 
 window.onload = refresh;
