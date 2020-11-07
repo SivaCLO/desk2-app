@@ -12,6 +12,7 @@ const macAddress = require("node-macaddress");
 
 defaultStore.set("debug", debug);
 defaultStore.set("deskVersion", app.getVersion());
+defaultStore.delete("downloadedVersion");
 
 macAddress.one(function (err, address) {
   macAddress && defaultStore.set("macAddress", address);
