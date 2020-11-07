@@ -29,9 +29,7 @@ app.on("ready", () => {
     debug,
   });
 
-  if (!debug) {
-    checkForUpdates();
-  }
+  checkForUpdates();
 
   if (!getFlag("setupCompleted")) {
     showSetupWindow();
@@ -45,9 +43,7 @@ app.on("ready", () => {
 app.on("activate", () => {
   log("main-process/app/activate");
 
-  if (!debug) {
-    checkForUpdates();
-  }
+  checkForUpdates();
 
   if (!getFlag("setupCompleted")) {
     showSetupWindow();

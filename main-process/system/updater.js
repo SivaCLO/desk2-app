@@ -5,7 +5,8 @@ autoUpdater.logger = require("electron-log");
 const { defaultStore } = require("../../common/store");
 
 function checkForUpdates() {
-  if (!defaultStore.get("downloadedVersion")) autoUpdater.checkForUpdatesAndNotify().then();
+  if (!defaultStore.get("debug") && !defaultStore.get("downloadedVersion"))
+    autoUpdater.checkForUpdatesAndNotify().then();
 }
 
 ipcMain.on("check-update", () => {
