@@ -53,7 +53,7 @@
     "uuid": "^8.3.1"
   },
   "build": {
-    "appId": "com.cloveapps.deskapp",
+    "appId": "co.thedesk.TheDeskApp",
     "productName": "Desk for Medium",
     "mac": {
       "category": "public.app-category.productivity",
