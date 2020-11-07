@@ -43,5 +43,8 @@ function handleAction(event) {
     document.execCommand("copy");
     document.body.removeChild(el);
     alert(`Link Copied`);
+  } else if (action === "exit-zen-mode") {
+    log("tools/exit-zen-mode");
+    exitZenMode();
   }
 }
