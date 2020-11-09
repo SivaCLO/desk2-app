@@ -1,6 +1,5 @@
 console.log("Preload File executed successfully...");
 const { ipcRenderer } = require("electron");
-console.log("Desk Preload Executing Successfully.");
 const { deskSignout } = require("../../common/desk");
 
 ipcRenderer.on("insert-screeshot-into-draft", (e, content) => {
