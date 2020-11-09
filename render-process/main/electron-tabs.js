@@ -4,10 +4,6 @@ const { ipcRenderer } = require("electron");
 const DeskTab = require("./desk-tab");
 const { log } = require("../../common/activity");
 const FindInPage = require("electron-find").FindInPage;
-const { desktopCapturer, shell } = require("electron");
-const fs = require("fs");
-const path = require("path");
-const { screen } = Remote;
 
 let findInPage = null;
 
@@ -502,48 +498,6 @@ function destroyFindInPage() {
     findInPage.destroy();
     findInPage = null;
   }
-}
-
-ipcRenderer.on("screenshot", (e, args) => {
-  console.log("screenshot electron tabs");
-  screenScreenshot();
-});
-
-async function screenScreenshot() {
-  const thumbSize = determineScreenShotSize();
-  let options = { types: ["screen"], thumbnailSize: thumbSize };
-  console.log("screenScreenshot -> options", options);
-  try {
-    let temp = await desktopCapturer.getSources(options);
-    temp.forEach(function (source) {
-      if (source.name) {
-        const content = source.thumbnail.toPNG();
-
-        ipcRenderer.send("insert-screenshot", { content });
-
-        //To save file locally
-
-        // fs.writeFile(path.join("./", "screenshot.png"), source.thumbnail.toPNG(), "base64", function (error) {
-        //   if (error) return console.log(error);
-        //   shell.openExternal("file://" + path.join("./", "screenshot.png"));
-        //   console.log("screenshot Saved");
-        // });
-      }
-    });
-  } catch (error) {
-    console.log("screenScreenshot -> error", error);
-  }
-}
-
-function determineScreenShotSize() {
-  const screenSize = screen.getPrimaryDisplay().workAreaSize;
-  const maxDimension = Math.max(screenSize.width, screenSize.height);
-  return {
-    width: screenSize.width,
-    // width: maxDimension * window.devicePixelRatio,
-    height: screenSize.height,
-    // height: maxDimension * window.devicePixelRatio,
-  };
 }
 
 module.exports = TabGroup;

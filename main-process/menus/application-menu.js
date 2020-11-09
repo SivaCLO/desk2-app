@@ -95,11 +95,10 @@ let template = [
         type: "separator",
       },
       {
-        label: "Screen Shot",
+        label: "Insert Screenshot",
         accelerator: "CmdOrCtrl+Shift+Alt+S",
         click: () => {
-          console.log("screenshot menu");
-          // log("application-menu/edit/find-in-page");
+          log("application-menu/edit/Insert-Screenshot");
           getMainWindow() && getMainWindow().webContents.send("screenshot");
         },
       },

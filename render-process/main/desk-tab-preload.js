@@ -1,6 +1,5 @@
-console.log("Preload File executed successfully...");
 const { ipcRenderer } = require("electron");
-const { deskSignout } = require("../../common/desk");
+const { log } = require("../../common/activity");
 
 ipcRenderer.on("insert-screeshot-into-draft", (e, content) => {
   const contents = new Uint8Array(content.content.content);
@@ -13,7 +12,7 @@ ipcRenderer.on("insert-screeshot-into-draft", (e, content) => {
   navigator.permissions.query({ name: "clipboard-write" }).then((result) => {
     if (result.state === "granted" || result.state === "prompt") {
       navigator.clipboard.write([item]).catch((ex) => {
-        console.log(ex);
+        log(ex);
       });
     }
   });
