@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Start Page</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../assets/css/variables.css" />
+    <link rel="stylesheet" href="../../assets/css/global.css" />
+    <link rel="stylesheet" href="../../assets/css/start.css" />
+    <style>
+      .row {
+        margin: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="input-group">
+          <input type="text" class="form-control" id="searchBox" placeholder="Search for gif" />
+          <div class="input-group-append">
+            <button id="giphy-search" class="btn btn-secondary" type="button">
+              <svg class="bi" width="15" height="15" data-action="menu">
+                <use xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#search" data-action="menu" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="searchMessage" hidden>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="row" id="gallery"></div>
+    </div>
+    <script>
+      //   window.$ = window.jQuery = require("jquery");
+      require("bootstrap");
+      require("./giphy");
+    </script>
+  </body>
+</html>
