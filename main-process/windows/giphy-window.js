@@ -10,11 +10,12 @@ function showGiphyWindow() {
   if (!giphyWindow) {
     log("giphy-window/show");
     giphyWindow = new BrowserWindow({
-      width: 200,
-      height: 264,
+      width: 250,
+      height: 700,
       frame: os.platform() === "linux",
       autoHideMenuBar: os.platform() === "linux",
       resizable: false,
+      modal: true,
       alwaysOnTop: true,
       fullscreen: false,
       webPreferences: {
@@ -42,6 +43,10 @@ ipcMain.on("open-giphy-window", () => {
 
 ipcMain.on("close-giphy-window", () => {
   closeGiphyWindow();
+});
+
+ipcMain.on("insertGif", (event, data) => {
+  getMainWindow().getBrowserView().webContents.send("insertGif-into-draft", data);
 });
 
 module.exports = { showGiphyWindow };

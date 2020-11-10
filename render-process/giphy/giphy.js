@@ -1,35 +1,29 @@
 console.log("giphy.js Executed Successfully...!");
 const axios = require("axios");
+const { ipcRenderer } = require("electron");
 
 document.getElementById("giphy-search").addEventListener("click", async (event) => {
-  console.log("event", event);
   var searchValue = document.getElementById("searchBox").value;
-  console.log("searchValue", searchValue);
   if (searchValue === "" || searchValue === undefined) {
     document.getElementById("searchMessage").hidden = false;
   } else {
     var data = await giphy(searchValue);
-    console.log("data", data);
-
     data.data.map((index) => {
-      console.log("url", index.images.fixed_height.url);
-
       var span = document.createElement("span");
       span.setAttribute("class", "col-md-2 mt-3");
       var img = document.createElement("img");
       img.setAttribute("class", "img-fluid rounded");
       img.setAttribute("src", index.images.fixed_height.url);
+      img.setAttribute("id", index.url);
       span.appendChild(img);
       document.getElementById("gallery").appendChild(span);
     });
+
+    var elem = document.getElementById("gallery");
+    elem.addEventListener("contextmenu", (event) => {
+      ipcRenderer.send("insertGif", { id: event.srcElement.id });
+    });
   }
-});
-
-var elem = document.getElementById("gallery");
-
-elem.addEventListener("contextmenu", (event) => {
-  var selectedGIF = event.explicitOriginalTarget.src;
-  console.log("selectedGIF", selectedGIF);
 });
 
 function giphy(searchValue) {
