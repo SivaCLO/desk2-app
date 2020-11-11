@@ -29,20 +29,44 @@
           <div class="col-7">
             <div class="card">
               <div class="card-body">
-                <div class="d-flex justify-content-between" id="quickLinks">
-                  <a class="quick-link-big" data-toggle="tooltip" data-placement="bottom" title="Insert Screenshot">
+                <div class="d-flex justify-content-between" id="mediaItems">
+                  <a
+                    class="quick-link-big"
+                    id="screenshot"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Insert Screenshot"
+                  >
                     <img src="../../assets/img/ss.svg" />
                   </a>
-                  <a class="quick-link-big" data-toggle="tooltip" data-placement="bottom" title="Insert Image">
+                  <a
+                    class="quick-link-big"
+                    id="image"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Insert Image"
+                  >
                     <img src="../../assets/img/jpeg.svg" />
                   </a>
-                  <a class="quick-link-big" data-toggle="tooltip" data-placement="bottom" title="Insert GIF">
+                  <a class="quick-link-big" id="gif" data-toggle="tooltip" data-placement="bottom" title="Insert GIF">
                     <img src="../../assets/img/gif.svg" />
                   </a>
-                  <a class="quick-link-big" data-toggle="tooltip" data-placement="bottom" title="Insert Video">
+                  <a
+                    class="quick-link-big"
+                    id="video"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Insert Video"
+                  >
                     <img src="../../assets/img/mov.svg" />
                   </a>
-                  <a class="quick-link-big" data-toggle="tooltip" data-placement="bottom" title="Insert Audio">
+                  <a
+                    class="quick-link-big"
+                    id="audio"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Insert Audio"
+                  >
                     <img src="../../assets/img/mp3.svg" />
                   </a>
                 </div>
@@ -54,24 +78,22 @@
           <div class="col-12">
             <div class="card">
               <div class="card-body">
-                <!-- <h4 class="card-title" id="title">This month</h4> -->
+                <h4 class="card-title" id="searchTitle"></h4>
                 <!-- Search Box -->
                 <div class="row" id="search" hidden>
                   <div class="input-group">
-                    <input type="text" class="form-control" id="searchBox" placeholder="Search for gif" />
-                    <div class="input-group-append">
-                      <button id="giphy-search" class="btn btn-secondary" type="button">
-                        <svg class="bi" width="15" height="15" data-action="menu">
-                          <use
-                            xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#search"
-                            data-action="menu"
-                          />
-                        </svg>
-                      </button>
-                    </div>
+                    <input type="text" class="form-control" id="searchBox" placeholder="Search for Media" />
+                    <button id="media-search-button" class="btn btn-secondary ml-2" type="button" disabled>
+                      <svg class="bi" width="15" height="15" data-action="menu">
+                        <use
+                          xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#search"
+                          data-action="menu"
+                        />
+                      </svg>
+                    </button>
                   </div>
                 </div>
-
+                <div class="row" id="gallery"></div>
                 <!-- Pagination -->
                 <div class="row" id="pagination" hidden>
                   <nav aria-label="Page navigation example">
