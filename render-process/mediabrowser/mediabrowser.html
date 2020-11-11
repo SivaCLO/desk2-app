@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Media Browser</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../assets/css/variables.css" />
+    <link rel="stylesheet" href="../../assets/css/global.css" />
+    <link rel="stylesheet" href="../../assets/css/start.css" />
+    <style>
+      .row {
+        margin: 15px;
+      }
+    </style>
+  </head>
+  <body style="-webkit-app-region: drag;">
+    <div class="container">
+      <section id="content">
+        <div class="row pt-4 pb-2">
+          <div class="col-5">
+            <div class="card">
+              <div class="card-body">
+                <h1>
+                  Media Browser
+                </h1>
+              </div>
+            </div>
+          </div>
+          <div class="col-7">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between" id="quickLinks">
+                  <a class="quick-link-big" data-toggle="tooltip" data-placement="bottom" title="Insert Screenshot">
+                    <img src="../../assets/img/ss.svg" />
+                  </a>
+                  <a class="quick-link-big" data-toggle="tooltip" data-placement="bottom" title="Insert Image">
+                    <img src="../../assets/img/jpeg.svg" />
+                  </a>
+                  <a class="quick-link-big" data-toggle="tooltip" data-placement="bottom" title="Insert GIF">
+                    <img src="../../assets/img/gif.svg" />
+                  </a>
+                  <a class="quick-link-big" data-toggle="tooltip" data-placement="bottom" title="Insert Video">
+                    <img src="../../assets/img/mov.svg" />
+                  </a>
+                  <a class="quick-link-big" data-toggle="tooltip" data-placement="bottom" title="Insert Audio">
+                    <img src="../../assets/img/mp3.svg" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row pt-5 pb-5">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <!-- <h4 class="card-title" id="title">This month</h4> -->
+                <!-- Search Box -->
+                <div class="row" id="search" hidden>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="searchBox" placeholder="Search for gif" />
+                    <div class="input-group-append">
+                      <button id="giphy-search" class="btn btn-secondary" type="button">
+                        <svg class="bi" width="15" height="15" data-action="menu">
+                          <use
+                            xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#search"
+                            data-action="menu"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="row" id="pagination" hidden>
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                      </li>
+                      <li class="page-item"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script>
+      window.$ = window.jQuery = require("jquery");
+      require("bootstrap");
+      require("./mediabrowser");
+    </script>
+  </body>
+</html>

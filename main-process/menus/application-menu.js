@@ -4,6 +4,8 @@ const { showImportDialog } = require("../dialogs/import-draft-dialog");
 const { defaultStore } = require("../../common/store");
 const { deskSignout } = require("../../common/desk");
 const { log } = require("../../common/activity");
+const path = require("path");
+
 let zenMode = false;
 
 let template = [
@@ -89,6 +91,22 @@ let template = [
         click: () => {
           log("application-menu/edit/find-in-page");
           getMainWindow() && getMainWindow().webContents.send("on-find");
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
+        label: "Browse Media",
+        accelerator: "CmdOrCtrl+Shift+M",
+        click: () => {
+          log("application-menu/edit/browse-media");
+          getMainWindow() &&
+            getMainWindow().webContents.send(
+              "new_tab",
+              "file://" + path.join(__dirname, "../../render-process/mediabrowser/mediabrowser.html")
+            );
+          // getMainWindow() && getMainWindow().webContents.send("on-find");
         },
       },
     ],

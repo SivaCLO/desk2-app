@@ -65,6 +65,12 @@ a:hover {
   width: 35px;
 }
 
+.quick-link-big img {
+  padding: 10px 10px;
+  height: 60px;
+  width: 60px;
+}
+
 .update-notifier {
   position: fixed;
   top: 20px;
