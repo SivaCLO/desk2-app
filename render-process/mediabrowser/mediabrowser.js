@@ -1,9 +1,9 @@
 console.log("mediabrowser.js Executed Successfully...!");
 const axios = require("axios");
 const { ipcRenderer } = require("electron");
+const { log } = require("../../common/activity");
 
 document.getElementById("mediaItems").addEventListener("click", (event) => {
-  //   console.log("event", event);
   document.getElementById("search").hidden = false;
   if (event.target.parentElement.id === "gif") document.getElementById("searchTitle").innerText = "Search GIF";
   if (event.target.parentElement.id === "screenshot")
@@ -24,6 +24,10 @@ document.getElementById("searchBox").addEventListener("keyup", function () {
 document.getElementById("media-search-button").addEventListener("click", async (event) => {
   if (document.getElementById("searchTitle").innerText === "Search GIF") {
     var data = await giphy(document.getElementById("searchBox").value);
+    //Clear Gallery div
+    document.getElementById("gallery").innerHTML = "";
+
+    //Insert GIFs in to the Gallery div
     data.data.map((index) => {
       var span = document.createElement("span");
       span.setAttribute("class", "col-md-2 mt-1");
@@ -35,6 +39,15 @@ document.getElementById("media-search-button").addEventListener("click", async (
       document.getElementById("gallery").appendChild(span);
     });
 
+    //Show Pagination
+    if (document.getElementById("gallery").innerHTML !== "") {
+      document.getElementById("pagination").hidden = false;
+    }
+
+    //Set Pagination
+    setPagination(Math.round(data.pagination.total_count / data.pagination.count));
+
+    //Send selected image data
     var elem = document.getElementById("gallery");
     elem.addEventListener("contextmenu", (event) => {
       ipcRenderer.send("insertGif", { id: event.srcElement.id });
@@ -70,4 +83,33 @@ function giphy(searchValue) {
         reject(e);
       });
   });
+}
+
+function setPagination(pages) {
+  var node = document.getElementById("pagination-item");
+  node.innerHTML = "";
+  var elem = createLIElement("Previous");
+  node.appendChild(elem);
+  for (let i = 1; i <= 3; i++) {
+    var elem = createLIElement(i);
+    node.appendChild(elem);
+  }
+  var elem = createLIElement("...");
+  node.appendChild(elem);
+  for (let i = pages - 3; i < pages; i++) {
+    var elem = createLIElement(i);
+    node.appendChild(elem);
+  }
+  var elem = createLIElement("Next");
+  node.appendChild(elem);
+}
+
+function createLIElement(text) {
+  var li = document.createElement("li");
+  li.setAttribute("class", "page-item");
+  var a = document.createElement("a");
+  a.setAttribute("class", "page-link");
+  a.innerText = text;
+  li.appendChild(a);
+  return li;
 }

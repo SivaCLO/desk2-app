@@ -96,3 +96,9 @@ a:hover {
   font-weight: 600;
   font-size: medium;
 }
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: 50%;
+}
