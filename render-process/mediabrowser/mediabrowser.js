@@ -3,6 +3,10 @@ const axios = require("axios");
 const { ipcRenderer } = require("electron");
 const { log } = require("../../common/activity");
 
+var data;
+var pnode = document.getElementById("pagination-item");
+
+//To Update Search Title
 document.getElementById("mediaItems").addEventListener("click", (event) => {
   document.getElementById("search").hidden = false;
   if (event.target.parentElement.id === "gif") document.getElementById("searchTitle").innerText = "Search GIF";
@@ -13,6 +17,7 @@ document.getElementById("mediaItems").addEventListener("click", (event) => {
   if (event.target.parentElement.id === "audio") document.getElementById("searchTitle").innerText = "Search Audio";
 });
 
+//To Disable and enable Search Button
 document.getElementById("searchBox").addEventListener("keyup", function () {
   if (document.getElementById("searchBox").value === "") {
     document.getElementById("media-search-button").disabled = true;
@@ -23,35 +28,21 @@ document.getElementById("searchBox").addEventListener("keyup", function () {
 
 document.getElementById("media-search-button").addEventListener("click", async (event) => {
   if (document.getElementById("searchTitle").innerText === "Search GIF") {
-    var data = await giphy(document.getElementById("searchBox").value);
-    //Clear Gallery div
-    document.getElementById("gallery").innerHTML = "";
+    data = await giphy(document.getElementById("searchBox").value, 25, 0);
 
-    //Insert GIFs in to the Gallery div
-    data.data.map((index) => {
-      var span = document.createElement("span");
-      span.setAttribute("class", "col-md-2 mt-1");
-      var img = document.createElement("img");
-      img.setAttribute("class", "img-fluid rounded");
-      img.setAttribute("src", index.images.fixed_height.url);
-      img.setAttribute("id", index.url);
-      span.appendChild(img);
-      document.getElementById("gallery").appendChild(span);
-    });
-
-    //Show Pagination
-    if (document.getElementById("gallery").innerHTML !== "") {
-      document.getElementById("pagination").hidden = false;
-    }
+    //Insert GIFs into the Gallery div
+    insertGif(data);
 
     //Set Pagination
-    setPagination(Math.round(data.pagination.total_count / data.pagination.count));
+    updatePagination(Math.round(data.pagination.total_count / data.pagination.count), 1, 1);
 
     //Send selected image data
     var elem = document.getElementById("gallery");
     elem.addEventListener("contextmenu", (event) => {
       ipcRenderer.send("insertGif", { id: event.srcElement.id });
     });
+
+    showPagination();
   }
 
   if (document.getElementById("searchTitle").innerText === "Search Screenshot") {
@@ -68,11 +59,44 @@ document.getElementById("media-search-button").addEventListener("click", async (
   }
 });
 
-function giphy(searchValue) {
+//Pagination click event handler
+pnode.addEventListener("click", async (event) => {
+  var activePageNo,
+    reqPage = "",
+    pageList;
+
+  if (event.target.innerText) {
+    pageList = pnode.children;
+    reqPage = Object.keys(pageList).map(function (key, index) {
+      var elem = pageList[key];
+      if (elem.classList.contains("active")) {
+        activePageNo = elem.innerText;
+      }
+    });
+
+    if (event.target.innerText === "Next") {
+      reqPage = Number(activePageNo) + 1;
+    }
+
+    if (event.target.innerText === "Previous") {
+      reqPage = Number(activePageNo) - 1;
+    }
+
+    if (event.target.innerText) {
+      reqPage = event.target.innerText;
+    }
+  }
+
+  data = await giphy(document.getElementById("searchBox").value, 25, reqPage * 25 - 25);
+  insertGif(data);
+  updatePagination(Math.round(data.pagination.total_count / data.pagination.count), activePageNo, reqPage);
+});
+
+function giphy(searchValue, limit, offset) {
   return new Promise((resolve, reject) => {
     axios
       .get(
-        `https://api.giphy.com/v1/gifs/search?api_key=Kql3ZWETKDvlHv7LqAoTOyJSoD8a12R7&q=${searchValue}&limit=25&offset=0&rating=g&lang=en`
+        `https://api.giphy.com/v1/gifs/search?api_key=Kql3ZWETKDvlHv7LqAoTOyJSoD8a12R7&q=${searchValue}&limit=${limit}&offset=${offset}&rating=g&lang=en`
       )
       .then(function (response) {
         resolve(response.data);
@@ -85,23 +109,39 @@ function giphy(searchValue) {
   });
 }
 
-function setPagination(pages) {
-  var node = document.getElementById("pagination-item");
-  node.innerHTML = "";
-  var elem = createLIElement("Previous");
-  node.appendChild(elem);
-  for (let i = 1; i <= 3; i++) {
-    var elem = createLIElement(i);
-    node.appendChild(elem);
+function insertGif(data) {
+  //Clear Gallery div
+  document.getElementById("gallery").innerHTML = "";
+
+  data.data.map((index) => {
+    var span = document.createElement("span");
+    span.setAttribute("class", "col-md-2 mt-1");
+    var img = document.createElement("img");
+    img.setAttribute("class", "img-fluid rounded");
+    img.setAttribute("src", index.images.fixed_height.url);
+    img.setAttribute("id", index.url);
+    span.appendChild(img);
+    document.getElementById("gallery").appendChild(span);
+  });
+}
+
+function showPagination() {
+  if (document.getElementById("gallery").innerHTML !== "") {
+    document.getElementById("pagination").hidden = false;
   }
-  var elem = createLIElement("...");
-  node.appendChild(elem);
-  for (let i = pages - 3; i < pages; i++) {
-    var elem = createLIElement(i);
-    node.appendChild(elem);
+}
+
+function updatePagination(pages, activePageNo, reqPage) {
+  pnode.innerHTML = "";
+  var elem = createLIElement("Previous");
+  pnode.appendChild(elem);
+  for (let i = 0; i <= 5; i++) {
+    var elem = createLIElement(Number(reqPage) + i);
+    pnode.appendChild(elem);
   }
   var elem = createLIElement("Next");
-  node.appendChild(elem);
+  pnode.appendChild(elem);
+  pnode.children.item(1).classList.add("active");
 }
 
 function createLIElement(text) {
