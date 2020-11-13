@@ -13,6 +13,7 @@ class DeskTab {
     this.isStart = true;
     this.isNew = false;
     this.draftId = null;
+    this.isMediaBrowser = true;
 
     this.browserView = new Remote.BrowserView({
       webPreferences: {
@@ -96,6 +97,7 @@ class DeskTab {
         ? this.url.split("/")[4]
         : null;
     this.isNew = this.url.split("?")[0].endsWith("/new-story");
+    this.isMediaBrowser = this.url.startsWith("file:") && this.url.endsWith("mediabrowser.html");
 
     this.activateTab();
 
@@ -126,6 +128,10 @@ class DeskTab {
         toolTitle.innerHTML = this.url.split("?")[0];
         document.getElementById("desk-tools").classList.remove("active");
         document.getElementById("draft-tools").classList.add("active");
+        document.getElementById("medium-tools").classList.remove("active");
+      } else if (this.isMediaBrowser) {
+        document.getElementById("desk-tools").classList.add("active");
+        document.getElementById("draft-tools").classList.remove("active");
         document.getElementById("medium-tools").classList.remove("active");
       } else {
         let toolTitle = document.getElementById("medium-tools-title");

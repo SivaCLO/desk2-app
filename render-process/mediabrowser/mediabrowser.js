@@ -9,6 +9,7 @@ var pnode = document.getElementById("pagination-item");
 //To Update Search Title
 document.getElementById("mediaItems").addEventListener("click", (event) => {
   document.getElementById("search").hidden = false;
+  document.getElementById("search").focus();
   if (event.target.parentElement.id === "gif") document.getElementById("searchTitle").innerText = "Search GIF";
   if (event.target.parentElement.id === "screenshot")
     document.getElementById("searchTitle").innerText = "Search Screenshot";
@@ -26,37 +27,21 @@ document.getElementById("searchBox").addEventListener("keyup", function () {
   }
 });
 
+var input = document.getElementById("search");
+
+// Execute a function when the user releases a key on the keyboard
+input.addEventListener("keyup", function (event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("media-search-button").click();
+  }
+});
+
 document.getElementById("media-search-button").addEventListener("click", async (event) => {
-  if (document.getElementById("searchTitle").innerText === "Search GIF") {
-    data = await giphy(document.getElementById("searchBox").value, 25, 0);
-
-    //Insert GIFs into the Gallery div
-    insertGif(data);
-
-    //Set Pagination
-    updatePagination(Math.round(data.pagination.total_count / data.pagination.count), 1, 1);
-
-    //Send selected image data
-    var elem = document.getElementById("gallery");
-    elem.addEventListener("contextmenu", (event) => {
-      ipcRenderer.send("insertGif", { id: event.srcElement.id });
-    });
-
-    showPagination();
-  }
-
-  if (document.getElementById("searchTitle").innerText === "Search Screenshot") {
-    console.log(document.getElementById("searchTitle").innerText);
-  }
-  if (document.getElementById("searchTitle").innerText === "Search Image") {
-    console.log(document.getElementById("searchTitle").innerText);
-  }
-  if (document.getElementById("searchTitle").innerText === "Search Video") {
-    console.log(document.getElementById("searchTitle").innerText);
-  }
-  if (document.getElementById("searchTitle").innerText === "Search Audio") {
-    console.log(document.getElementById("searchTitle").innerText);
-  }
+  searchMedia();
 });
 
 //Pagination click event handler
@@ -91,6 +76,48 @@ pnode.addEventListener("click", async (event) => {
   insertGif(data);
   updatePagination(Math.round(data.pagination.total_count / data.pagination.count), activePageNo, reqPage);
 });
+
+async function searchMedia() {
+  if (document.getElementById("searchTitle").innerText === "Search GIF") {
+    data = await giphy(document.getElementById("searchBox").value, 25, 0);
+    //Insert GIFs into the Gallery div
+    insertGif(data);
+    document.getElementById("message").hidden = false;
+
+    //Set Pagination
+    updatePagination(Math.round(data.pagination.total_count / data.pagination.count), 1, 1);
+
+    //Send selected image data
+    var elem = document.getElementById("gallery");
+    elem.addEventListener("dblclick", (event) => {
+      console.log("event", event);
+
+      ipcRenderer.send("insertGif", { id: event.target.id });
+      $("#Modal").modal("show");
+      var modalbody = document.getElementsByClassName("modal-body");
+      modalbody.item(0).innerText = "";
+      var img = document.createElement("img");
+      img.setAttribute("src", event.target.src);
+      img.setAttribute("class", "img-fluid rounded");
+      modalbody.item(0).appendChild(img);
+    });
+
+    showPagination();
+  }
+
+  if (document.getElementById("searchTitle").innerText === "Search Screenshot") {
+    console.log(document.getElementById("searchTitle").innerText);
+  }
+  if (document.getElementById("searchTitle").innerText === "Search Image") {
+    console.log(document.getElementById("searchTitle").innerText);
+  }
+  if (document.getElementById("searchTitle").innerText === "Search Video") {
+    console.log(document.getElementById("searchTitle").innerText);
+  }
+  if (document.getElementById("searchTitle").innerText === "Search Audio") {
+    console.log(document.getElementById("searchTitle").innerText);
+  }
+}
 
 function giphy(searchValue, limit, offset) {
   return new Promise((resolve, reject) => {
