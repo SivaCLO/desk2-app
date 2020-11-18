@@ -328,6 +328,21 @@ class Tab extends EventEmitter {
       activeTab.emit("inactive", activeTab);
     }
 
+    // Last Active Tab
+    var currentTab = this.tab;
+    setTimeout(() => {
+      if (
+        currentTab.children.item(1).className.includes("title") &&
+        currentTab.children.item(1).innerText === "Media Browser" &&
+        activeTab.url.split("/")[5] === "edit"
+      ) {
+        var lastActiveTabId = activeTab.id;
+        console.log("Tab -> activate -> lastActiveTabId", lastActiveTabId);
+        var lastActiveTabURL = activeTab.url;
+        console.log("Tab -> activate -> lastActiveTabURL", lastActiveTabURL);
+      }
+    }, 2000);
+
     // Activate Tab
     TabGroupPrivate.setActiveTab.bind(this.tabGroup)(this);
     this.tab.classList.add("active");

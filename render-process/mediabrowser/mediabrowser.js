@@ -1,6 +1,7 @@
 console.log("mediabrowser.js Executed Successfully...!");
 const axios = require("axios");
 const { ipcRenderer } = require("electron");
+const flexImages = require("../../assets/js/flex-images");
 const { log } = require("../../common/activity");
 
 var data;
@@ -17,6 +18,8 @@ document.getElementById("mediaItems").addEventListener("click", (event) => {
   if (event.target.parentElement.id === "video") document.getElementById("searchTitle").innerText = "Search Video";
   if (event.target.parentElement.id === "audio") document.getElementById("searchTitle").innerText = "Search Audio";
 });
+
+document.getElementById("next").hidden = true;
 
 //To Disable and enable Search Button
 document.getElementById("searchBox").addEventListener("keyup", function () {
@@ -72,20 +75,15 @@ pnode.addEventListener("click", async (event) => {
     }
   }
 
-  data = await giphy(document.getElementById("searchBox").value, 25, reqPage * 25 - 25);
+  data = await giphy(document.getElementById("searchBox").value, 12, reqPage * 12 - 12);
   insertGif(data);
-  updatePagination(Math.round(data.pagination.total_count / data.pagination.count), activePageNo, reqPage);
 });
 
 async function searchMedia() {
   if (document.getElementById("searchTitle").innerText === "Search GIF") {
-    data = await giphy(document.getElementById("searchBox").value, 25, 0);
+    data = await giphy(document.getElementById("searchBox").value, 12, 0);
     //Insert GIFs into the Gallery div
     insertGif(data);
-    document.getElementById("message").hidden = false;
-
-    //Set Pagination
-    updatePagination(Math.round(data.pagination.total_count / data.pagination.count), 1, 1);
 
     //Send selected image data
     var elem = document.getElementById("gallery");
@@ -101,8 +99,6 @@ async function searchMedia() {
       img.setAttribute("class", "img-fluid rounded");
       modalbody.item(0).appendChild(img);
     });
-
-    showPagination();
   }
 
   if (document.getElementById("searchTitle").innerText === "Search Screenshot") {
@@ -140,43 +136,28 @@ function insertGif(data) {
   //Clear Gallery div
   document.getElementById("gallery").innerHTML = "";
 
-  data.data.map((index) => {
-    var span = document.createElement("span");
-    span.setAttribute("class", "col-md-2 mt-1");
+  data.data.map((index, i, pos) => {
+    var div = document.createElement("div");
+    div.setAttribute("class", "item");
+    div.setAttribute("data-w", index.images.original.width);
+    div.setAttribute("data-h", index.images.original.height);
     var img = document.createElement("img");
-    img.setAttribute("class", "img-fluid rounded");
-    img.setAttribute("src", index.images.fixed_height.url);
-    img.setAttribute("id", index.url);
-    span.appendChild(img);
-    document.getElementById("gallery").appendChild(span);
+    img.setAttribute("src", index.images.original.url);
+    img.setAttribute("alt", index.title);
+    div.appendChild(img);
+    document.getElementById("gallery").appendChild(div);
   });
+  new flexImages({ selector: "#gallery", rowHeight: 140 });
+  document.getElementById("result").innerText = `${data.pagination.total_count} results`;
+  document.getElementById("next").hidden = false;
 }
 
-function showPagination() {
-  if (document.getElementById("gallery").innerHTML !== "") {
-    document.getElementById("pagination").hidden = false;
-  }
-}
-
-function updatePagination(pages, activePageNo, reqPage) {
-  pnode.innerHTML = "";
-  var elem = createLIElement("Previous");
-  pnode.appendChild(elem);
-  for (let i = 0; i <= 5; i++) {
-    var elem = createLIElement(Number(reqPage) + i);
-    pnode.appendChild(elem);
-  }
-  var elem = createLIElement("Next");
-  pnode.appendChild(elem);
-  pnode.children.item(1).classList.add("active");
-}
-
-function createLIElement(text) {
-  var li = document.createElement("li");
-  li.setAttribute("class", "page-item");
-  var a = document.createElement("a");
-  a.setAttribute("class", "page-link");
-  a.innerText = text;
-  li.appendChild(a);
-  return li;
-}
+var nextButtton = document.getElementById("next");
+nextButtton.addEventListener("click", async (event) => {
+  data = await giphy(
+    document.getElementById("searchBox").value,
+    data.pagination.count,
+    data.pagination.count + data.pagination.offset
+  );
+  insertGif(data);
+});
