@@ -87,7 +87,7 @@ async function searchMedia() {
 
     //Send selected image data
     var elem = document.getElementById("gallery");
-    elem.addEventListener("dblclick", (event) => {
+    elem.addEventListener("click", (event) => {
       console.log("event", event);
 
       ipcRenderer.send("insertGif", { id: event.target.id });
@@ -152,6 +152,7 @@ function insertGif(data) {
   document.getElementById("next").hidden = false;
 }
 
+//Next list of items for the keyword
 var nextButtton = document.getElementById("next");
 nextButtton.addEventListener("click", async (event) => {
   data = await giphy(
@@ -160,4 +161,9 @@ nextButtton.addEventListener("click", async (event) => {
     data.pagination.count + data.pagination.offset
   );
   insertGif(data);
+});
+
+var insertDraftButtton = document.getElementById("insertDraft");
+insertDraftButtton.addEventListener("click", async (event) => {
+  console.log("event", event);
 });

@@ -77,8 +77,21 @@
                 <!-- Search Box -->
                 <div class="row" id="search" hidden>
                   <div class="col-10"></div>
-                  <div class="col-2 mr-0 p-0">
-                    <button class="btn btn-outline-secondary mb-1" id="next" type="button" hidden>
+                  <div class="col-2 mr-0 p-0"></div>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="searchBox" placeholder="Search for Media" autofocus />
+                    <button id="media-search-button" class="btn btn-secondary ml-2" type="button" disabled>
+                      <svg class="bi" width="15" height="15" data-action="menu">
+                        <use
+                          xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#search"
+                          data-action="menu"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="mx-auto">
+                    <span class="font-weight-light text-muted mx-auto" id="result"></span>
+                    <span class="mb-1" id="next" type="button" hidden>
                       Next
                       <svg
                         width="1em"
@@ -97,20 +110,8 @@
                           d="M4 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5A.5.5 0 0 0 4 8z"
                         />
                       </svg>
-                    </button>
+                    </span>
                   </div>
-                  <div class="input-group">
-                    <input type="text" class="form-control" id="searchBox" placeholder="Search for Media" autofocus />
-                    <button id="media-search-button" class="btn btn-secondary ml-2" type="button" disabled>
-                      <svg class="bi" width="15" height="15" data-action="menu">
-                        <use
-                          xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#search"
-                          data-action="menu"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <p class="font-weight-light text-muted mx-auto" id="result"></p>
                 </div>
                 <div style="max-width: 700px; margin: auto; padding: 0 10px 10px;">
                   <div class="flex-images" id="gallery"></div>
@@ -136,7 +137,7 @@
                       <div class="modal-body text-center"></div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Insert into Draft</button>
+                        <button type="button" class="btn btn-primary" id="insertDraft">Insert into Draft</button>
                       </div>
                     </div>
                   </div>
