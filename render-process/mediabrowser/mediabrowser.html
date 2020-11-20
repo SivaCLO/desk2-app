@@ -1,29 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Media Browser</title>
+    <title>Media</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../../assets/css/global.css" />
     <link rel="stylesheet" href="../../assets/css/start.css" />
+    <link rel="stylesheet" href="../../assets/css/variables.css" />
     <link rel="stylesheet" href="../../assets/css/flex-images.css" />
   </head>
   <body style="-webkit-app-region: drag;">
     <div class="container">
       <section id="content">
-        <div class="row pt-4 pb-2">
+        <div class="row pt-4">
           <div class="col-5">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body p-0">
+                <a class="link text-nowrap text-truncate">
+                  Back to editor
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-7"></div>
+        </div>
+        <div class="row pb-2">
+          <div class="col-5">
+            <div class="card">
+              <div class="card-body p-0">
                 <h1>
-                  Media Browser
+                  Insert Media
                 </h1>
               </div>
             </div>
           </div>
           <div class="col-7">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body pt-0">
                 <div class="d-flex justify-content-between" id="mediaItems">
                   <a
                     class="quick-link-big disabled"
@@ -69,85 +82,44 @@
             </div>
           </div>
         </div>
-        <div class="row pt-5 pb-5">
+        <div class="row pt-5">
           <div class="col-12">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title" id="searchTitle"></h4>
+                <!-- <h4 class="card-title" id="searchTitle"></h4> -->
                 <!-- Search Box -->
                 <div class="row" id="search" hidden>
-                  <div class="col-10"></div>
-                  <div class="col-2 mr-0 p-0"></div>
                   <div class="input-group">
-                    <input type="text" class="form-control" id="searchBox" placeholder="Search for Media" autofocus />
-                    <button id="media-search-button" class="btn btn-secondary ml-2" type="button" disabled>
-                      <svg class="bi" width="15" height="15" data-action="menu">
-                        <use
-                          xlink:href="../../node_modules/bootstrap-icons/bootstrap-icons.svg#search"
-                          data-action="menu"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <div class="mx-auto">
-                    <span class="font-weight-light text-muted mx-auto" id="result"></span>
-                    <span class="mb-1" id="next" type="button" hidden>
-                      Next
-                      <svg
-                        width="1em"
-                        height="1em"
-                        viewBox="0 0 16 16"
-                        class="bi bi-caret-right"
-                        fill="currentColor"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
-                        />
-                        <path
-                          fill-rule="evenodd"
-                          d="M4 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5A.5.5 0 0 0 4 8z"
-                        />
-                      </svg>
-                    </span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="searchBox"
+                      placeholder="Type keywords to search Unsplash, and press Enter"
+                      autofocus
+                    />
                   </div>
                 </div>
-                <div style="max-width: 700px; margin: auto; padding: 0 10px 10px;">
-                  <div class="flex-images" id="gallery"></div>
-                </div>
-
-                <!-- Modal -->
-                <div
-                  class="modal fade"
-                  id="Modal"
-                  tabindex="-1"
-                  role="dialog"
-                  aria-labelledby="ModalLabel"
-                  aria-hidden="true"
-                >
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h4 class="modal-title" id="ModalLabel">Selected GIF</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body text-center"></div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="insertDraft">Insert into Draft</button>
-                      </div>
-                    </div>
+                <div class="row">
+                  <div class="col pl-0 text-left">
+                    <span class="font-weight-light text-muted" id="previous" hidden>Previous</span>
+                  </div>
+                  <div class="col text-center">
+                    <span class="font-weight-light text-muted" id="result" hidden></span>
+                  </div>
+                  <div class="col pr-0 text-right">
+                    <span class="font-weight-light text-muted" id="next" hidden>Next</span>
                   </div>
                 </div>
-
-                <!-- Pagination -->
-                <div class="row justify-content-center" id="pagination" hidden>
-                  <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center" id="pagination-item"></ul>
-                  </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row pb-5">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body p-0">
+                <div style="max-width: 1000px;">
+                  <div class="flex-images mt-4" id="gallery"></div>
                 </div>
               </div>
             </div>
