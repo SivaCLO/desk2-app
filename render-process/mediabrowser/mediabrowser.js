@@ -2,6 +2,7 @@ console.log("mediabrowser.js Executed Successfully...!");
 const axios = require("axios");
 const flexImages = require("../../assets/js/flex-images");
 const { log } = require("../../common/activity");
+const { defaultStore } = require("../../common/store");
 
 var data;
 
@@ -35,7 +36,7 @@ async function searchMedia() {
   var elem = document.getElementById("gallery");
   elem.addEventListener("click", (event) => {
     console.log("event", event);
-    console.log({
+    defaultStore.set("insertMediaElement", {
       url: event.target.src,
       id: event.target.id,
       altText: event.target.alt,
@@ -109,4 +110,11 @@ prevButton.addEventListener("click", async (event) => {
   insertGif(data);
 });
 
-// window.location = "https://google.com";
+var backToEditorElem = document.getElementById("backToEditor");
+backToEditorElem.addEventListener("click", (event) => {
+  backToEditorFunc();
+});
+
+function backToEditorFunc() {
+  window.location = defaultStore.get("editorURL").url;
+}

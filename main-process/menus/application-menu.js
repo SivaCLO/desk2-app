@@ -97,16 +97,21 @@ let template = [
         type: "separator",
       },
       {
-        label: "Browse Media",
+        label: "Insert Media",
         accelerator: "CmdOrCtrl+Shift+M",
         click: () => {
-          log("application-menu/edit/browse-media");
+          log("application-menu/edit/insert-media");
+
+          // to get Current URL
           getMainWindow() &&
-            getMainWindow().webContents.send(
-              "new_tab",
-              "file://" + path.join(__dirname, "../../render-process/mediabrowser/mediabrowser.html")
-            );
-          // getMainWindow() && getMainWindow().webContents.send("on-find");
+            defaultStore.set("editorURL", { url: getMainWindow().getBrowserView().webContents.getURL() });
+
+          getMainWindow() &&
+            getMainWindow()
+              .getBrowserView()
+              .webContents.loadURL(
+                "file://" + path.join(__dirname, "../../render-process/mediabrowser/mediabrowser.html")
+              );
         },
       },
     ],
