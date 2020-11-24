@@ -111,12 +111,18 @@ let template = [
           getMainWindow() &&
             defaultStore.set("editorURL", { url: getMainWindow().getBrowserView().webContents.getURL() });
 
-          getMainWindow() &&
-            getMainWindow()
-              .getBrowserView()
-              .webContents.loadURL(
-                "file://" + path.join(__dirname, "../../render-process/mediabrowser/mediabrowser.html")
-              );
+          getMainWindow() && getMainWindow().getBrowserView().webContents.send("collect-caretPosition");
+          // getMainWindow() && getMainWindow().webContents.send("collect-caretPosition");
+          if (!url.includes("file") && url.includes("p/") && url.includes("/edit")) {
+            setTimeout(() => {
+              getMainWindow() &&
+                getMainWindow()
+                  .getBrowserView()
+                  .webContents.loadURL(
+                    "file://" + path.join(__dirname, "../../render-process/mediabrowser/mediabrowser.html")
+                  );
+            }, 1000);
+          }
         },
       },
     ],
