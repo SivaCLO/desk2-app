@@ -61,6 +61,7 @@ async function getFrequent() {
     "https://medium.com/me/publications",
     "https://" + defaultStore.get("mediumUser").username + ".medium.com",
     "https://medium.com/@" + defaultStore.get("mediumUser").username,
+    "file://" + path.join(__dirname, "../../render-process/mediabrowser/mediabrowser.html"),
   ];
 
   for (let page of pages) {
