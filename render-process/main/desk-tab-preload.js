@@ -1,5 +1,6 @@
 console.log("Desk Preload Executing Successfully.");
 
+const { defaultStore } = require("../../common/store");
 const { ipcRenderer } = require("electron");
 
 window.addEventListener("load", () => {
@@ -8,4 +9,10 @@ window.addEventListener("load", () => {
       ipcRenderer.send("signOut");
     }
   });
+
+  //Inserting link into the post
+  var sel = window.getSelection();
+  if (sel) {
+    sel.focusNode.innerText = defaultStore.get("insertMediaElement").id;
+  }
 });

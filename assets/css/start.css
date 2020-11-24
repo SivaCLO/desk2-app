@@ -111,11 +111,10 @@ select.form-control {
   -webkit-box-shadow: none;
   box-shadow: none;
   border-radius: 0;
-  letter-spacing: 0;
   font-weight: 400;
   font-style: normal;
   font-size: 16px;
-  text-transform: capitalize;
+  letter-spacing: 0.05rem;
   padding: 0%;
 }
 
@@ -128,7 +127,7 @@ select.form-control:focus {
 
 #galleryItem:hover {
   cursor: pointer;
-  box-shadow: 0 0 0 3px #b5e5a4;
+  box-shadow: 0 0 0 3px var(--color-accent);
 }
 
 #next:hover {
@@ -137,4 +136,10 @@ select.form-control:focus {
 
 #previous:hover {
   cursor: pointer;
+}
+
+#next,
+#previous,
+#result {
+  color: rgba(0, 0, 0, 0.54) !important;
 }

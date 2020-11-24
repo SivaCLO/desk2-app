@@ -5,6 +5,7 @@ const { defaultStore } = require("../../common/store");
 const { deskSignout } = require("../../common/desk");
 const { log } = require("../../common/activity");
 const path = require("path");
+const { validate } = require("uuid");
 
 let zenMode = false;
 
@@ -103,6 +104,10 @@ let template = [
           log("application-menu/edit/insert-media");
 
           // to get Current URL
+          var url = getMainWindow().getBrowserView().webContents.getURL();
+          console.log("url", url);
+          console.log("url", typeof url);
+
           getMainWindow() &&
             defaultStore.set("editorURL", { url: getMainWindow().getBrowserView().webContents.getURL() });
 

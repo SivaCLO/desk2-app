@@ -41,6 +41,7 @@ async function searchMedia() {
       id: event.target.id,
       altText: event.target.alt,
     });
+    backToEditorFunc();
   });
 }
 
