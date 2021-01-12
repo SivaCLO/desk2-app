@@ -6,6 +6,11 @@ const { defaultStore } = require("../../common/store");
 
 var data;
 
+// if (defaultStore.get("caretPosition") !== null) {
+console.log("Caret Position", defaultStore.get("caretPosition"));
+// defaultStore.set("caretPosition", null);
+// }
+
 //To Update Search Title
 document.getElementById("mediaItems").addEventListener("click", (event) => {
   document.getElementById("search").hidden = false;
