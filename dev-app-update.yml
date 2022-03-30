@@ -1,4 +1,4 @@
 provider: "github"
-owner: "cloveapps"
-repo: "app1-releases"
+owner: "cloveapp1"
+repo: "cloveapp1-releases"
 token: "c425bcee75779c0c29891512377033d2a2a9cbd8"
