@@ -1,7 +1,7 @@
 {
-  "name": "deskapp",
+  "name": "app1",
   "productName": "Desk for Medium",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Desktop App for Medium",
   "license": "UNLICENSED",
   "private": true,
@@ -71,7 +71,7 @@
     "win": {
       "target": "nsis",
       "icon": "assets/app-icon/app.ico",
-      "certificateFile": "certs/win/deskapp.pfx",
+      "certificateFile": "certs/win/app1.pfx",
       "certificatePassword": "CloveCrypto!11",
       "publisherName": "Clove Inc."
     },
@@ -83,7 +83,7 @@
       {
         "provider": "github",
         "owner": "cloveapps",
-        "repo": "deskapp-releases",
+        "repo": "app1-releases",
         "token": "c425bcee75779c0c29891512377033d2a2a9cbd8"
       }
     ],
