@@ -4,6 +4,7 @@ const { ipcRenderer } = require("electron");
 const DeskTab = require("./desk-tab");
 const { log } = require("../../common/activity");
 const FindInPage = require("electron-find").FindInPage;
+
 let findInPage = null;
 
 if (!document) {

@@ -91,6 +91,17 @@ let template = [
           getMainWindow() && getMainWindow().webContents.send("on-find");
         },
       },
+      {
+        type: "separator",
+      },
+      {
+        label: "Insert Screenshot",
+        accelerator: "CmdOrCtrl+Shift+Alt+S",
+        click: () => {
+          log("application-menu/edit/Insert-Screenshot");
+          getMainWindow() && getMainWindow().webContents.send("screenshot");
+        },
+      },
     ],
   },
   {
