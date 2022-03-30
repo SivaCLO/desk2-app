@@ -9,3 +9,7 @@ window.addEventListener("load", () => {
     }
   });
 });
+
+ipcRenderer.on("insertGif-into-draft", (event, data) => {
+  console.log("data", data.id);
+});

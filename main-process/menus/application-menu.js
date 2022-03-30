@@ -4,6 +4,7 @@ const { showImportDialog } = require("../dialogs/import-draft-dialog");
 const { defaultStore } = require("../../common/store");
 const { deskSignout } = require("../../common/desk");
 const { log } = require("../../common/activity");
+const { showGiphyWindow } = require("../windows/giphy-window.js");
 let zenMode = false;
 
 let template = [
@@ -89,6 +90,14 @@ let template = [
         click: () => {
           log("application-menu/edit/find-in-page");
           getMainWindow() && getMainWindow().webContents.send("on-find");
+        },
+      },
+      {
+        label: "Insert GIPHY",
+        accelerator: "CmdOrCtrl+G",
+        click: async () => {
+          log("application-menu/edit/Insert-GIPHY");
+          showGiphyWindow();
         },
       },
     ],
