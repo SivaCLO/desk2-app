@@ -1,0 +1,37 @@
+{
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "route": "v1.2/signin/callback",
+      "methods": [
+        "get"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "name": "signinDocument",
+      "databaseName": "v1.2",
+      "collectionName": "signins",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB",
+      "partitionKey": "{state}",
+      "sqlQuery": "SELECT * FROM c WHERE c.id={state}",
+      "direction": "in",
+      "type": "cosmosDB"
+    },
+    {
+      "name": "newSigninDocument",
+      "direction": "out",
+      "type": "cosmosDB",
+      "databaseName": "v1.2",
+      "collectionName": "signins",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB"
+    }
+  ]
+}

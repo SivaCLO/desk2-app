@@ -1,0 +1,37 @@
+{
+  "bindings": [
+    {
+      "authLevel": "function",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "route": "user110/{userName}",
+      "methods": [
+        "post"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "name": "userDocument",
+      "databaseName": "thedeskapp",
+      "collectionName": "users",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB",
+      "partitionKey": "{userName}",
+      "sqlQuery": "SELECT * FROM c WHERE c.userName={userName}",
+      "direction": "in",
+      "type": "cosmosDB"
+    },
+    {
+      "name": "newUserDocument",
+      "direction": "out",
+      "type": "cosmosDB",
+      "databaseName": "thedeskapp",
+      "collectionName": "users",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB"
+    }
+  ]
+}

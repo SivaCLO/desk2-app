@@ -1,0 +1,55 @@
+{
+  "bindings": [
+    {
+      "name": "req",
+      "direction": "in",
+      "type": "httpTrigger",
+      "authLevel": "function",
+      "route": "v13/desks/{deskId}/pages/{pageId}",
+      "methods": [
+        "post"
+      ]
+    },
+    {
+      "name": "res",
+      "direction": "out",
+      "type": "http"
+    },
+    {
+      "name": "deskDocument",
+      "direction": "in",
+      "type": "cosmosDB",
+      "databaseName": "v1.2",
+      "collectionName": "desks",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB",
+      "partitionKey": "{deskId}",
+      "sqlQuery": "SELECT * FROM c WHERE c.id={deskId}"
+    },
+    {
+      "name": "newDeskDocument",
+      "direction": "out",
+      "type": "cosmosDB",
+      "databaseName": "v1.2",
+      "collectionName": "desks",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB"
+    },
+    {
+      "name": "pageDocument",
+      "direction": "in",
+      "type": "cosmosDB",
+      "databaseName": "v1.2",
+      "collectionName": "pages",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB",
+      "partitionKey": "{deskId}",
+      "sqlQuery": "SELECT * FROM c WHERE c.id={pageId}"
+    },
+    {
+      "name": "newPageDocument",
+      "direction": "out",
+      "type": "cosmosDB",
+      "databaseName": "v1.2",
+      "collectionName": "pages",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "bindings": [
+    {
+      "name": "req",
+      "direction": "in",
+      "type": "httpTrigger",
+      "authLevel": "function",
+      "route": "v13/desks/{deskId}/pages",
+      "methods": [
+        "get"
+      ]
+    },
+    {
+      "name": "res",
+      "direction": "out",
+      "type": "http"
+    },
+    {
+      "name": "pageDocuments",
+      "direction": "in",
+      "type": "cosmosDB",
+      "databaseName": "v1.2",
+      "collectionName": "pages",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB",
+      "partitionKey": "{deskId}",
+      "sqlQuery": "SELECT * FROM c WHERE c.deskId={deskId}"
+    }
+  ]
+}

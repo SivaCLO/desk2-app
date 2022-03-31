@@ -1,0 +1,36 @@
+{
+  "bindings": [
+    {
+      "authLevel": "function",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "route": "v1.2/signin/desk/{mediumUserId}",
+      "methods": [
+        "post"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "name": "deskDocument",
+      "databaseName": "v1.2",
+      "collectionName": "desks",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB",
+      "sqlQuery": "SELECT * FROM c WHERE c.mediumUser.id={mediumUserId}",
+      "direction": "in",
+      "type": "cosmosDB"
+    },
+    {
+      "name": "newDeskDocument",
+      "direction": "out",
+      "type": "cosmosDB",
+      "databaseName": "v1.2",
+      "collectionName": "desks",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB"
+    }
+  ]
+}

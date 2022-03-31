@@ -1,0 +1,37 @@
+{
+  "bindings": [
+    {
+      "name": "req",
+      "direction": "in",
+      "type": "httpTrigger",
+      "authLevel": "function",
+      "route": "v13/desks/{deskId}/drafts/{mediumPostId}",
+      "methods": [
+        "post"
+      ]
+    },
+    {
+      "name": "res",
+      "direction": "out",
+      "type": "http"
+    },
+    {
+      "name": "draftDocument",
+      "direction": "in",
+      "type": "cosmosDB",
+      "databaseName": "v1.2",
+      "collectionName": "drafts",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB",
+      "partitionKey": "{deskId}",
+      "sqlQuery": "SELECT * FROM c WHERE c.mediumPostId={mediumPostId} AND c.deskId={deskId}"
+    },
+    {
+      "name": "newDraftDocument",
+      "direction": "out",
+      "type": "cosmosDB",
+      "databaseName": "v1.2",
+      "collectionName": "drafts",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB"
+    }
+  ]
+}

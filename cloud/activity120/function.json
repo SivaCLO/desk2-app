@@ -1,0 +1,45 @@
+{
+  "bindings": [
+    {
+      "authLevel": "function",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "route": "v1.2/activity/{deskId}",
+      "methods": [
+        "post"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "name": "deskDocument",
+      "databaseName": "v1.2",
+      "collectionName": "desks",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB",
+      "partitionKey": "{deskId}",
+      "sqlQuery": "SELECT * FROM c WHERE c.id={deskId}",
+      "direction": "in",
+      "type": "cosmosDB"
+    },
+    {
+      "name": "newDeskDocument",
+      "direction": "out",
+      "type": "cosmosDB",
+      "databaseName": "v1.2",
+      "collectionName": "desks",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB"
+    },
+    {
+      "name": "activityDocument",
+      "direction": "out",
+      "type": "cosmosDB",
+      "databaseName": "v1.2",
+      "collectionName": "activities",
+      "connectionStringSetting": "thedeskapp_DOCUMENTDB"
+    }
+  ]
+}
