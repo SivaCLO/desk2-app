@@ -7,7 +7,7 @@
   },
   "author": "",
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.2",
     "qs": "^6.9.4",
     "uuid": "^8.3.1"
   }
