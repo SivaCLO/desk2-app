@@ -5,7 +5,7 @@
   "description": "Desktop App for Medium",
   "license": "UNLICENSED",
   "private": true,
-  "main": "main.js",
+  "main": "app.js",
   "bin": "cli.js",
   "scripts": {
     "start": "electron .",
