@@ -6,7 +6,6 @@
   "license": "UNLICENSED",
   "private": true,
   "main": "app/index.js",
-  "bin": "cli.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --debug",
