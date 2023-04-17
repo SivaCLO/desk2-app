@@ -248,7 +248,7 @@ let template = [
         label: "Contact Support",
         click: () => {
           log("application-menu/help/contact-support");
-          shell.openExternal("mailto:support@cloveapps.com");
+          shell.openExternal("mailto:support@clove.pro");
         },
       },
     ],
