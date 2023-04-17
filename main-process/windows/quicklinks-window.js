@@ -19,6 +19,7 @@ function showQuicklinksWindow() {
       fullscreen: false,
       webPreferences: {
         nodeIntegration: true,
+        contextIsolation: false,
         spellcheck: false,
         enableRemoteModule: true,
       },

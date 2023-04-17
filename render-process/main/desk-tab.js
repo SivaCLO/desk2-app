@@ -18,6 +18,7 @@ class DeskTab {
       webPreferences: {
         allowRunningInsecureContent: true,
         nodeIntegration: true,
+        contextIsolation: false,
         spellcheck: false,
         preload: path.join(__dirname, "desk-tab-preload.js"),
       },

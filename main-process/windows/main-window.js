@@ -27,6 +27,7 @@ function showMainWindow() {
       frame: os.platform() === "linux",
       webPreferences: {
         nodeIntegration: true,
+        contextIsolation: false,
         enableRemoteModule: true,
       },
     };

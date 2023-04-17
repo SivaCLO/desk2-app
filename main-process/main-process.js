@@ -7,7 +7,7 @@ const { showSetupWindow } = require("./windows/setup-window");
 const { signinMain } = require("../common/signin");
 const { defaultStore } = require("../common/store");
 const { getFlag, deskSignout } = require("../common/desk");
-const debug = /--debug/.test(process.argv[2]);
+const debug = /--inspect/.test(process.argv[2]);
 const macAddress = require("node-macaddress");
 
 defaultStore.set("debug", debug);
