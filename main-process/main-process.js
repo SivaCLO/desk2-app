@@ -8,7 +8,7 @@ const { signinMain } = require("../common/signin");
 const { defaultStore } = require("../common/store");
 const { getFlag, deskSignout } = require("../common/desk");
 const debug = /--inspect/.test(process.argv[2]);
-const macAddress = require("node-macaddress");
+const macAddress = require("macaddress");
 
 defaultStore.set("debug", debug);
 defaultStore.set("deskVersion", app.getVersion());
