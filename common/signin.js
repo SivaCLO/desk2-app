@@ -9,7 +9,9 @@ function callSigninCreate() {
   return new Promise((resolve, reject) => {
     axios
       .post(
-        `https://desk11.azurewebsites.net/api/v1.2/signins?code=5TD8xmd2nnZp2vZJweMiEoF0w/DVyPXvRTBBfNxY/mQZLOEeSUEzOg==`,
+        defaultStore.get("debug")
+        ? `http://localhost:5050/api/v20/signins?code=5TD8xmd2nnZp2vZJweMiEoF0w/DVyPXvRTBBfNxY/mQZLOEeSUEzOg==`
+        : `https://goldfish-app-kqhm2.ondigitalocean.app/api/v20/signins?code=5TD8xmd2nnZp2vZJweMiEoF0w/DVyPXvRTBBfNxY/mQZLOEeSUEzOg==`,
         {
           version: {
             deskVersion: defaultStore.get("deskVersion"),

@@ -6,9 +6,10 @@ function log(activityCode, activityData) {
   axios
     .post(
       defaultStore.get("debug")
-        ? `http://localhost:7071/api/v13/desks/${deskId}/activities`
-        : `https://desk11.azurewebsites.net/api/v13/desks/${deskId}/activities?code=RDXNvdqM0a0OaJMu1Q1516Y3xt/a9OuWn7a3QnusIaZkr1VoIGTWJw==`,
+        ? `http://localhost:5050/api/v20/activities?code=RDXNvdqM0a0OaJMu1Q1516Y3xt/a9OuWn7a3QnusIaZkr1VoIGTWJw==`
+        : `https://goldfish-app-kqhm2.ondigitalocean.app/api/v20/activities?code=RDXNvdqM0a0OaJMu1Q1516Y3xt/a9OuWn7a3QnusIaZkr1VoIGTWJw==`,
       {
+        deskId,
         activityCode,
         activityData,
         activityTime: Date.now(),
