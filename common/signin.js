@@ -11,7 +11,7 @@ function callSigninCreate() {
       .post(
         defaultStore.get("debug")
           ? `http://localhost:5050/v20/signin`
-          : `https://goldfish-app-kqhm2.ondigitalocean.app/api/v20/signins`,
+          : `https://api.desk.clove.pro/api/v20/signins`,
         {
           version: {
             deskVersion: defaultStore.get("deskVersion"),
@@ -37,7 +37,9 @@ function callSigninRead(signinId) {
   return new Promise((resolve, reject) => {
     axios
       .get(
-        `https://desk11.azurewebsites.net/api/v1.2/signins/${signinId}?code=zCDTbdP7PLrcmRPHffxDeqQ/fYnxjj4Ot/qgNl4wXgcTaMm75spLpw==`
+        defaultStore.get("debug")
+        ? `http://localhost:5050/v20/signin/${signinId}`
+        : `https://api.desk.clove.pro/api/v20/signins/${signinId}`
       )
       .then(function (response) {
         resolve(response.data);
