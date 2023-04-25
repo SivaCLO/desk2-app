@@ -34,7 +34,7 @@ function callSigninRead(signinId) {
       .get(
         defaultStore.get("debug")
           ? `http://localhost:5050/v20/signin/${signinId}`
-          : `${Config.deskappServerURL}/api/v20/signins/${signinId}`
+          : `${Config.deskappServerURL}/v20/signin/${signinId}`
       )
       .then(function (response) {
         resolve(response.data);
