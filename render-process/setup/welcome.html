@@ -41,7 +41,7 @@
         signinStart().then(() => {
           window.location = `https://medium.com/m/oauth/authorize?client_id=cf95dd471267&scope=basicProfile%2CpublishPost&state=${defaultStore.get(
             "signinId"
-          )}&response_type=code&redirect_uri=https://api.desk.clove.pro/v20/signin/callback`;
+          )}&response_type=code&redirect_uri=https://deskapp-server-bcvw5.ondigitalocean.app/v20/signin/callback`;
         });
       });
     </script>
