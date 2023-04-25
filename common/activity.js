@@ -5,9 +5,7 @@ function log(activityCode, activityData) {
   let deskId = defaultStore.get("deskId") || "setup";
   axios
     .post(
-      defaultStore.get("debug")
-        ? `http://localhost:5050/v20/activity`
-        : `https://api.desk.clove.pro/v20/activity`,
+      defaultStore.get("debug") ? `http://localhost:5050/v20/activity` : `https://api.desk.clove.pro/v20/activity`,
       {
         deskId,
         activityCode,

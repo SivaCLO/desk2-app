@@ -8,20 +8,15 @@ const os = require("os");
 function callSigninCreate() {
   return new Promise((resolve, reject) => {
     axios
-      .post(
-        defaultStore.get("debug")
-          ? `http://localhost:5050/v20/signin`
-          : `https://api.desk.clove.pro/api/v20/signins`,
-        {
-          version: {
-            deskVersion: defaultStore.get("deskVersion"),
-            osPlatform: os.platform(),
-            osRelease: os.release(),
-            macAddress: defaultStore.get("macAddress"),
-            debug: defaultStore.get("debug"),
-          },
-        }
-      )
+      .post(defaultStore.get("debug") ? `http://localhost:5050/v20/signin` : `https://api.desk.clove.pro/v20/signin`, {
+        version: {
+          deskVersion: defaultStore.get("deskVersion"),
+          osPlatform: os.platform(),
+          osRelease: os.release(),
+          macAddress: defaultStore.get("macAddress"),
+          debug: defaultStore.get("debug"),
+        },
+      })
       .then(function (response) {
         resolve(response.data);
       })
@@ -38,8 +33,8 @@ function callSigninRead(signinId) {
     axios
       .get(
         defaultStore.get("debug")
-        ? `http://localhost:5050/v20/signin/${signinId}`
-        : `https://api.desk.clove.pro/api/v20/signins/${signinId}`
+          ? `http://localhost:5050/v20/signin/${signinId}`
+          : `https://api.desk.clove.pro/api/v20/signins/${signinId}`
       )
       .then(function (response) {
         resolve(response.data);
