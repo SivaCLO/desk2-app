@@ -4,12 +4,11 @@ const { log } = require("./activity");
 const { callMediumPostJSON } = require("./undocumented");
 const axios = require("axios");
 const os = require("os");
-const Config = require("../config");
 
 function deskPUT(deskId, desk) {
   return new Promise((resolve, reject) => {
     axios
-      .put(`${Config.deskappServerURL()}/desk/${deskId}`, JSON.stringify(desk))
+      .put(`${defaultStore.get("deskappServerURL")}/desk/${deskId}`, JSON.stringify(desk))
       .then(function (response) {
         resolve(response.data);
       })
@@ -24,7 +23,7 @@ function deskPUT(deskId, desk) {
 function deskPOST(mediumUserId, desk) {
   return new Promise((resolve, reject) => {
     axios
-      .post(`${Config.deskappServerURL()}/desk/${mediumUserId}`, JSON.stringify(desk))
+      .post(`${defaultStore.get("deskappServerURL")}/desk/${mediumUserId}`, JSON.stringify(desk))
       .then(function (response) {
         resolve(response.data);
       })
@@ -39,7 +38,7 @@ function deskPOST(mediumUserId, desk) {
 function draftPOST(deskId, mediumPostId, draft) {
   return new Promise((resolve, reject) => {
     axios
-      .post(`${Config.deskappServerURL()}/desk/${deskId}/draft/${mediumPostId}`, JSON.stringify(draft))
+      .post(`${defaultStore.get("deskappServerURL")}/desk/${deskId}/draft/${mediumPostId}`, JSON.stringify(draft))
       .then(function (response) {
         resolve(response.data);
       })
@@ -54,7 +53,7 @@ function draftPOST(deskId, mediumPostId, draft) {
 function draftsGET(deskId) {
   return new Promise((resolve, reject) => {
     axios
-      .get(`${Config.deskappServerURL()}/desk/${deskId}/draft/list`)
+      .get(`${defaultStore.get("deskappServerURL")}/desk/${deskId}/draft/list`)
       .then(function (response) {
         resolve(response.data);
       })

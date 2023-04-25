@@ -6,7 +6,7 @@ function visit(url, title, tabId, pageId) {
     let deskId = defaultStore.get("deskId");
     let sessionId = defaultStore.get("sessionId");
     axios
-      .post(`${Config.deskappServerURL()}/desk/${deskId}/page/${pageId}`, {
+      .post(`${defaultStore.get("deskappServerURL")}/desk/${deskId}/page/${pageId}`, {
         url,
         title,
         tabId,
@@ -27,7 +27,7 @@ function pagesGET() {
   return new Promise((resolve, reject) => {
     let deskId = defaultStore.get("deskId");
     axios
-      .get(`${Config.deskappServerURL()}/desk/${deskId}/page/list`)
+      .get(`${defaultStore.get("deskappServerURL")}/desk/${deskId}/page/list`)
       .then((res) => {
         resolve(res.data.pages);
       })

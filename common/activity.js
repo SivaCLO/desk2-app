@@ -1,11 +1,10 @@
 const axios = require("axios");
 const { defaultStore } = require("./store");
-const Config = require("../config");
 
 function log(activityCode, activityData) {
   let deskId = defaultStore.get("deskId") || "setup";
   axios
-    .post(`${Config.deskappServerURL()}/activity`, {
+    .post(`${defaultStore.get("deskappServerURL")}/activity`, {
       deskId,
       activityCode,
       activityData,
