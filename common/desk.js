@@ -4,16 +4,12 @@ const { log } = require("./activity");
 const { callMediumPostJSON } = require("./undocumented");
 const axios = require("axios");
 const os = require("os");
+const Config = require("../config");
 
 function deskPUT(deskId, desk) {
   return new Promise((resolve, reject) => {
     axios
-      .put(
-        defaultStore.get("debug")
-          ? `http://localhost:7071/api/v13/desks/${deskId}`
-          : `https://desk11.azurewebsites.net/api/v13/desks/${deskId}?code=PxSqEhZkcZNq6VOoJbNV030bJWV1CysDlj0VVX8/aDhXWc3F7aquQg==`,
-        JSON.stringify(desk)
-      )
+      .put(`${Config.deskappServerURL()}/desk/${deskId}`, JSON.stringify(desk))
       .then(function (response) {
         resolve(response.data);
       })
@@ -28,12 +24,7 @@ function deskPUT(deskId, desk) {
 function deskPOST(mediumUserId, desk) {
   return new Promise((resolve, reject) => {
     axios
-      .post(
-        defaultStore.get("debug")
-          ? `http://localhost:7071/api/v13/desks/${mediumUserId}`
-          : `https://desk11.azurewebsites.net/api/v13/desks/${mediumUserId}?code=pFHMELSU5KHhbtUbqaIJSmybxTaF4ZgAwKcBrBlQ4laAGakaw8aacA==`,
-        JSON.stringify(desk)
-      )
+      .post(`${Config.deskappServerURL()}/desk/${mediumUserId}`, JSON.stringify(desk))
       .then(function (response) {
         resolve(response.data);
       })
@@ -48,12 +39,7 @@ function deskPOST(mediumUserId, desk) {
 function draftPOST(deskId, mediumPostId, draft) {
   return new Promise((resolve, reject) => {
     axios
-      .post(
-        defaultStore.get("debug")
-          ? `http://localhost:7071/api/v13/desks/${deskId}/drafts/${mediumPostId}`
-          : `https://desk11.azurewebsites.net/api/v13/desks/${deskId}/drafts/${mediumPostId}?code=FhayN76vKHa9ETaYM5wsymuR6KeVdzi9bD/UUy7SrTiwklkgjRTvmQ==`,
-        JSON.stringify(draft)
-      )
+      .post(`${Config.deskappServerURL()}/desk/${deskId}/draft/${mediumPostId}`, JSON.stringify(draft))
       .then(function (response) {
         resolve(response.data);
       })
@@ -68,11 +54,7 @@ function draftPOST(deskId, mediumPostId, draft) {
 function draftsGET(deskId) {
   return new Promise((resolve, reject) => {
     axios
-      .get(
-        defaultStore.get("debug")
-          ? `http://localhost:7071/api/v13/desks/${deskId}/drafts`
-          : `https://desk11.azurewebsites.net/api/v13/desks/${deskId}/drafts?code=WZfzu0bZ9WQTG6xXACLdK6/bqWDbwp8sil7QFWDlhGI1nzu6GS1aWw==`
-      )
+      .get(`${Config.deskappServerURL()}/desk/${deskId}/draft/list`)
       .then(function (response) {
         resolve(response.data);
       })

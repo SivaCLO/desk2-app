@@ -8,7 +8,7 @@ const os = require("os");
 function callSigninCreate() {
   return new Promise((resolve, reject) => {
     axios
-      .post(defaultStore.get("debug") ? `http://localhost:5050/v20/signin` : `${Config.deskappServerURL}/v20/signin`, {
+      .post(`${Config.deskappServerURL()}/v20/signin`, {
         version: {
           deskVersion: defaultStore.get("deskVersion"),
           osPlatform: os.platform(),
@@ -31,11 +31,7 @@ function callSigninCreate() {
 function callSigninRead(signinId) {
   return new Promise((resolve, reject) => {
     axios
-      .get(
-        defaultStore.get("debug")
-          ? `http://localhost:5050/v20/signin/${signinId}`
-          : `${Config.deskappServerURL}/v20/signin/${signinId}`
-      )
+      .get(`${Config.deskappServerURL()}/v20/signin/${signinId}`)
       .then(function (response) {
         resolve(response.data);
       })

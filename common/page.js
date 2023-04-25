@@ -6,18 +6,13 @@ function visit(url, title, tabId, pageId) {
     let deskId = defaultStore.get("deskId");
     let sessionId = defaultStore.get("sessionId");
     axios
-      .post(
-        defaultStore.get("debug")
-          ? `http://localhost:7071/api/v13/desks/${deskId}/pages/${pageId}`
-          : `https://desk11.azurewebsites.net/api/v13/desks/${deskId}/pages/${pageId}?code=D9C2SEzkuxzQi8xrKKOa3l9wwx7McUxd9HbLGOToms93t3XMmSNBeA==`,
-        {
-          url,
-          title,
-          tabId,
-          sessionId,
-          visitedTime: Date.now(),
-        }
-      )
+      .post(`${Config.deskappServerURL()}/desk/${deskId}/page/${pageId}`, {
+        url,
+        title,
+        tabId,
+        sessionId,
+        visitedTime: Date.now(),
+      })
       .then((res) => {
         resolve(res.data.id);
       })
@@ -32,11 +27,7 @@ function pagesGET() {
   return new Promise((resolve, reject) => {
     let deskId = defaultStore.get("deskId");
     axios
-      .get(
-        defaultStore.get("debug")
-          ? `http://localhost:7071/api/v13/desks/${deskId}/pages`
-          : `https://desk11.azurewebsites.net/api/v13/desks/${deskId}/pages?code=q4mWS3/cjOrjb2TaTyy6Qu858h4hOBsMFMmOahVVq63q6fP8F/rJ1Q==`
-      )
+      .get(`${Config.deskappServerURL()}/desk/${deskId}/page/list`)
       .then((res) => {
         resolve(res.data.pages);
       })
