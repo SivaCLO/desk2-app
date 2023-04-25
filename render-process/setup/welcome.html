@@ -34,6 +34,7 @@
       require("bootstrap");
       const { signinStart } = require("../../common/signin");
       const { defaultStore } = require("../../common/store");
+      const deskappServerURL = "https://api.desk.clove.pro";
 
       document.getElementById("continue").addEventListener("click", function () {
         document.getElementById("content").hidden = true;
@@ -41,7 +42,7 @@
         signinStart().then(() => {
           window.location = `https://medium.com/m/oauth/authorize?client_id=cf95dd471267&scope=basicProfile%2CpublishPost&state=${defaultStore.get(
             "signinId"
-          )}&response_type=code&redirect_uri=https://deskapp-server-bcvw5.ondigitalocean.app/v20/signin/callback`;
+          )}&response_type=code&redirect_uri=${deskappServerURL}/v20/signin/callback`;
         });
       });
     </script>

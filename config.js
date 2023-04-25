@@ -1,5 +1,5 @@
 class Config {
-  deskappServerURL = "https://deskapp-server-bcvw5.ondigitalocean.app";
+  deskappServerURL = "https://api.desk.clove.pro";
 }
 
 module.exports = Config;
