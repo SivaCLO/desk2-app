@@ -4,6 +4,7 @@ const { log } = require("../../common/activity");
 const { signinSetup } = require("../../common/signin");
 const { showMainWindow } = require("./main-window");
 const os = require("os");
+const deskappServerURL = "https://api.desk.clove.pro";
 
 let setupWindow = null;
 
@@ -35,7 +36,7 @@ function showSetupWindow() {
     });
 
     setupWindow.webContents.on("did-navigate", (e, url) => {
-      if (url.startsWith("https://desk11.azurewebsites.net")) {
+      if (url.startsWith(deskappServerURL)) {
         signinSetup().then(() => {
           setupWindow.loadURL("file://" + path.join(__dirname, "../../render-process/setup/goal.html")).then();
         });
