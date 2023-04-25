@@ -6,8 +6,8 @@ function log(activityCode, activityData) {
   axios
     .post(
       defaultStore.get("debug")
-        ? `http://localhost:5050/api/v20/activities?code=RDXNvdqM0a0OaJMu1Q1516Y3xt/a9OuWn7a3QnusIaZkr1VoIGTWJw==`
-        : `https://goldfish-app-kqhm2.ondigitalocean.app/api/v20/activities?code=RDXNvdqM0a0OaJMu1Q1516Y3xt/a9OuWn7a3QnusIaZkr1VoIGTWJw==`,
+        ? `http://localhost:5050/v20/activity`
+        : `https://api.desk.clove.pro/v20/activity`,
       {
         deskId,
         activityCode,

@@ -10,8 +10,8 @@ function callSigninCreate() {
     axios
       .post(
         defaultStore.get("debug")
-        ? `http://localhost:5050/api/v20/signins?code=5TD8xmd2nnZp2vZJweMiEoF0w/DVyPXvRTBBfNxY/mQZLOEeSUEzOg==`
-        : `https://goldfish-app-kqhm2.ondigitalocean.app/api/v20/signins?code=5TD8xmd2nnZp2vZJweMiEoF0w/DVyPXvRTBBfNxY/mQZLOEeSUEzOg==`,
+          ? `http://localhost:5050/v20/signin`
+          : `https://goldfish-app-kqhm2.ondigitalocean.app/api/v20/signins`,
         {
           version: {
             deskVersion: defaultStore.get("deskVersion"),
