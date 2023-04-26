@@ -1,19 +1,19 @@
-const { app, session } = require("electron");
-const { defaultStore } = require("./store");
-const { log } = require("./activity");
-const { callMediumPostJSON } = require("./undocumented");
-const axios = require("axios");
-const os = require("os");
+const { app, session } = require('electron');
+const { defaultStore } = require('./store');
+const { log } = require('./activity');
+const { callMediumPostJSON } = require('./undocumented');
+const axios = require('axios');
+const os = require('os');
 
 function deskPUT(deskId, desk) {
   return new Promise((resolve, reject) => {
     axios
-      .put(`${defaultStore.get("deskappServerURL")}/desk/${deskId}`, desk)
+      .put(`${defaultStore.get('deskappServerURL')}/desk/${deskId}`, desk)
       .then(function (response) {
         resolve(response.data);
       })
       .catch((e) => {
-        log("desk/deskPUT/error", { e, desk });
+        log('desk/deskPUT/error', { e, desk });
         console.error(e);
         reject(e);
       });
@@ -23,12 +23,12 @@ function deskPUT(deskId, desk) {
 function deskPOST(mediumUserId, desk) {
   return new Promise((resolve, reject) => {
     axios
-      .post(`${defaultStore.get("deskappServerURL")}/desk/mediumUser/${mediumUserId}`, desk)
+      .post(`${defaultStore.get('deskappServerURL')}/desk/mediumUser/${mediumUserId}`, desk)
       .then(function (response) {
         resolve(response.data);
       })
       .catch((e) => {
-        log("desk/deskPOST/error", { e, mediumUserId, desk });
+        log('desk/deskPOST/error', { e, mediumUserId, desk });
         console.error(e);
         reject(e);
       });
@@ -38,12 +38,12 @@ function deskPOST(mediumUserId, desk) {
 function draftPOST(deskId, mediumPostId, draft) {
   return new Promise((resolve, reject) => {
     axios
-      .post(`${defaultStore.get("deskappServerURL")}/desk/${deskId}/draft/${mediumPostId}`, draft)
+      .post(`${defaultStore.get('deskappServerURL')}/draft/${deskId}/${mediumPostId}`, draft)
       .then(function (response) {
         resolve(response.data);
       })
       .catch((e) => {
-        log("desk/draftPOST/error", { e, deskId, mediumPostId, draft });
+        log('desk/draftPOST/error', { e, deskId, mediumPostId, draft });
         console.error(e);
         reject(e);
       });
@@ -53,12 +53,12 @@ function draftPOST(deskId, mediumPostId, draft) {
 function draftsGET(deskId) {
   return new Promise((resolve, reject) => {
     axios
-      .get(`${defaultStore.get("deskappServerURL")}/desk/${deskId}/draft/list`)
+      .get(`${defaultStore.get('deskappServerURL')}/draft/${deskId}/list`)
       .then(function (response) {
         resolve(response.data);
       })
       .catch((e) => {
-        log("desk/draftsGET/error", { e });
+        log('desk/draftsGET/error', { e });
         console.error(e);
         reject(e);
       });
@@ -66,49 +66,49 @@ function draftsGET(deskId) {
 }
 
 async function deskSignin() {
-  let mediumUser = defaultStore.get("mediumUser");
-  let mediumUserJSON = defaultStore.get("mediumUserJSON");
+  let mediumUser = defaultStore.get('mediumUser');
+  let mediumUserJSON = defaultStore.get('mediumUserJSON');
   let desk = await deskPOST(mediumUser.id, {
     mediumUser,
     mediumUserJSON,
     lastSignin: Date.now(),
     lastSigninVersion: {
-      deskVersion: defaultStore.get("deskVersion"),
+      deskVersion: defaultStore.get('deskVersion'),
       osPlatform: os.platform(),
       osRelease: os.release(),
-      macAddress: defaultStore.get("macAddress"),
-      debug: defaultStore.get("debug"),
+      macAddress: defaultStore.get('macAddress'),
+      debug: defaultStore.get('debug'),
     },
   });
-  defaultStore.set("deskId", desk.deskId);
-  defaultStore.set("deskType", desk.type);
-  defaultStore.set("deskSettings", desk.settings);
-  defaultStore.set("deskFlags", desk.flags);
+  defaultStore.set('deskId', desk.deskId);
+  defaultStore.set('deskType', desk.type);
+  defaultStore.set('deskSettings', desk.settings);
+  defaultStore.set('deskFlags', desk.flags);
 
-  let draftData = await draftsGET(defaultStore.get("deskId"));
-  defaultStore.set("deskDrafts", draftData.drafts);
-  log("signin/desk", { desk, mediumUser, mediumUserJSON, draftData });
+  let draftData = await draftsGET(defaultStore.get('deskId'));
+  defaultStore.set('deskDrafts', draftData.drafts);
+  log('signin/desk', { desk, mediumUser, mediumUserJSON, draftData });
 }
 
 async function updateSetting(key, value) {
-  let settings = defaultStore.get("deskSettings");
+  let settings = defaultStore.get('deskSettings');
   settings[key] = value;
-  defaultStore.set("deskSettings", settings);
-  await deskPUT(defaultStore.get("deskId"), { settings });
+  defaultStore.set('deskSettings', settings);
+  await deskPUT(defaultStore.get('deskId'), { settings });
 }
 function getSetting(key) {
-  let settings = defaultStore.get("deskSettings") || {};
+  let settings = defaultStore.get('deskSettings') || {};
   return settings[key];
 }
 
 async function updateFlag(key, value) {
-  let flags = defaultStore.get("deskFlags");
+  let flags = defaultStore.get('deskFlags');
   flags[key] = value;
-  defaultStore.set("deskFlags", flags);
-  await deskPUT(defaultStore.get("deskId"), { flags });
+  defaultStore.set('deskFlags', flags);
+  await deskPUT(defaultStore.get('deskId'), { flags });
 }
 function getFlag(key) {
-  let flags = defaultStore.get("deskFlags") || {};
+  let flags = defaultStore.get('deskFlags') || {};
   return flags[key];
 }
 
@@ -140,18 +140,18 @@ async function updateDraft(mediumPostId, lastOpenedTime) {
     drafts.push(draft);
   }
 
-  defaultStore.set("deskDrafts", drafts);
+  defaultStore.set('deskDrafts', drafts);
 
-  await draftPOST(defaultStore.get("deskId"), mediumPostId, draft);
+  await draftPOST(defaultStore.get('deskId'), mediumPostId, draft);
 
   return data;
 }
 function getDrafts() {
-  return defaultStore.get("deskDrafts") || {};
+  return defaultStore.get('deskDrafts') || {};
 }
 
 function deskSignout() {
-  log("desk/signout");
+  log('desk/signout');
   session.defaultSession.clearCache().then(() => {
     session.defaultSession.clearStorageData().then(() => {
       defaultStore.clear();
