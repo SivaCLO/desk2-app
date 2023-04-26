@@ -52,8 +52,8 @@ function draftPOST(deskId, mediumPostId, draft) {
 
 function draftsGET(deskId) {
   return new Promise((resolve, reject) => {
-    .get(`${defaultStore.get("deskappServerURL")}/desk/${deskId}/draft/list`)
     axios
+      .get(`${defaultStore.get("deskappServerURL")}/desk/${deskId}/draft/list`)
       .then(function (response) {
         resolve(response.data);
       })
