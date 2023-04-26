@@ -32,6 +32,7 @@
     "rimraf": "^2.5.2"
   },
   "dependencies": {
+    "@electron/remote": "^2.0.9",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.2",
     "bootstrap-icons": "^1.0.0",

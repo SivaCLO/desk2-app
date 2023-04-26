@@ -1,6 +1,6 @@
 const TabGroup = require("./electron-tabs");
 const { ipcRenderer } = require("electron");
-const Remote = require("electron").remote;
+const Remote = require("@electron/remote");
 const { log } = require("../../common/activity");
 const os = require("os");
 const path = require("path");

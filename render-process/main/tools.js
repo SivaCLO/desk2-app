@@ -1,4 +1,4 @@
-const Remote = require("electron").remote;
+const Remote = require("@electron/remote");
 const { ipcRenderer } = require("electron");
 const { enterZenMode, exitZenMode, zoomIn, zoomOut, resetZoom } = require("./tabs");
 const { log } = require("../../common/activity");

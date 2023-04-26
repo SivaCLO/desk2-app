@@ -25,6 +25,7 @@ function showSetupWindow() {
         enableRemoteModule: true,
       },
     });
+    require("@electron/remote/main").enable(setupWindow.webContents);
     setupWindow.loadURL("file://" + path.join(__dirname, "../../render-process/setup/welcome.html")).then();
 
     setupWindow.webContents.on("will-redirect", (e, url) => {

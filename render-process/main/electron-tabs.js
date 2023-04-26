@@ -1,5 +1,5 @@
 const EventEmitter = require("events");
-const Remote = require("electron").remote;
+const Remote = require("@electron/remote");
 const { ipcRenderer } = require("electron");
 const DeskTab = require("./desk-tab");
 const { log } = require("../../common/activity");

@@ -9,6 +9,7 @@ const { defaultStore } = require("../common/store");
 const { getFlag, deskSignout } = require("../common/desk");
 const debug = /--inspect/.test(process.argv[2]);
 const macAddress = require("macaddress");
+require("@electron/remote/main").initialize();
 
 defaultStore.set("debug", debug);
 defaultStore.set("deskVersion", app.getVersion());

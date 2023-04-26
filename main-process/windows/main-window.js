@@ -33,6 +33,7 @@ function showMainWindow() {
     };
 
     mainWindow = new BrowserWindow(windowOptions);
+    require("@electron/remote/main").enable(mainWindow.webContents);
     mainWindow.loadURL("file://" + path.join(__dirname, "../../render-process/main/tabs.html"));
     mainWindow.on("resize", () => {
       resizeWindow();

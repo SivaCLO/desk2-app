@@ -1,4 +1,4 @@
-const remote = require("electron").remote;
+const remote = require("@electron/remote");
 const { ipcRenderer } = require("electron");
 const os = require("os");
 

@@ -1,5 +1,5 @@
 const { ipcRenderer } = require("electron");
-const Remote = require("electron").remote;
+const Remote = require("@electron/remote");
 const { log } = require("../../common/activity");
 const { visit } = require("../../common/page");
 const { updateDraft } = require("../../common/desk");
@@ -20,9 +20,11 @@ class DeskTab {
         nodeIntegration: true,
         contextIsolation: false,
         spellcheck: false,
+        enableRemoteModule: true,
         preload: path.join(__dirname, "desk-tab-preload.js"),
       },
     });
+    require("@electron/remote/main").enable(this.browserView.webContents);
 
     this.handleNavigation();
     this.browserView.webContents.loadURL(url).then();

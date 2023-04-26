@@ -33,6 +33,7 @@ function toggleShortcutsWindow() {
     };
 
     shortcutsWindow = new BrowserWindow(windowOptions);
+    require("@electron/remote/main").enable(shortcutsWindow.webContents);
     shortcutsWindow.loadURL("file://" + path.join(__dirname, "../../render-process/shortcuts/shortcuts.html")).then();
     shortcutsWindow.on("close", () => {
       defaultStore.set("shortcutsWindowPosition", shortcutsWindow.getBounds());

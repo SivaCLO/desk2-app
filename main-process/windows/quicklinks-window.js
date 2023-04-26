@@ -24,6 +24,7 @@ function showQuicklinksWindow() {
         enableRemoteModule: true,
       },
     });
+    require("@electron/remote/main").enable(quicklinksWindow.webContents);
     quicklinksWindow
       .loadURL("file://" + path.join(__dirname, "../../render-process/quicklinks/quicklinks.html"))
       .then();
