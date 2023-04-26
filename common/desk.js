@@ -8,7 +8,7 @@ const os = require("os");
 function deskPUT(deskId, desk) {
   return new Promise((resolve, reject) => {
     axios
-      .put(`${defaultStore.get("deskappServerURL")}/desk/${deskId}`, JSON.stringify(desk))
+      .put(`${defaultStore.get("deskappServerURL")}/desk/${deskId}`, desk)
       .then(function (response) {
         resolve(response.data);
       })
@@ -23,7 +23,7 @@ function deskPUT(deskId, desk) {
 function deskPOST(mediumUserId, desk) {
   return new Promise((resolve, reject) => {
     axios
-      .post(`${defaultStore.get("deskappServerURL")}/desk/mediumUser/${mediumUserId}`, JSON.stringify(desk))
+      .post(`${defaultStore.get("deskappServerURL")}/desk/mediumUser/${mediumUserId}`, desk)
       .then(function (response) {
         resolve(response.data);
       })
@@ -38,7 +38,7 @@ function deskPOST(mediumUserId, desk) {
 function draftPOST(deskId, mediumPostId, draft) {
   return new Promise((resolve, reject) => {
     axios
-      .post(`${defaultStore.get("deskappServerURL")}/desk/${deskId}/draft/${mediumPostId}`, JSON.stringify(draft))
+      .post(`${defaultStore.get("deskappServerURL")}/desk/${deskId}/draft/${mediumPostId}`, draft)
       .then(function (response) {
         resolve(response.data);
       })
