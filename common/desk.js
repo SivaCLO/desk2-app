@@ -38,7 +38,7 @@ function deskPOST(mediumUserId, desk) {
 function draftPOST(deskId, mediumPostId, draft) {
   return new Promise((resolve, reject) => {
     axios
-      .post(`${defaultStore.get("deskappServerURL")}/desk/${deskId}/draft/${mediumPostId}`, JSON.stringify(draft))
+      .post(`${defaultStore.get("deskappServerURL")}/draft/${deskId}/${mediumPostId}`, JSON.stringify(draft))
       .then(function (response) {
         resolve(response.data);
       })
