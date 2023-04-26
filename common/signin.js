@@ -66,20 +66,20 @@ function callMediumMe(mediumTokens) {
 }
 
 async function signinStart() {
-  let data = await callSigninCreate();
-  defaultStore.set("signinId", data.signinId);
-  log("signin/start", { signinId: data.signinId });
+  let signin = await callSigninCreate();
+  defaultStore.set("signinId", signin.signinId);
+  log("signin/start", { signinId: signin.signinId });
 }
 
 async function signinSetup() {
   let signinId = defaultStore.get("signinId");
-  let signinData = await callSigninRead(signinId);
-  defaultStore.set("mediumTokens", signinData.mediumTokens);
-  defaultStore.set("mediumUser", signinData.mediumUser);
+  let signin = await callSigninRead(signinId);
+  defaultStore.set("mediumTokens", signin.mediumTokens);
+  defaultStore.set("mediumUser", signin.mediumUser);
 
-  log("signin/medium", { signinId, signinData });
+  log("signin/medium", { signinId, signin });
 
-  let mediumUserJSON = await callMediumUserJSON(signinData.mediumUser.url);
+  let mediumUserJSON = await callMediumUserJSON(signin.mediumUser.url);
   defaultStore.set("mediumUserJSON", mediumUserJSON);
 
   await deskSignin();
