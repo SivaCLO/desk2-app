@@ -23,7 +23,7 @@ function deskPUT(deskId, desk) {
 function deskPOST(mediumUserId, desk) {
   return new Promise((resolve, reject) => {
     axios
-      .post(`${defaultStore.get("deskappServerURL")}/desk/${mediumUserId}`, JSON.stringify(desk))
+      .post(`${defaultStore.get("deskappServerURL")}/desk/mediumUser/${mediumUserId}`, JSON.stringify(desk))
       .then(function (response) {
         resolve(response.data);
       })
