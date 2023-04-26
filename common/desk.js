@@ -53,12 +53,12 @@ function draftPOST(deskId, mediumPostId, draft) {
 function draftsGET(deskId) {
   return new Promise((resolve, reject) => {
     axios
-      .get(`${defaultStore.get("deskappServerURL")}/desk/${deskId}/draft/list`)
+      .get(`${defaultStore.get("deskappServerURL")}/draft/${deskId}/list`)
       .then(function (response) {
         resolve(response.data);
       })
       .catch((e) => {
-        log("desk/draftsGET/error", { e, data });
+        log("desk/draftsGET/error", { e });
         console.error(e);
         reject(e);
       });
