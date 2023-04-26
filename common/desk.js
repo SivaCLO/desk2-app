@@ -80,7 +80,7 @@ async function deskSignin() {
       debug: defaultStore.get("debug"),
     },
   });
-  defaultStore.set("deskId", desk.id);
+  defaultStore.set("deskId", desk.deskId);
   defaultStore.set("deskType", desk.type);
   defaultStore.set("deskSettings", desk.settings);
   defaultStore.set("deskFlags", desk.flags);
