@@ -1,12 +1,13 @@
 const axios = require('axios');
 const { defaultStore } = require('./store');
 
-function visit(url, title, tabId, pageId) {
+function visit(url, title, tabId) {
   return new Promise((resolve, reject) => {
     let deskId = defaultStore.get('deskId');
     let sessionId = defaultStore.get('sessionId');
     axios
-      .post(`${defaultStore.get('deskappServerURL')}/page/${deskId}/${pageId}`, {
+      .post(`${defaultStore.get('deskappServerURL')}/page`, {
+        deskId,
         url,
         title,
         tabId,
@@ -14,7 +15,7 @@ function visit(url, title, tabId, pageId) {
         visitedTime: Date.now(),
       })
       .then((res) => {
-        resolve(res.data.id);
+        resolve(res.data.postId);
       })
       .catch((err) => {
         console.error('Failed to record page history', err && err.code, url, tabId, sessionId);
@@ -57,7 +58,11 @@ async function getFrequent() {
   for (let page of pages) {
     let currUrl = page.url.split('?')[0];
     if (currUrl.endsWith('/')) currUrl = currUrl.substr(0, currUrl.length - 1);
-    if (!hideLinks.includes(currUrl) && !(currUrl.startsWith('https://medium.com/p') && currUrl.endsWith('/edit'))) {
+    if (
+      !hideLinks.includes(currUrl) &&
+      !(currUrl.startsWith('https://medium.com/p') && currUrl.endsWith('/edit')) &&
+      !currUrl.startsWith('file://')
+    ) {
       let currPage = uniquePages[currUrl] || { url: currUrl, title: currUrl, count: 0 };
       if (page.title) {
         currPage.title = page.title;
@@ -70,6 +75,8 @@ async function getFrequent() {
       uniquePages[currUrl] = currPage;
     }
   }
+
+  console.log(uniquePages);
 
   return Object.values(uniquePages);
 }
