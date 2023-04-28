@@ -41,7 +41,7 @@
       require("bootstrap");
       const path = require("path");
       const axios = require("axios");
-      const { getSetting, updateSetting } = require("../../common/desk");
+      const { getSetting, updateSetting } = require("../../common/user");
 
       window.onload = function () {
         getSetting("userEmail") && (document.getElementById("email").value = getSetting("userEmail"));

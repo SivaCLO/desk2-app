@@ -2,7 +2,7 @@ const { Menu, app, shell, ipcMain } = require("electron");
 const { getMainWindow } = require("../windows/main-window");
 const { showImportDialog } = require("../dialogs/import-draft-dialog");
 const { defaultStore } = require("../../common/store");
-const { deskSignout } = require("../../common/desk");
+const { userSignout } = require("../../common/user");
 const { log } = require("../../common/activity");
 let zenMode = false;
 
@@ -39,7 +39,7 @@ let template = [
         label: "Sign out",
         click() {
           log("application-menu/file/sign-out");
-          deskSignout();
+          userSignout();
         },
       },
     ],
@@ -320,7 +320,7 @@ if (process.platform === "darwin") {
   addUpdateMenuItems(template[0].submenu, 1);
 }
 
-if (defaultStore.get("debug") || defaultStore.get("deskType") === "admin") {
+if (defaultStore.get("debug") || defaultStore.get("userType") === "admin") {
   template[template.length - 2].submenu.push(
     {
       type: "separator",

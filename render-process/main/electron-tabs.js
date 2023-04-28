@@ -1,25 +1,25 @@
-const EventEmitter = require("events");
-const Remote = require("@electron/remote");
-const { ipcRenderer } = require("electron");
-const DeskTab = require("./desk-tab");
-const { log } = require("../../common/activity");
-const FindInPage = require("electron-find").FindInPage;
+const EventEmitter = require('events');
+const Remote = require('@electron/remote');
+const { ipcRenderer } = require('electron');
+const AppTab = require('./app-tab');
+const { log } = require('../../common/activity');
+const FindInPage = require('electron-find').FindInPage;
 let findInPage = null;
 
 if (!document) {
-  throw Error("electron-tabs module must be called in renderer process");
+  throw Error('electron-tabs module must be called in renderer process');
 }
 
 class TabGroup extends EventEmitter {
   constructor(args = {}) {
     super();
     let options = (this.options = {
-      tabContainerSelector: args.tabContainerSelector || ".etabs-tabs",
-      buttonsContainerSelector: args.buttonsContainerSelector || ".etabs-buttons",
-      tabClass: args.tabClass || "etabs-tab",
-      closeButtonText: args.closeButtonText || "&#215;",
+      tabContainerSelector: args.tabContainerSelector || '.etabs-tabs',
+      buttonsContainerSelector: args.buttonsContainerSelector || '.etabs-buttons',
+      tabClass: args.tabClass || 'etabs-tab',
+      closeButtonText: args.closeButtonText || '&#215;',
       newTab: args.newTab,
-      newTabButtonText: args.newTabButtonText || "&#65291;",
+      newTabButtonText: args.newTabButtonText || '&#65291;',
       visibilityThreshold: args.visibilityThreshold || 0,
       ready: args.ready,
     });
@@ -29,17 +29,17 @@ class TabGroup extends EventEmitter {
     this.newTabId = 0;
     TabGroupPrivate.initNewTabButton.bind(this)();
     TabGroupPrivate.initVisibility.bind(this)();
-    if (typeof this.options.ready === "function") {
+    if (typeof this.options.ready === 'function') {
       this.options.ready(this);
     }
   }
 
   addTab(args = this.options.newTab) {
-    if (typeof args === "function") {
+    if (typeof args === 'function') {
       args = args(this);
     }
     let id = this.newTabId;
-    log("electron-tabs/add-tab", { id, args });
+    log('electron-tabs/add-tab', { id, args });
     this.newTabId++;
     let tab = new Tab(this, id, args);
     this.tabs.push(tab);
@@ -47,7 +47,7 @@ class TabGroup extends EventEmitter {
     if (args.active === true) {
       tab.activate();
     }
-    this.emit("tab-added", tab, this);
+    this.emit('tab-added', tab, this);
     this.resizeTabs();
     return tab;
   }
@@ -66,9 +66,9 @@ class TabGroup extends EventEmitter {
   }
 
   setTabWidth(width) {
-    let all = document.getElementsByClassName("etabs-tab");
+    let all = document.getElementsByClassName('etabs-tab');
     for (let i = 0; i < all.length; i++) {
-      all[i].style.width = width + "px";
+      all[i].style.width = width + 'px';
     }
   }
 
@@ -128,13 +128,13 @@ const TabGroupPrivate = {
   initNewTabButton: function () {
     if (!this.options.newTab) return;
     let container = document.querySelector(this.options.buttonsContainerSelector);
-    let button = container.appendChild(document.createElement("button"));
+    let button = container.appendChild(document.createElement('button'));
     button.classList.add(`${this.options.tabClass}-button-new`);
     button.innerHTML = this.options.newTabButtonText;
     button.addEventListener(
-      "click",
+      'click',
       (() => {
-        log("electron-tabs/new-tab-button");
+        log('electron-tabs/new-tab-button');
         this.addTab();
       }).bind(this),
       false
@@ -146,14 +146,14 @@ const TabGroupPrivate = {
       var visibilityThreshold = this.options.visibilityThreshold;
       var el = tabGroup.tabContainer.parentNode;
       if (this.tabs.length >= visibilityThreshold) {
-        el.classList.add("visible");
+        el.classList.add('visible');
       } else {
-        el.classList.remove("visible");
+        el.classList.remove('visible');
       }
     }
 
-    this.on("tab-added", toggleTabsVisibility);
-    this.on("tab-removed", toggleTabsVisibility);
+    this.on('tab-added', toggleTabsVisibility);
+    this.on('tab-removed', toggleTabsVisibility);
   },
 
   removeTab: function (tab, triggerEvent) {
@@ -165,7 +165,7 @@ const TabGroupPrivate = {
       }
     }
     if (triggerEvent) {
-      this.emit("tab-removed", tab, this);
+      this.emit('tab-removed', tab, this);
     }
     return this;
   },
@@ -173,7 +173,7 @@ const TabGroupPrivate = {
   setActiveTab: function (tab) {
     TabGroupPrivate.removeTab.bind(this)(tab);
     this.tabs.unshift(tab);
-    this.emit("tab-active", tab, this);
+    this.emit('tab-active', tab, this);
     return this;
   },
 
@@ -198,11 +198,11 @@ class Tab extends EventEmitter {
     this.tabElements = {};
     TabPrivate.initTab.bind(this)();
     this.url = args.url;
-    this.view = new DeskTab(this.url, this, tabGroup);
+    this.view = new AppTab(this.url, this, tabGroup);
     if (args.visible !== false) {
       this.show();
     }
-    if (typeof args.ready === "function") {
+    if (typeof args.ready === 'function') {
       args.ready(this);
     }
   }
@@ -212,9 +212,9 @@ class Tab extends EventEmitter {
     let span = this.tabElements.title;
     span.innerHTML = title;
     span.title = title;
-    span.classList.remove("hidden");
+    span.classList.remove('hidden');
     this.title = title;
-    this.emit("title-changed", title, this);
+    this.emit('title-changed', title, this);
     return this;
   }
 
@@ -230,12 +230,12 @@ class Tab extends EventEmitter {
 
     if (badge) {
       span.innerHTML = badge;
-      span.classList.remove("hidden");
+      span.classList.remove('hidden');
     } else {
-      span.classList.add("hidden");
+      span.classList.add('hidden');
     }
 
-    this.emit("badge-changed", badge, this);
+    this.emit('badge-changed', badge, this);
   }
 
   getBadge() {
@@ -250,16 +250,16 @@ class Tab extends EventEmitter {
     let span = this.tabElements.icon;
     if (iconURL) {
       span.innerHTML = `<img src="${iconURL}" />`;
-      this.emit("icon-changed", iconURL, this);
+      this.emit('icon-changed', iconURL, this);
     } else if (icon) {
       span.innerHTML = `<i class="${icon}"></i>`;
-      this.emit("icon-changed", icon, this);
+      this.emit('icon-changed', icon, this);
     } else if (iconSVG) {
       span.innerHTML = `<svg class="bi">${iconSVG}</svg>`;
-      this.emit("icon-changed", iconSVG, this);
+      this.emit('icon-changed', iconSVG, this);
     } else {
       span.innerHTML = ``;
-      this.emit("icon-changed", null, this);
+      this.emit('icon-changed', null, this);
     }
 
     return this;
@@ -319,18 +319,18 @@ class Tab extends EventEmitter {
   activate() {
     if (this.isClosed) return;
 
-    log("electron-tabs/activate-tab", { id: this.id, url: this.url, title: this.getTitle() });
+    log('electron-tabs/activate-tab', { id: this.id, url: this.url, title: this.getTitle() });
 
     // Deactivate previous Tab
     let activeTab = this.tabGroup.getActiveTab();
     if (activeTab) {
-      activeTab.tab.classList.remove("active");
-      activeTab.emit("inactive", activeTab);
+      activeTab.tab.classList.remove('active');
+      activeTab.emit('inactive', activeTab);
     }
 
     // Activate Tab
     TabGroupPrivate.setActiveTab.bind(this.tabGroup)(this);
-    this.tab.classList.add("active");
+    this.tab.classList.add('active');
 
     this.view.activateTab();
 
@@ -345,7 +345,7 @@ class Tab extends EventEmitter {
     });
     this.view.browserView.webContents.focus();
 
-    this.emit("active", this);
+    this.emit('active', this);
     destroyFindInPage();
     return this;
   }
@@ -353,11 +353,11 @@ class Tab extends EventEmitter {
   show(flag) {
     if (this.isClosed) return;
     if (flag !== false) {
-      this.tab.classList.add("visible");
-      this.emit("visible", this);
+      this.tab.classList.add('visible');
+      this.emit('visible', this);
     } else {
-      this.tab.classList.remove("visible");
-      this.emit("hidden", this);
+      this.tab.classList.remove('visible');
+      this.emit('hidden', this);
     }
     return this;
   }
@@ -369,11 +369,11 @@ class Tab extends EventEmitter {
   flash(flag) {
     if (this.isClosed) return;
     if (flag !== false) {
-      this.tab.classList.add("flash");
-      this.emit("flash", this);
+      this.tab.classList.add('flash');
+      this.emit('flash', this);
     } else {
-      this.tab.classList.remove("flash");
-      this.emit("unflash", this);
+      this.tab.classList.remove('flash');
+      this.emit('unflash', this);
     }
     return this;
   }
@@ -387,10 +387,10 @@ class Tab extends EventEmitter {
   }
 
   close(force) {
-    log("electron-tabs/close-tab", { id: this.id, url: this.url, title: this.getTitle() });
+    log('electron-tabs/close-tab', { id: this.id, url: this.url, title: this.getTitle() });
     const abortController = new AbortController();
     const abort = () => abortController.abort();
-    this.emit("closing", this, abort);
+    this.emit('closing', this, abort);
 
     const abortSignal = abortController.signal;
     if (this.isClosed || (!this.closable && !force) || abortSignal.aborted) return;
@@ -401,15 +401,15 @@ class Tab extends EventEmitter {
     if (this.url) {
       this.tabGroup.closedTabs.push(this.url);
     }
-    ipcRenderer.send("delete-tab", { id: this.id });
+    ipcRenderer.send('delete-tab', { id: this.id });
 
     let activeTab = this.tabGroup.getActiveTab();
     TabGroupPrivate.removeTab.bind(tabGroup)(this, true);
 
-    this.emit("close", this);
+    this.emit('close', this);
 
     if (this.tabGroup.tabs.length === 0) {
-      ipcRenderer.send("close-main-window");
+      ipcRenderer.send('close-main-window');
     }
 
     this.tabGroup.resizeTabs();
@@ -424,10 +424,10 @@ const TabPrivate = {
     let tabClass = this.tabGroup.options.tabClass;
 
     // Create tab element
-    let tab = (this.tab = document.createElement("div"));
+    let tab = (this.tab = document.createElement('div'));
     tab.classList.add(tabClass);
-    for (let el of ["icon", "title", "buttons", "badge"]) {
-      let span = tab.appendChild(document.createElement("span"));
+    for (let el of ['icon', 'title', 'buttons', 'badge']) {
+      let span = tab.appendChild(document.createElement('span'));
       span.classList.add(`${tabClass}-${el}`);
       this.tabElements[el] = span;
     }
@@ -445,13 +445,13 @@ const TabPrivate = {
     let container = this.tabElements.buttons;
     let tabClass = this.tabGroup.options.tabClass;
     if (this.closable) {
-      container.classList.remove("hidden");
-      let button = container.appendChild(document.createElement("button"));
+      container.classList.remove('hidden');
+      let button = container.appendChild(document.createElement('button'));
       button.classList.add(`${tabClass}-button-close`);
       button.innerHTML = this.tabGroup.options.closeButtonText;
-      button.addEventListener("click", this.close.bind(this, false), false);
+      button.addEventListener('click', this.close.bind(this, false), false);
     } else {
-      container.classList.add("hidden");
+      container.classList.add('hidden');
     }
   },
 
@@ -463,30 +463,30 @@ const TabPrivate = {
         this.close();
       }
     };
-    this.tab.addEventListener("mouseup", tabClickHandler.bind(this), false);
+    this.tab.addEventListener('mouseup', tabClickHandler.bind(this), false);
     // Mouse down
     const tabMouseDownHandler = function (e) {
       if (this.isClosed) return;
       if (e.which === 1) {
-        if (e.target.matches("button")) return;
+        if (e.target.matches('button')) return;
         this.activate();
       }
     };
-    this.tab.addEventListener("mousedown", tabMouseDownHandler.bind(this), false);
+    this.tab.addEventListener('mousedown', tabMouseDownHandler.bind(this), false);
   },
 };
 
-ipcRenderer.on("on-find", (e, args) => {
+ipcRenderer.on('on-find', (e, args) => {
   if (findInPage) {
     findInPage.destroy();
   }
   findInPage = new FindInPage(Remote.getCurrentWindow().getBrowserView().webContents, {
     preload: true,
-    parentElement: document.querySelector(".toolbar.active"),
+    parentElement: document.querySelector('.toolbar.active'),
     offsetTop: 40,
   });
   setTimeout(() => {
-    let elements = document.getElementsByClassName("find-box")[0].children;
+    let elements = document.getElementsByClassName('find-box')[0].children;
     elements[0].focus();
   }, 500);
   findInPage.openFindWindow();

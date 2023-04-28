@@ -1,27 +1,27 @@
-const { defaultStore } = require("./store");
-const { log } = require("./activity");
-const { deskSignin, deskSignout } = require("./desk");
-const { callMediumUserJSON } = require("./undocumented");
-const axios = require("axios");
-const os = require("os");
+const { defaultStore } = require('./store');
+const { log } = require('./activity');
+const { userSignin, userSignout } = require('./user');
+const { callMediumUserJSON } = require('./undocumented');
+const axios = require('axios');
+const os = require('os');
 
 function callSigninCreate() {
   return new Promise((resolve, reject) => {
     axios
-      .post(`${defaultStore.get("deskappServerURL")}/signin`, {
+      .post(`${defaultStore.get('serverURL')}/signin`, {
         version: {
-          deskVersion: defaultStore.get("deskVersion"),
+          appVersion: defaultStore.get('appVersion'),
           osPlatform: os.platform(),
           osRelease: os.release(),
-          macAddress: defaultStore.get("macAddress"),
-          debug: defaultStore.get("debug"),
+          macAddress: defaultStore.get('macAddress'),
+          debug: defaultStore.get('debug'),
         },
       })
       .then(function (response) {
         resolve(response.data);
       })
       .catch((e) => {
-        log("signin/call-signin-create/error", { e });
+        log('signin/call-signin-create/error', { e });
         console.error(e);
         reject(e);
       });
@@ -31,12 +31,12 @@ function callSigninCreate() {
 function callSigninRead(signinId) {
   return new Promise((resolve, reject) => {
     axios
-      .get(`${defaultStore.get("deskappServerURL")}/signin/${signinId}`)
+      .get(`${defaultStore.get('serverURL')}/signin/${signinId}`)
       .then(function (response) {
         resolve(response.data);
       })
       .catch((e) => {
-        log("signin/call-signin-read/error", { e, signinId });
+        log('signin/call-signin-read/error', { e, signinId });
         console.error(e);
         reject(e);
       });
@@ -46,7 +46,7 @@ function callSigninRead(signinId) {
 function callMediumMe(mediumTokens) {
   return new Promise((resolve, reject) => {
     axios
-      .get("https://api.medium.com/v1/me", {
+      .get('https://api.medium.com/v1/me', {
         headers: {
           Authorization: `${mediumTokens.token_type} ${mediumTokens.access_token}`,
         },
@@ -55,10 +55,10 @@ function callMediumMe(mediumTokens) {
         resolve(response.data.data);
       })
       .catch((e) => {
-        log("signin/call-medium-me/error", { e, mediumTokens });
+        log('signin/call-medium-me/error', { e, mediumTokens });
         console.error(e);
         if (e && e.response.status === 401) {
-          deskSignout();
+          userSignout();
         }
         reject(e);
       });
@@ -67,34 +67,34 @@ function callMediumMe(mediumTokens) {
 
 async function signinStart() {
   let signin = await callSigninCreate();
-  defaultStore.set("signinId", signin.signinId);
-  log("signin/start", { signinId: signin.signinId });
+  defaultStore.set('signinId', signin.signinId);
+  log('signin/start', { signinId: signin.signinId });
 }
 
 async function signinSetup() {
-  let signinId = defaultStore.get("signinId");
+  let signinId = defaultStore.get('signinId');
   let signin = await callSigninRead(signinId);
-  defaultStore.set("mediumTokens", signin.mediumTokens);
-  defaultStore.set("mediumUser", signin.mediumUser);
+  defaultStore.set('mediumTokens', signin.mediumTokens);
+  defaultStore.set('mediumUser', signin.mediumUser);
 
-  log("signin/medium", { signinId, signin });
+  log('signin/medium', { signinId, signin });
 
   let mediumUserJSON = await callMediumUserJSON(signin.mediumUser.url);
-  defaultStore.set("mediumUserJSON", mediumUserJSON);
+  defaultStore.set('mediumUserJSON', mediumUserJSON);
 
-  await deskSignin();
+  await userSignin();
 }
 
 async function signinMain() {
   // TODO: Use Refresh token if this fails. Show Reset message if refresh fails too.
-  let mediumTokens = defaultStore.get("mediumTokens");
+  let mediumTokens = defaultStore.get('mediumTokens');
   let mediumUser = await callMediumMe(mediumTokens);
-  defaultStore.set("mediumUser", mediumUser);
+  defaultStore.set('mediumUser', mediumUser);
 
   let mediumUserJSON = await callMediumUserJSON(mediumUser.url);
-  defaultStore.set("mediumUserJSON", mediumUserJSON);
+  defaultStore.set('mediumUserJSON', mediumUserJSON);
 
-  await deskSignin();
+  await userSignin();
 }
 
 module.exports = { signinStart, signinSetup, signinMain };

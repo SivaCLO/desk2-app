@@ -3,11 +3,11 @@ const { defaultStore } = require('./store');
 
 function visit(url, title, tabId) {
   return new Promise((resolve, reject) => {
-    let deskId = defaultStore.get('deskId');
+    let userId = defaultStore.get('userId');
     let sessionId = defaultStore.get('sessionId');
     axios
-      .post(`${defaultStore.get('deskappServerURL')}/page`, {
-        deskId,
+      .post(`${defaultStore.get('serverURL')}/page`, {
+        userId,
         url,
         title,
         tabId,
@@ -26,9 +26,9 @@ function visit(url, title, tabId) {
 
 function pagesGET() {
   return new Promise((resolve, reject) => {
-    let deskId = defaultStore.get('deskId');
+    let userId = defaultStore.get('userId');
     axios
-      .get(`${defaultStore.get('deskappServerURL')}/page/${deskId}/list`)
+      .get(`${defaultStore.get('serverURL')}/page/${userId}/list`)
       .then((res) => {
         resolve(res.data.pages);
       })

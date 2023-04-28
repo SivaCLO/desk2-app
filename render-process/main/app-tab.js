@@ -2,10 +2,10 @@ const { ipcRenderer } = require('electron');
 const Remote = require('@electron/remote');
 const { log } = require('../../common/activity');
 const { visit } = require('../../common/page');
-const { updateDraft } = require('../../common/desk');
+const { updateDraft } = require('../../common/user');
 const path = require('path');
 
-class DeskTab {
+class AppTab {
   constructor(url, tab, tabs) {
     this.url = url;
     this.tab = tab;
@@ -21,7 +21,7 @@ class DeskTab {
         contextIsolation: false,
         spellcheck: false,
         enableRemoteModule: true,
-        preload: path.join(__dirname, 'desk-tab-preload.js'),
+        preload: path.join(__dirname, 'tab-preload.js'),
       },
     });
     require('@electron/remote/main').enable(this.browserView.webContents);
@@ -43,7 +43,7 @@ class DeskTab {
 
     this.browserView.webContents.on('will-navigate', (event, url) => {
       const fromURL = this.browserView.webContents.getURL();
-      const { checkAndActivateTab } = require('../main/tabs');
+      const { checkAndActivateTab } = require('./tabs');
       if (url.startsWith('https://medium.com/p') && url.split('?')[0].endsWith('/edit')) {
         if (checkAndActivateTab(url)) {
           if (this.isStart) {
@@ -75,7 +75,7 @@ class DeskTab {
     });
 
     this.browserView.webContents.on('new-window', (e, url) => {
-      log('desk-tab/new-window', { url, fromURL: this.browserView.webContents.getURL(), tab: this.tab.id });
+      log('tab/new-window', { url, fromURL: this.browserView.webContents.getURL(), tab: this.tab.id });
       e.preventDefault();
       const { newTab } = require('./tabs');
       newTab(url);
@@ -111,19 +111,19 @@ class DeskTab {
   activateTab = async () => {
     if (this.tabs.getActiveTab() && this.tab.id === this.tabs.getActiveTab().id) {
       if (this.isStart) {
-        document.getElementById('desk-tools').classList.add('active');
+        document.getElementById('main-tools').classList.add('active');
         document.getElementById('draft-tools').classList.remove('active');
         document.getElementById('medium-tools').classList.remove('active');
       } else if (this.draftId) {
         let toolTitle = document.getElementById('draft-tools-title');
         toolTitle.innerHTML = this.url.split('?')[0];
-        document.getElementById('desk-tools').classList.remove('active');
+        document.getElementById('main-tools').classList.remove('active');
         document.getElementById('draft-tools').classList.add('active');
         document.getElementById('medium-tools').classList.remove('active');
       } else {
         let toolTitle = document.getElementById('medium-tools-title');
         toolTitle.innerHTML = this.url.split('?')[0];
-        document.getElementById('desk-tools').classList.remove('active');
+        document.getElementById('main-tools').classList.remove('active');
         document.getElementById('draft-tools').classList.remove('active');
         document.getElementById('medium-tools').classList.add('active');
       }
@@ -139,4 +139,4 @@ class DeskTab {
   };
 }
 
-module.exports = DeskTab;
+module.exports = AppTab;

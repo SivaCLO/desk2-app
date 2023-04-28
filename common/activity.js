@@ -1,18 +1,18 @@
-const axios = require("axios");
-const { defaultStore } = require("./store");
+const axios = require('axios');
+const { defaultStore } = require('./store');
 
 function log(activityCode, activityData) {
-  let deskId = defaultStore.get("deskId") || "setup";
+  let userId = defaultStore.get('userId') || 'setup';
   axios
-    .post(`${defaultStore.get("deskappServerURL")}/activity`, {
-      deskId,
+    .post(`${defaultStore.get('serverURL')}/activity`, {
+      userId,
       activityCode,
       activityData,
       activityTime: Date.now(),
     })
     .then((res) => {})
     .catch((err) => {
-      console.error("Failed to log activity", err && err.code, activityCode, activityData);
+      console.error('Failed to log activity', err && err.code, activityCode, activityData);
     });
 }
 

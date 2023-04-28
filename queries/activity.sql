@@ -2,8 +2,8 @@
 /* v1.0.1 - 1600352616000 */
 
 /* Filters */
-WHERE c.deskType = "writer" OR c.deskType = "editor" ORDER BY c.id DESC
-WHERE c.deskType = "writer" OR c.deskType = "editor" ORDER BY c.activityTime DESC
+WHERE c.userType = "writer" OR c.userType = "editor" ORDER BY c.id DESC
+WHERE c.userType = "writer" OR c.userType = "editor" ORDER BY c.activityTime DESC
 
 /* All User Activities */
 SELECT c.userName, c.activityCode, c.activityData, TimestampToDateTime(c.activityTime) FROM c WHERE c.activityTime >= 1600352616000 ORDER BY c.activityTime DESC

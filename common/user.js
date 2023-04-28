@@ -5,110 +5,110 @@ const { callMediumPostJSON } = require('./undocumented');
 const axios = require('axios');
 const os = require('os');
 
-function deskPUT(deskId, desk) {
+function userPUT(userId, user) {
   return new Promise((resolve, reject) => {
     axios
-      .put(`${defaultStore.get('deskappServerURL')}/desk/${deskId}`, desk)
+      .put(`${defaultStore.get('serverURL')}/user/${userId}`, user)
       .then(function (response) {
         resolve(response.data);
       })
       .catch((e) => {
-        log('desk/deskPUT/error', { e, desk });
+        log('user/userPUT/error', { e, user });
         console.error(e);
         reject(e);
       });
   });
 }
 
-function deskPOST(mediumUserId, desk) {
+function userPOST(mediumUserId, user) {
   return new Promise((resolve, reject) => {
     axios
-      .post(`${defaultStore.get('deskappServerURL')}/desk/mediumUser/${mediumUserId}`, desk)
+      .post(`${defaultStore.get('serverURL')}/user/mediumUser/${mediumUserId}`, user)
       .then(function (response) {
         resolve(response.data);
       })
       .catch((e) => {
-        log('desk/deskPOST/error', { e, mediumUserId, desk });
+        log('user/userPOST/error', { e, mediumUserId, user });
         console.error(e);
         reject(e);
       });
   });
 }
 
-function draftPOST(deskId, mediumPostId, draft) {
+function draftPOST(userId, mediumPostId, draft) {
   return new Promise((resolve, reject) => {
     axios
-      .post(`${defaultStore.get('deskappServerURL')}/draft/${deskId}/${mediumPostId}`, draft)
+      .post(`${defaultStore.get('serverURL')}/draft/${userId}/${mediumPostId}`, draft)
       .then(function (response) {
         resolve(response.data);
       })
       .catch((e) => {
-        log('desk/draftPOST/error', { e, deskId, mediumPostId, draft });
+        log('user/draftPOST/error', { e, userId, mediumPostId, draft });
         console.error(e);
         reject(e);
       });
   });
 }
 
-function draftsGET(deskId) {
+function draftsGET(userId) {
   return new Promise((resolve, reject) => {
     axios
-      .get(`${defaultStore.get('deskappServerURL')}/draft/${deskId}/list`)
+      .get(`${defaultStore.get('serverURL')}/draft/${userId}/list`)
       .then(function (response) {
         resolve(response.data);
       })
       .catch((e) => {
-        log('desk/draftsGET/error', { e });
+        log('user/draftsGET/error', { e });
         console.error(e);
         reject(e);
       });
   });
 }
 
-async function deskSignin() {
+async function userSignin() {
   let mediumUser = defaultStore.get('mediumUser');
   let mediumUserJSON = defaultStore.get('mediumUserJSON');
-  let desk = await deskPOST(mediumUser.id, {
+  let user = await userPOST(mediumUser.id, {
     mediumUser,
     mediumUserJSON,
     lastSignin: Date.now(),
     lastSigninVersion: {
-      deskVersion: defaultStore.get('deskVersion'),
+      appVersion: defaultStore.get('appVersion'),
       osPlatform: os.platform(),
       osRelease: os.release(),
       macAddress: defaultStore.get('macAddress'),
       debug: defaultStore.get('debug'),
     },
   });
-  defaultStore.set('deskId', desk.deskId);
-  defaultStore.set('deskType', desk.type);
-  defaultStore.set('deskSettings', desk.settings);
-  defaultStore.set('deskFlags', desk.flags);
+  defaultStore.set('userId', user.userId);
+  defaultStore.set('userType', user.type);
+  defaultStore.set('userSettings', user.settings);
+  defaultStore.set('userFlags', user.flags);
 
-  let draftData = await draftsGET(defaultStore.get('deskId'));
-  defaultStore.set('deskDrafts', draftData.drafts);
-  log('signin/desk', { desk, mediumUser, mediumUserJSON, draftData });
+  let draftData = await draftsGET(defaultStore.get('userId'));
+  defaultStore.set('userDrafts', draftData.drafts);
+  log('signin/user', { user, mediumUser, mediumUserJSON, draftData });
 }
 
 async function updateSetting(key, value) {
-  let settings = defaultStore.get('deskSettings');
+  let settings = defaultStore.get('userSettings');
   settings[key] = value;
-  defaultStore.set('deskSettings', settings);
-  await deskPUT(defaultStore.get('deskId'), { settings });
+  defaultStore.set('userSettings', settings);
+  await userPUT(defaultStore.get('userId'), { settings });
 }
 function getSetting(key) {
-  let settings = defaultStore.get('deskSettings') || {};
+  let settings = defaultStore.get('userSettings') || {};
   return settings[key];
 }
 
 async function updateFlag(key, value) {
-  let flags = defaultStore.get('deskFlags');
+  let flags = defaultStore.get('userFlags');
   flags[key] = value;
-  defaultStore.set('deskFlags', flags);
-  await deskPUT(defaultStore.get('deskId'), { flags });
+  defaultStore.set('userFlags', flags);
+  await userPUT(defaultStore.get('userId'), { flags });
 }
 function getFlag(key) {
-  let flags = defaultStore.get('deskFlags') || {};
+  let flags = defaultStore.get('userFlags') || {};
   return flags[key];
 }
 
@@ -140,18 +140,18 @@ async function updateDraft(mediumPostId, lastOpenedTime) {
     drafts.push(draft);
   }
 
-  defaultStore.set('deskDrafts', drafts);
+  defaultStore.set('userDrafts', drafts);
 
-  await draftPOST(defaultStore.get('deskId'), mediumPostId, draft);
+  await draftPOST(defaultStore.get('userId'), mediumPostId, draft);
 
   return data;
 }
 function getDrafts() {
-  return defaultStore.get('deskDrafts') || {};
+  return defaultStore.get('userDrafts') || {};
 }
 
-function deskSignout() {
-  log('desk/signout');
+function userSignout() {
+  log('user/signout');
   session.defaultSession.clearCache().then(() => {
     session.defaultSession.clearStorageData().then(() => {
       defaultStore.clear();
@@ -161,12 +161,12 @@ function deskSignout() {
 }
 
 module.exports = {
-  deskSignin,
+  userSignin,
   updateSetting,
   getSetting,
   updateFlag,
   getFlag,
   updateDraft,
   getDrafts,
-  deskSignout,
+  userSignout,
 };

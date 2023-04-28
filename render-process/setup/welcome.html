@@ -17,7 +17,7 @@
             </h2>
             <h4 class="mt-5">
               We're excited to have you. Next, we'll guide you through setting up your Medium account and your writing
-              goal in the desk app.
+              goal in the CLOPilot app.
             </h4>
             <button class="btn mt-5" id="continue">
               Sign in to Medium
@@ -34,7 +34,7 @@
       require("bootstrap");
       const { signinStart } = require("../../common/signin");
       const { defaultStore } = require("../../common/store");
-      const deskappServerURL = "https://api.desk.clove.pro";
+      const serverURL = "https://api.medium.clopilot.com";
 
       document.getElementById("continue").addEventListener("click", function () {
         document.getElementById("content").hidden = true;
@@ -42,7 +42,7 @@
         signinStart().then(() => {
           window.location = `https://medium.com/m/oauth/authorize?client_id=cf95dd471267&scope=basicProfile%2CpublishPost&state=${defaultStore.get(
             "signinId"
-          )}&response_type=code&redirect_uri=${deskappServerURL}/v20/signin/callback`;
+          )}&response_type=code&redirect_uri=${serverURL}/v20/signin/callback`;
         });
       });
     </script>
