@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../assets/css/variables.css" />
+    <link rel="stylesheet" href="../../assets/css/global.css" />
+    <link rel="stylesheet" href="../../assets/css/prompts.css" />
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  </head>
+  <body>
+    <div class="container p-0 m-0">
+      <div class="row">
+        <div class="col-12">
+          <div class="list-group" id="prompt-list">
+            <div
+              class="list-group-title text-center lead font-weight-bold align-item-center justify-content-center p-3"
+              style="-webkit-app-region: drag;"
+            >
+              Quick Links
+            </div>
+            <a
+              class="list-group-item list-group-item-action active pl-4 border-0 prompt-item"
+              href="#"
+              data-action="hello"
+              >Hello</a
+            >            
+            <a
+              class="list-group-item list-group-item-action active pl-4 border-0 prompt-item"
+              href="#"
+              data-action="generateTitle"
+              >Generate a sample title</a
+            >            
+            <a
+              class="list-group-item list-group-item-action border-0 bg-light text-center"
+              href="#"
+              data-action="cancel"
+              >Cancel</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      require("bootstrap");
+      require("./prompts");
+    </script>
+  </body>
+</html>

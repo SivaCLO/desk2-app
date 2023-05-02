@@ -1,9 +1,9 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
-const os = require("os");
-const { defaultStore } = require("../../common/store");
-const path = require("path");
-const { log } = require("../../common/activity");
-const uuid = require("uuid");
+const { app, BrowserWindow, ipcMain } = require('electron');
+const os = require('os');
+const { defaultStore } = require('../../common/store');
+const path = require('path');
+const { log } = require('../../common/activity');
+const uuid = require('uuid');
 
 let mainWindow = null;
 
@@ -13,8 +13,8 @@ function getMainWindow() {
 
 function showMainWindow() {
   if (!mainWindow) {
-    const mainWindowPosition = defaultStore.get("mainWindowPosition") || { width: 1140, height: 840 };
-    log("main-window/show", { position: mainWindowPosition });
+    const mainWindowPosition = defaultStore.get('mainWindowPosition') || { width: 1140, height: 840 };
+    log('main-window/show', { position: mainWindowPosition });
     const windowOptions = {
       x: mainWindowPosition.x,
       y: mainWindowPosition.y,
@@ -23,8 +23,8 @@ function showMainWindow() {
       minWidth: 850,
       minHeight: 500,
       title: app.name,
-      titleBarStyle: "hiddenInset",
-      frame: os.platform() === "linux",
+      titleBarStyle: 'hiddenInset',
+      frame: os.platform() === 'linux',
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: false,
@@ -33,32 +33,31 @@ function showMainWindow() {
     };
 
     mainWindow = new BrowserWindow(windowOptions);
-    require("@electron/remote/main").enable(mainWindow.webContents);
-    mainWindow.loadURL("file://" + path.join(__dirname, "../../render-process/main/tabs.html"));
-    mainWindow.on("resize", () => {
+    require('@electron/remote/main').enable(mainWindow.webContents);
+    mainWindow.loadURL('file://' + path.join(__dirname, '../../render-process/main/tabs.html'));
+    mainWindow.on('resize', () => {
       resizeWindow();
     });
-    mainWindow.on("maximize", () => {
-      log("main-window/maximize");
+    mainWindow.on('maximize', () => {
+      log('main-window/maximize');
       resizeWindow();
     });
-    mainWindow.on("minimize", () => {
-      log("main-window/minimize");
+    mainWindow.on('minimize', () => {
+      log('main-window/minimize');
       resizeWindow();
     });
-    mainWindow.on("enter-full-screen", () => {
-      log("main-window/enter-full-screen");
+    mainWindow.on('enter-full-screen', () => {
+      log('main-window/enter-full-screen');
       resizeWindow();
     });
-    mainWindow.on("leave-full-screen", () => {
-      log("main-window/leave-full-screen");
+    mainWindow.on('leave-full-screen', () => {
+      log('main-window/leave-full-screen');
       resizeWindow();
     });
-    mainWindow.on("unmaximize", () => {
-      log("main-window/unmaximize");
+    mainWindow.on('unmaximize', () => {
+      log('main-window/unmaximize');
       resizeWindow();
     });
-
     function resizeWindow() {
       mainWindow.getBrowserView() &&
         mainWindow.getBrowserView().setBounds({
@@ -67,36 +66,36 @@ function showMainWindow() {
           width: mainWindow.getContentBounds().width,
           height: mainWindow.getContentBounds().height - 80,
         });
-      mainWindow.webContents.send("tab-padding", process.platform === "darwin" && !mainWindow.isFullScreen());
-      mainWindow.webContents.send("resize-tabs");
+      mainWindow.webContents.send('tab-padding', process.platform === 'darwin' && !mainWindow.isFullScreen());
+      mainWindow.webContents.send('resize-tabs');
     }
 
-    mainWindow.on("close", () => {
-      log("main-window/close");
+    mainWindow.on('close', () => {
+      log('main-window/close');
       if (!mainWindow.fullScreen) {
-        defaultStore.set("mainWindowPosition", mainWindow.getBounds());
+        defaultStore.set('mainWindowPosition', mainWindow.getBounds());
       }
     });
 
-    mainWindow.on("closed", () => {
+    mainWindow.on('closed', () => {
       mainWindow = null;
     });
 
-    mainWindow.webContents.on("did-finish-load", () => {
+    mainWindow.webContents.on('did-finish-load', () => {
       resizeWindow();
     });
 
-    mainWindow.webContents.once("did-finish-load", () => {
+    mainWindow.webContents.once('did-finish-load', () => {
       let sessionId = uuid.v4();
-      defaultStore.set("sessionId", sessionId);
-      log("main-window/new-session", { sessionId });
-      let tempTabs = defaultStore.get("tabs");
+      defaultStore.set('sessionId', sessionId);
+      log('main-window/new-session', { sessionId });
+      let tempTabs = defaultStore.get('tabs');
       if (tempTabs && tempTabs.length > 0) {
-        mainWindow.webContents.send("restore_tabs", tempTabs);
-        defaultStore.set("tabs", []);
+        mainWindow.webContents.send('restore_tabs', tempTabs);
+        defaultStore.set('tabs', []);
         tempTabs = null;
       } else {
-        mainWindow.webContents.send("new_tab");
+        mainWindow.webContents.send('new_tab');
       }
     });
   }
@@ -106,26 +105,26 @@ function closeMainWindow() {
   mainWindow.close();
 }
 
-ipcMain.on("close-main-window", () => {
+ipcMain.on('close-main-window', () => {
   closeMainWindow();
 });
 
-ipcMain.on("save-tab", (e, tab) => {
-  let tempTabs = defaultStore.get("tabs");
+ipcMain.on('save-tab', (e, tab) => {
+  let tempTabs = defaultStore.get('tabs');
   if (tempTabs && tempTabs.length > 0) {
-    let tempTabs = defaultStore.get("tabs");
+    let tempTabs = defaultStore.get('tabs');
     let filteredTabs = tempTabs.filter((t) => t.id !== tab.id);
-    defaultStore.set("tabs", [...filteredTabs, tab]);
+    defaultStore.set('tabs', [...filteredTabs, tab]);
   } else {
-    defaultStore.set("tabs", [tab]);
+    defaultStore.set('tabs', [tab]);
   }
 });
 
-ipcMain.on("delete-tab", (e, tabs) => {
-  let tempTabs = defaultStore.get("tabs");
+ipcMain.on('delete-tab', (e, tabs) => {
+  let tempTabs = defaultStore.get('tabs');
   if (tempTabs) {
     let filteredTabs = tempTabs.filter((t) => t.id !== tabs.id);
-    defaultStore.set("tabs", filteredTabs);
+    defaultStore.set('tabs', filteredTabs);
   }
 });
 
