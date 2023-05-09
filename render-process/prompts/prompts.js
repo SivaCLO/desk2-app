@@ -29,9 +29,9 @@ async function handleAction(event) {
   if (action === 'hello') {
     log('prompts/hello');
     ipcRenderer.send('send-prompt', 'hello');
-  } else if (action === 'generateTitle') {
-    log('prompts/generateTitle');
-    ipcRenderer.send('send-prompt', 'generateTitle');
+  } else if (action === 'generate-title') {
+    log('prompts/generate-title');
+    ipcRenderer.send('send-prompt', 'generate-title');
   } else if (action === 'cancel') {
     log('prompts/cancel');
   }
