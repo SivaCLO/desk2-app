@@ -22,7 +22,7 @@
     "chai": "^3.4.1",
     "chai-as-promised": "^6.0.0",
     "check-for-leaks": "^1.2.1",
-    "electron": "^24.1.2",
+    "electron": "^24.7.1",
     "electron-builder": "^24.2.1",
     "electron-packager": "^17.1.1",
     "eslint": "^7.5.0",
